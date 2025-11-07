@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bn0f8e3irhsby"]
+
+[ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="1_sjo87"]
+[ext_resource type="Script" uid="uid://b4ybmrlavgjvb" path="res://scripts/tilemaps/terrain_tilemap_layer.gd" id="2_rrdko"]
+
+[node name="TerrainTilemapLayer" type="TileMapLayer"]
+tile_set = ExtResource("1_sjo87")
+script = ExtResource("2_rrdko")
