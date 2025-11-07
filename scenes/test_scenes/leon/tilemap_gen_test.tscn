@@ -1,10 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6nwjmr5iton0"]
+[gd_scene load_steps=2 format=3 uid="uid://b6nwjmr5iton0"]
 
-[ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="1_rebcb"]
-[ext_resource type="Script" uid="uid://b4ybmrlavgjvb" path="res://scripts/tilemaps/terrain_tilemap_layer.gd" id="2_8q6cw"]
+[ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_rebcb"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
-[node name="TerrainTilemapLayer" type="TileMapLayer" parent="."]
-tile_set = ExtResource("1_rebcb")
-script = ExtResource("2_8q6cw")
+[node name="TerrainTilemapLayer" parent="." instance=ExtResource("1_rebcb")]
