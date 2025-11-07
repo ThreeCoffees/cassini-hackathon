@@ -17,3 +17,11 @@ config/icon="res://icon.svg"
 [dotnet]
 
 project/assembly_name="CASSINI Hackathon"
+
+[file_customization]
+
+folder_colors={
+"res://assets/": "yellow",
+"res://scenes/": "green",
+"res://scripts/": "blue"
+}
