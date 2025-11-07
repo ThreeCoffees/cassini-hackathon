@@ -22,6 +22,7 @@ project/assembly_name="CASSINI Hackathon"
 
 folder_colors={
 "res://assets/": "yellow",
+"res://resources/": "purple",
 "res://scenes/": "green",
 "res://scripts/": "blue"
 }
