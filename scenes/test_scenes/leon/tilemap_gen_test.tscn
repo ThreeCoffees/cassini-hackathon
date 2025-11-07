@@ -1,7 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6nwjmr5iton0"]
+[gd_scene load_steps=3 format=3 uid="uid://b6nwjmr5iton0"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_rebcb"]
+[ext_resource type="PackedScene" uid="uid://bhjlsbeqdqyby" path="res://scenes/tilemap/city_manger.tscn" id="2_8q6cw"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
 [node name="TerrainTilemapLayer" parent="." instance=ExtResource("1_rebcb")]
+
+[node name="CityManger" parent="." instance=ExtResource("2_8q6cw")]

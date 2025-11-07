@@ -1,8 +1,8 @@
 class_name TileMapGenerator extends TileMapLayer
 
 var tmp_array: Array = []
-var tmp_array_height = 128
-var tmp_array_width = 128
+var tmp_array_height = 12
+var tmp_array_width = 12
 
 var selected_city = null
 enum TileTypes{
@@ -22,7 +22,7 @@ func prepare_dummy_array():
 			tmp_array[i][j] = randi_range(0, 4)
 	
 
-func _ready() -> void:
+func _init() -> void:
 	prepare_dummy_array()
 	generate_tilemap()
 
