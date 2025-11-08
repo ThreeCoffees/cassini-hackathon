@@ -39,12 +39,17 @@ var resources: Dictionary[String, ResourceData] = {}
 var forest_hp_node = null
 
 var plants: Array[PowerPlant] = []
-
+ 
+var population_happiness: int = -1
 func initialize_resources():
 	resources.set("wood", ResourceData.new("wood"))
 	resources.set("food", ResourceData.new("food"))
 	resources.set("energy", ResourceData.new("energy"))
 	resources.set("population", ResourceData.new("population"))
+
+	# Initialize population happiness once at game start
+	if population_happiness == -1:
+		population_happiness = 100
 
 	on_update_resources()
 
@@ -53,6 +58,9 @@ func calculate_stores():
 	for resource in resources.values():
 		resource.update_storage()
 	global_resources_updated.emit()
+
+	# After storages changed, check population happiness
+	check_population_happiness()
 
 	# For each worked WOODS tile, reduce its HP by 1 (same tempo as resource tick)
 	if forest_hp_node != null:
@@ -76,8 +84,8 @@ func on_update_resources(faction_id: int = -1):
 		resource.update_change()
 	global_resources_updated.emit()
 	faction_info_changed.emit(faction_id)
-	
-	
+
+
 func use_resources(type : String, number : int):
 	print("At first:")
 	print(resources[type].storage)			# gets number of type resource from the storage
@@ -88,8 +96,31 @@ func use_resources(type : String, number : int):
 	print(resources[type].storage)	
 	global_resources_updated.emit()
 
+	# resource changed manually -> evaluate happiness
+	check_population_happiness()
 func how_much_resource(type : String):
 	return resources[type].storage
+
+
+func check_population_happiness() -> void:
+	# Ensure happiness initialized
+	if population_happiness == -1:
+		population_happiness = 100
+
+	if population_happiness <= 0:
+		print("GAME OVER! Population happiness dropped below 0")
+		exit
+	# If either food or energy is negative, reduce happiness by 5 (floor 0)
+	if how_much_resource("food") < 0 or how_much_resource("energy") < 0:
+		population_happiness = max(0, population_happiness - 5)
+		print("WARNING! Population happiness is dropping: %d" % population_happiness)
+
+	if population_happiness < 50:
+		print("Warning: Population happiness is low!")
+
 	
-	
-	
+
+	if (how_much_resource("food") /2 > how_much_resource("population")) and how_much_resource("energy")/2> how_much_resource("population"):
+		population_happiness += 5
+		print("Population happiness increased: %d" % population_happiness)
+		
