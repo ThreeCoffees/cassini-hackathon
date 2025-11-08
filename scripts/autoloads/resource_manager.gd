@@ -126,4 +126,7 @@ func check_population_happiness() -> void:
 	if (how_much_resource("food") /2 > how_much_resource("population")) and how_much_resource("energy")/2> how_much_resource("population"):
 		population_happiness += 5
 		print("Population happiness increased: %d" % population_happiness)
+
+func get_happiness():
+	return population_happiness
 		

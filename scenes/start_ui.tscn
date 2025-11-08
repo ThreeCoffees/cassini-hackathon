@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dwollyrtwuedd"]
 
-[ext_resource type="Theme" uid="uid://xdlsookcp48p" path="res://resources/start_ui.tres" id="1_1d3wy"]
-[ext_resource type="Script" uid="uid://bum4t4h3slpul" path="res://scripts/ui/start.gd" id="2_0cbgb"]
+[ext_resource type="Theme" uid="uid://xdlsookcp48p" path="res://resources/start_ui.tres" id="1_yxax6"]
+[ext_resource type="Script" uid="uid://bum4t4h3slpul" path="res://scripts/ui/start.gd" id="2_r2mcs"]
 
 [node name="StartUi" type="Node2D"]
 
@@ -10,12 +10,12 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_1d3wy")
-script = ExtResource("2_0cbgb")
+theme = ExtResource("1_yxax6")
+script = ExtResource("2_r2mcs")
 
 [node name="PanelContainer" type="PanelContainer" parent="Control"]
 layout_mode = 1
@@ -55,7 +55,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="Button3" type="Button" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("1_1d3wy")
+theme = ExtResource("1_yxax6")
 text = "START"
 
 [node name="PanelContainer3" type="PanelContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
