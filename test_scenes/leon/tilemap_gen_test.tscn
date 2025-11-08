@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6nwjmr5iton0"]
+
+[ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_ein4j"]
+[ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="2_ein4j"]
+[ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_fifh3"]
+[ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_g6a3i"]
+[ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="3_pmoas"]
+[ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="5_pmoas"]
+
+[node name="TilemapGenTest" type="Node2D"]
+
+[node name="Tilemap" type="Node2D" parent="."]
+
+[node name="TerrainTilemapLayer" parent="Tilemap" node_paths=PackedStringArray("tile_picker") instance=ExtResource("1_ein4j")]
+tile_picker = NodePath("")
+
+[node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
+tile_set = ExtResource("2_fifh3")
+script = ExtResource("3_g6a3i")
+
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer")]
+script = ExtResource("2_ein4j")
+terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
+
+[node name="Camera2D" parent="." instance=ExtResource("3_pmoas")]
+position = Vector2(-69, 369)
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="CityInspector" parent="GUI" instance=ExtResource("5_pmoas")]
+
+[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
+[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]

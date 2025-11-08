@@ -60,7 +60,7 @@ func _set_zoom_level(value: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("zoom_in"):
-		self._zoom_level = _zoom_level - zoom_factor
+		self._zoom_level = _zoom_level + zoom_factor
 		
 	if event.is_action_pressed("zoom_out"):
-		self._zoom_level = _zoom_level + zoom_factor
+		self._zoom_level = _zoom_level - zoom_factor
