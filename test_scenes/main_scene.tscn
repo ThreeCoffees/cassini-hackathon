@@ -30,29 +30,31 @@ position = Vector2(-69, 369)
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="PowerPlantAdder" parent="GUI" instance=ExtResource("7_sd8ys")]
+anchors_preset = 4
+
+[node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
+terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 
 [node name="CityInspector" parent="GUI/PowerPlantAdder" instance=ExtResource("6_pf31u")]
 layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -504.0
 offset_top = 367.0
 offset_right = -504.0
 offset_bottom = 367.0
-
-[node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="3" node_paths=PackedStringArray("terrain_tilemap")]
-terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="ResourceInspector" parent="GUI" instance=ExtResource("8_0oq0b")]
 
 [node name="ResourceTimer" parent="." instance=ExtResource("9_oqvsx")]
 
-[node name="ResourceTimer" type="Timer" parent="."]
-wait_time = 2.0
-autostart = true
-script = ExtResource("9_oqvsx")
-
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/PowerPlantAdder/CityInspector" method="_on_faction_picked"]
 [connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
-[connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
 
 [editable path="GUI/PowerPlantAdder"]
