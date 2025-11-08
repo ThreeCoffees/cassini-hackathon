@@ -60,7 +60,7 @@ func remove_worked_tile(tile: WorkedTile) -> void:
 	worked_tiles = worked_tiles.filter(func(w): return w.coords != tile.coords)
 	update_info()
 
-	# Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
+# Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
 func remove_worked_tile_by_coords(coords: Vector2i) -> void:
 	for i in range(worked_tiles.size()):
 		if worked_tiles[i].coords == coords:
@@ -69,7 +69,7 @@ func remove_worked_tile_by_coords(coords: Vector2i) -> void:
 			return
 	# (no additional helpers here; keep API minimal)
 
-signal update_resources
+signal update_resources(faction_id: int)
 
 # Przelicza populację, wymagania i zbiory dla frakcji na podstawie miast i pracowanych pól
 func update_info():
@@ -84,8 +84,7 @@ func update_info():
 				wood_yields += wood_prod_mul
 			TerrainTilemapLayer.TileTypes.AGRI:
 				food_yields += food_prod_mul
-    
-	update_resources.emit()
+	update_resources.emit(id)
 	update_population()
 
 # Zwraca produkcję (yield) dla danego typu zasobu

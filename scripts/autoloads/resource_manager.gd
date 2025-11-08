@@ -69,10 +69,13 @@ func register_forest_hp(node):
 	forest_hp_node = node
 
 
-func on_update_resources():
+signal faction_info_changed(faction_id: int)
+
+func on_update_resources(faction_id: int = -1):
 	for resource in resources.values():
 		resource.update_change()
 	global_resources_updated.emit()
+	faction_info_changed.emit(faction_id)
 	
 	
 func use_resources(type : String, number : int):
