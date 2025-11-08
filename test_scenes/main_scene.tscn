@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dpvqbye37cjmd"]
+[gd_scene load_steps=10 format=3 uid="uid://dpvqbye37cjmd"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_qbqmk"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_1prhk"]
@@ -40,7 +40,12 @@ offset_bottom = 367.0
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="3" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 
-[node name="PowerPlants" type="Node" parent="."]
+[node name="ResourceInspector" parent="GUI" instance=ExtResource("8_0oq0b")]
+
+[node name="ResourceTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+script = ExtResource("9_oqvsx")
 
 [node name="ResourceTimer" type="Timer" parent="."]
 wait_time = 2.0

@@ -7,7 +7,13 @@
 
 [node name="CityInspector" type="Control" node_paths=PackedStringArray("city_label", "population_info", "food_yield_info", "wood_yield_info", "food_requirement_info", "energy_requirement_info")]
 layout_mode = 3
-anchors_preset = 0
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_right = -32.0
+grow_horizontal = 0
+grow_vertical = 2
 script = ExtResource("1_jo5e0")
 city_label = NodePath("VBoxContainer/CityHeader/MarginContainer/Label")
 population_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/PopulationInfo")
