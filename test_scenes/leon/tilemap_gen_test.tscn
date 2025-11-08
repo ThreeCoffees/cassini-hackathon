@@ -11,8 +11,7 @@
 
 [node name="Tilemap" type="Node2D" parent="."]
 
-[node name="TerrainTilemapLayer" parent="Tilemap" node_paths=PackedStringArray("tile_picker") instance=ExtResource("1_ein4j")]
-tile_picker = NodePath("")
+[node name="TerrainTilemapLayer" parent="Tilemap" instance=ExtResource("1_ein4j")]
 
 [node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
 tile_set = ExtResource("2_fifh3")
@@ -31,3 +30,4 @@ position = Vector2(-69, 369)
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
+[connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]

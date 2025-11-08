@@ -21,6 +21,19 @@ func add_city_tile(tile_coords: Vector2i)-> void:
 	city_tiles.append(tile_coords)
 	update_info()
 
+func _get_worked_tiles() -> Array[Vector2i]:
+	return worked_tiles
+
+func add_worked_tile(tile_coords: Vector2i)-> void:
+	worked_tiles.append(tile_coords)
+	print(worked_tiles)
+	update_info()
+
+func remove_worked_tile(tile_coords: Vector2i) -> void:
+	worked_tiles.erase(tile_coords)
+	print(worked_tiles)
+	update_info()
+
 func update_info():
 	population = population_starter_multiplier * city_tiles.size()
 	food_requirement = population * food_multiplier
