@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://ctkf2ywe2ftv6"]
+[gd_scene load_steps=4 format=3 uid="uid://ctkf2ywe2ftv6"]
 
 [ext_resource type="Shader" uid="uid://dkxqrdj436cr" path="res://resources/worker_line.gdshader" id="1_fd3ga"]
-[ext_resource type="Script" path="res://scenes/tilemap/worker_line.gd" id="1_snax1"]
 [ext_resource type="Texture2D" uid="uid://bugw1ib3h5rqy" path="res://assets/icons/arrow.png" id="1_vu7ed"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4hha7"]
@@ -12,4 +11,3 @@ texture_repeat = 2
 material = SubResource("ShaderMaterial_4hha7")
 texture = ExtResource("1_vu7ed")
 texture_mode = 1
-script = ExtResource("1_snax1")
