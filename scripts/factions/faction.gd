@@ -1,6 +1,7 @@
 class_name Faction extends Node
 
 const population_starter_multiplier: int = 1
+const population_max_multiplier: int = 3
 const food_req_mul: float = 0.1
 const energy_req_mul: float = 0.1
 
@@ -18,6 +19,7 @@ var city_tiles: Array[Vector2i] = []: get = _get_city_tiles
 var worked_tiles: Array[WorkedTile] = []
 
 var population: int
+var max_population: int
 var food_requirement: float
 var energy_requirement: float
 
@@ -50,6 +52,7 @@ signal update_resources
 
 func update_info():
 	population = population_starter_multiplier * city_tiles.size()
+	max_population = population_max_multiplier * city_tiles.size()
 	food_requirement = population * food_req_mul
 	energy_requirement = population * energy_req_mul
 
