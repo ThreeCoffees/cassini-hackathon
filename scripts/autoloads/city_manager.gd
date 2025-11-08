@@ -13,6 +13,12 @@ func get_cell_faction(cell_coords: Vector2i) -> Faction:
 		return null
 	return faction_id 
 
+func get_cell_exploatation_faction(cell_coords: Vector2i) -> Faction:
+	for f in _faction_infos:
+		if f.worked_tiles.has(cell_coords):
+			return f
+	return null
+
 # returns all city cells of a faction specified by the id.
 func get_faction_id_cells(faction_id: int) -> Array:
 	if faction_id >= Faction.faction_count:

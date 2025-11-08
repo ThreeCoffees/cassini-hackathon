@@ -17,7 +17,6 @@ func assign_hp_to_tilemap(tilemap: TerrainTilemapLayer, sel: SelectionLayer) -> 
 	selection_layer = sel
 
 	for coords in tilemap.get_used_cells_by_id(1, Vector2i(2, 0)):
-		print(coords)
 		hp_map.set(coords, forest_hp)
 	return hp_map
 
@@ -41,10 +40,9 @@ func damage(cell, amount := 1) -> bool:
 		hp_map.erase(cell)
 
 		# Spróbuj usunąć pracowane pole z każdej frakcji, jeśli było przypisane.
-		var faction = CityManager.get_cell_faction(cell)
+		var faction = CityManager.get_cell_exploatation_faction(cell)
 		if faction != null:
 			faction.remove_worked_tile_by_coords(cell)
-			print(selection_layer)
 			selection_layer.clear_worked_tile(cell, faction.id)
 	return true
 

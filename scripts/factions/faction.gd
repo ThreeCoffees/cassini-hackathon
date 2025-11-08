@@ -18,7 +18,8 @@ class WorkedTile:
 
 var id: int
 var city_tiles: Array[Vector2i] = []: get = _get_city_tiles
-var worked_tiles: Array[WorkedTile] = []
+
+var worked_tiles: Dictionary[Vector2i, WorkedTile] = {}
 
 var population: int
 var max_population: int
@@ -44,25 +45,25 @@ func add_city_tile(tile_coords: Vector2i)-> void:
 
 # Zwraca listę obsługiwanych (worked) kafli
 func _get_worked_tiles() -> Array[WorkedTile]:
-	return worked_tiles
+	return worked_tiles.values()
 
 # Zwraca tablicę współrzędnych obsługiwanych kafli
 func get_worked_tiles_coords() -> Array:
-	return worked_tiles.map(func(tile: WorkedTile): return tile.coords)
+	return worked_tiles.keys()
 
 # Dodaje nowe obsługiwane pole i odświeża informacje
 func add_worked_tile(new_tile: WorkedTile)-> void:
-	worked_tiles.append(new_tile)
+	worked_tiles.set(new_tile.coords, new_tile)
 	update_info()
 
 # Usuwa obsługiwane pole i odświeża informacje
 func remove_worked_tile(tile: WorkedTile) -> void:
-	worked_tiles = worked_tiles.filter(func(w): return w.coords != tile.coords)
+	worked_tiles.erase(tile.coords)
 	update_info()
 
 # Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
 func remove_worked_tile_by_coords(coords: Vector2i) -> void:
-	worked_tiles = worked_tiles.filter(func(w): return w.coords != coords)
+	worked_tiles.erase(coords)
 	update_info()
 
 signal update_resources(faction_id: int)
@@ -74,7 +75,7 @@ func update_info():
 
 	food_yields = 0
 	wood_yields = 0
-	for tile in worked_tiles:
+	for tile in worked_tiles.values():
 		match tile.type:
 			TerrainTilemapLayer.TileTypes.WOODS:
 				wood_yields += wood_prod_mul

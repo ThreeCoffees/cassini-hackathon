@@ -2,7 +2,7 @@ class_name SelectionLayer extends TileMapLayer
 
 @export var debug: bool = false
 var line_scene: = preload("uid://ctkf2ywe2ftv6")
-var linesArr : Array[Line2D]
+var linesArr : Array
 
 signal faction_yields_changed(faction_id: int)
 
@@ -29,14 +29,16 @@ func _remove_lines():
 	linesArr.clear()
 
 func _remove_line(coords):
-	var line_to_delete = linesArr[linesArr.find_custom(func(line: Line2D): return line.points[0] == to_global(map_to_local(coords)))]
+	var line_idx = linesArr.find_custom(func(line: Line2D): return line.points[0] == to_global(map_to_local(coords)))
+	if line_idx == -1:
+		return
+	var line_to_delete = linesArr[line_idx]
 	linesArr = linesArr.filter(func(line: Line2D): return line.points[0] != to_global(map_to_local(coords)))
 
 	line_to_delete.queue_free()
 
 # Public helper do bezpiecznego odznaczania pracowanego pola
 func clear_worked_tile(cell_coords: Vector2i, faction_id: int) -> void:
-	print("clearing")
 	occupied_tiles.erase(cell_coords)
 	set_cell(cell_coords)
 	_remove_line(cell_coords)
