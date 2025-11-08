@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://w2qkwrv0apk8"]
+
+[ext_resource type="Material" uid="uid://ct8o1piifhaxj" path="res://assets/materials/earth_shader.tres" id="1_lqivt"]
+[ext_resource type="Script" uid="uid://b6s6xj04rvg5b" path="res://test_scenes/hania/rotate_controller.gd" id="2_gpw37"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lqivt"]
+resource_local_to_scene = true
+texture_filter = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_yr14o"]
+material = SubResource("StandardMaterial3D_lqivt")
+
+[node name="InteractivePlanet" type="Node3D"]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(1000, 500)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
+mesh = SubResource("SphereMesh_yr14o")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.8832197)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+material = ExtResource("1_lqivt")
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InteractiveEarth" type="ColorRect" parent="CanvasLayer/Control"]
+material = ExtResource("1_lqivt")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -289.0
+offset_right = 305.0
+offset_bottom = 211.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ZoomController" type="Node" parent="CanvasLayer/Control/InteractiveEarth"]
+
+[node name="RotateController" type="Node" parent="CanvasLayer/Control/InteractiveEarth" node_paths=PackedStringArray("node")]
+script = ExtResource("2_gpw37")
+node = NodePath("..")
+invert_pitch = true
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "test text"
