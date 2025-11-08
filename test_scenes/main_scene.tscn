@@ -1,14 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=13 format=3 uid="uid://5gydacn7c0o3"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
 [ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_ioya4"]
 [ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="4_auybo"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_4gsma"]
+[ext_resource type="PackedScene" uid="uid://cdde5nk2a5ajp" path="res://test_scenes/domi/happiness_ui.tscn" id="6_bvtse"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
-[ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
+[ext_resource type="Script" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
 
@@ -29,6 +30,12 @@ terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 
 [node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="HappinessUi" parent="GUI" instance=ExtResource("6_bvtse")]
+offset_left = 1.0
+offset_top = 82.0
+offset_right = 1.0
+offset_bottom = 82.0
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("6_phaxv")]
 
@@ -65,13 +72,15 @@ text = "Game speed: 1x"
 [node name="FloatingHealthbar" parent="GUI" node_paths=PackedStringArray("terrain_tilemap_layer") instance=ExtResource("10_kwpv6")]
 terrain_tilemap_layer = NodePath("../../Tilemap/TerrainTilemapLayer")
 
-[node name="ResourceTimer" parent="." instance=ExtResource("11_bvtse")]
+[node name="ResourceTimer" parent="." node_paths=PackedStringArray("happiness_bar") instance=ExtResource("11_bvtse")]
+happiness_bar = NodePath("../GUI/HappinessUi/PanelContainer/HBoxContainer/MarginContainer3/ProgressBar")
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
 [connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
 [connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
 
+[editable path="GUI/HappinessUi"]
 [editable path="GUI/PowerPlantAdder"]
 [editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wood Plant"]
 [editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Sun Plant"]
