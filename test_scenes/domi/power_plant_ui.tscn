@@ -1,0 +1,198 @@
+[gd_scene load_steps=7 format=3 uid="uid://c7ycitwvkmev1"]
+
+[ext_resource type="Texture2D" uid="uid://dttp0nhfw60md" path="res://assets/icons/power_plant.png" id="1_un1on"]
+[ext_resource type="Texture2D" uid="uid://b32e3x6esqrwi" path="res://assets/icons/tree.png" id="2_j14n6"]
+[ext_resource type="Script" uid="uid://dgo3ajjwuhd4n" path="res://scripts/ui/plant_adder.gd" id="2_xbog7"]
+[ext_resource type="Texture2D" uid="uid://rjcikbm6818l" path="res://assets/icons/power.png" id="3_xbog7"]
+[ext_resource type="Texture2D" uid="uid://dlm2c7enxfm08" path="res://assets/icons/sun_plant.png" id="4_j14n6"]
+[ext_resource type="Texture2D" uid="uid://d1mht5bwg8527" path="res://assets/icons/wind_plant.png" id="4_v52ok"]
+
+[node name="PowerPlantUi" type="Node2D"]
+
+[node name="PowerPlantAdder" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "Power Plants"
+
+[node name="MarginContainer" type="MarginContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("1_un1on")
+icon_alignment = 1
+script = ExtResource("2_xbog7")
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Wood Plant"
+
+[node name="Wood Plant Cost" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("2_j14n6")
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer"]
+layout_mode = 2
+text = "20"
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("3_xbog7")
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2"]
+layout_mode = 2
+text = "+2"
+horizontal_alignment = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("4_j14n6")
+icon_alignment = 1
+script = ExtResource("2_xbog7")
+type = 1
+metadata/type = 1
+
+[node name="Label2" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Sun Plant"
+
+[node name="SunPlantCost" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost/HBoxContainer2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost/HBoxContainer2/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("2_j14n6")
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost/HBoxContainer2"]
+layout_mode = 2
+text = "40"
+horizontal_alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost/HBoxContainer3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost/HBoxContainer3/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("3_xbog7")
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/VBoxContainer/SunPlantCost/HBoxContainer3"]
+layout_mode = 2
+text = "+3"
+horizontal_alignment = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("4_v52ok")
+icon_alignment = 1
+script = ExtResource("2_xbog7")
+type = 2
+metadata/type = 2
+
+[node name="Label3" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer"]
+layout_mode = 2
+text = "Wind Plant"
+
+[node name="WindPlantCost" type="VBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost/HBoxContainer2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost/HBoxContainer2/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("2_j14n6")
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost/HBoxContainer2"]
+layout_mode = 2
+text = "80"
+horizontal_alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost/HBoxContainer3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost/HBoxContainer3/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("3_xbog7")
+
+[node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/VBoxContainer/WindPlantCost/HBoxContainer3"]
+layout_mode = 2
+text = "+4"
+horizontal_alignment = 2

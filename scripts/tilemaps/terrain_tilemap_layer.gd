@@ -3,7 +3,7 @@ class_name TerrainTilemapLayer extends TileMapLayer
 @export var debug: bool = false
 
 signal faction_picked(faction_id: int)
-signal plant_position_picked(position :Vector2i)
+signal plant_position_picked(position :Vector2i, parent : TerrainTilemapLayer)
 signal worked_cell_picked(faction_id: int, cell_coords: Vector2i)
 
 var selected_city: int = -1: set = _on_selected_city_set

@@ -54,6 +54,18 @@ func on_update_resources():
 	global_resources_updated.emit()
 	
 	
+func use_resources(type : String, number : int):
+	print("At first:")
+	print(resources[type].total_yield)			# gets number of type resource from the storage
+	var current = resources[type].total_yield
+	current = current - number
+	resources[type].total_yield = current
+	print("After:")
+	print(resources[type].total_yield)	
+	global_resources_updated.emit()
 
+func how_much_resource(type : String):
+	return resources[type].total_yield
+	
 	
 	
