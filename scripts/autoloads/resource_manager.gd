@@ -9,9 +9,13 @@ class ResourceData:
 	var type: String
 
 	func get_label() -> String:
+		if type == "population":
+			return "%d" % storage
 		return "%d | %d/day" % [storage, get_change()]
 
 	func get_change() -> int:
+		if type == "population":
+			return 0
 		return total_yield - total_cost
 
 	func update_change():
@@ -46,6 +50,9 @@ func initialize_resources():
 	resources.set("food", ResourceData.new("food"))
 	resources.set("energy", ResourceData.new("energy"))
 	resources.set("population", ResourceData.new("population"))
+
+	for faction in CityManager.get_all_factions():
+		resources["population"].storage += faction.population
 
 	# Initialize population happiness once at game start
 	if population_happiness == -1:
@@ -83,18 +90,18 @@ func on_update_resources(faction_id: int = -1):
 	for resource in resources.values():
 		resource.update_change()
 	global_resources_updated.emit()
+	faction_info_changed.emit(faction_id)
 	
 	
 func use_resources(type : String, number : int):# gets number of type resource from the storage
 	var current = resources[type].storage
 	current = current - number
 	resources[type].storage = current
-	print("After:")
-	print(resources[type].storage)	
 	global_resources_updated.emit()
 
 	# resource changed manually -> evaluate happiness
 	check_population_happiness()
+
 func how_much_resource(type : String):
 	return resources[type].storage
 
@@ -116,8 +123,11 @@ func check_population_happiness() -> void:
 		#print("Warning: Population happiness is low!")
 
 	
-
 	if (how_much_resource("food") /2 > how_much_resource("population")) and how_much_resource("energy")/2> how_much_resource("population"):
 		population_happiness += 5
 		#print("Population happiness increased: %d" % population_happiness)
+		print("Population happiness increased: %d" % population_happiness)
+
+func get_happiness():
+	return population_happiness
 		

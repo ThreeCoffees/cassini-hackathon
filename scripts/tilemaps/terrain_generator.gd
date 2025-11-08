@@ -1,6 +1,7 @@
 class_name TerrainGenerator extends Node
 
 @export var terrain_tilemap_layer: TileMapLayer
+@export var selection_layer: TileMapLayer
 @export var auto_assign_forest_hp := true
 
 var ForestHP = null
@@ -42,7 +43,7 @@ func generate_tilemap():
 			ForestHP = load("res://scripts/tile_resources/forest_hp.gd")
 		var fh = ForestHP.new()
 		add_child(fh)
-		fh.assign_hp_to_tilemap(terrain_tilemap_layer)
+		fh.assign_hp_to_tilemap(terrain_tilemap_layer, selection_layer)
 		# Zarejestruj instancję w ResourceManager, żeby mogła być aktualizowana co tick
 		if ResourceManager.has_method("register_forest_hp"):
 			ResourceManager.register_forest_hp(fh)

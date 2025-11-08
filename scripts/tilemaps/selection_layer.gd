@@ -35,15 +35,13 @@ func _remove_line(coords):
 	line_to_delete.queue_free()
 
 # Public helper do bezpiecznego odznaczania pracowanego pola
-func clear_worked_tile(cell_coords: Vector2i) -> void:
-	# Usuń z listy zajętych pól, jeśli tam było
-	if occupied_tiles.has(cell_coords):
-		occupied_tiles.erase(cell_coords)
-	# Wyczyść kafel na warstwie zaznaczeń
+func clear_worked_tile(cell_coords: Vector2i, faction_id: int) -> void:
+	print("clearing")
+	occupied_tiles.erase(cell_coords)
 	set_cell(cell_coords)
-	# Usuń ewentualne linie (prosty sposób — czyści wszystkie linie)
-	_remove_lines()
-	
+	_remove_line(cell_coords)
+	faction_yields_changed.emit(faction_id)
+
 
 # Aktualizuje warstwę zaznaczeń po wybraniu frakcji
 func _on_faction_picked(faction_id: int) -> void:
