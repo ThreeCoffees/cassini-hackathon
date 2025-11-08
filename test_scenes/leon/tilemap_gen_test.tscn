@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="5_pmoas"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_g6a3i"]
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_qt5ed"]
-[ext_resource type="PackedScene" path="res://test_scenes/leon/resource_timer.tscn" id="9_c4s81"]
+[ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="9_qt5ed"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
@@ -42,10 +42,11 @@ offset_left = 0.0
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 
-[node name="ResourceTimer" parent="." instance=ExtResource("9_c4s81")]
+[node name="ResourceTimer" parent="." instance=ExtResource("9_qt5ed")]
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
 [connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
+[connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
 
 [editable path="GUI/PowerPlantAdder"]
