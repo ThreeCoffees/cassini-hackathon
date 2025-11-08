@@ -3,12 +3,15 @@
 [ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="1_sf82t"]
 [ext_resource type="Script" uid="uid://clyew40bi4bui" path="res://scripts/ui/floating_healthbar.gd" id="2_0b0ce"]
 
-[node name="FloatingHealthbar" type="Node2D" node_paths=PackedStringArray("label")]
+[node name="FloatingHealthbar" type="Control" node_paths=PackedStringArray("label")]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("2_0b0ce")
 label = NodePath("PanelContainer/MarginContainer/Label")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-anchors_preset = -1
+layout_mode = 1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5

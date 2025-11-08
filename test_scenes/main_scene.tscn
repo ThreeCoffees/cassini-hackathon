@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
 [ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
 [ext_resource type="Script" uid="uid://c7773krbd5lqd" path="res://scripts/timers/resource_timer.gd" id="9_v54x0"]
+[ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="9_oqvsx"]
+[ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_k1eob"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
@@ -25,8 +27,7 @@ script = ExtResource("3_ioya4")
 script = ExtResource("4_auybo")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 
-[node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
-position = Vector2(-69, 369)
+[node name="Camera2D" parent="." instance=ExtResource("5_o3e0c")]
 
 [node name="GUI" type="CanvasLayer" parent="."]
 
@@ -62,10 +63,10 @@ offset_right = 266.0
 offset_bottom = 65.0
 text = "Game speed: 1x"
 
-[node name="ResourceTimer" type="Timer" parent="."]
-wait_time = 2.0
-autostart = true
-script = ExtResource("9_v54x0")
+[node name="FloatingHealthbar" parent="GUI" node_paths=PackedStringArray("terrain_tilemap_layer") instance=ExtResource("10_k1eob")]
+terrain_tilemap_layer = NodePath("../../Tilemap/TerrainTilemapLayer")
+
+[node name="ResourceTimer" parent="." instance=ExtResource("9_oqvsx")]
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
