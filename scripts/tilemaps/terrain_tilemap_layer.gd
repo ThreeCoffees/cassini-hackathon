@@ -3,7 +3,7 @@ class_name TerrainTilemapLayer extends TileMapLayer
 @export var debug: bool = false
 
 signal faction_picked(faction_id: int)
-signal plant_position_picked(position :Vector2i)
+signal plant_position_picked(position :Vector2i, parent : TerrainTilemapLayer)
 signal worked_cell_picked(faction_id: int, cell_coords: Vector2i)
 
 var selected_city: int = -1: set = _on_selected_city_set
@@ -35,6 +35,15 @@ func _unhandled_input(event):
 
 		handle_select_cell(selected_cell)
 
+		# Jeśli kliknięty kafel to las (WOODS), wypisz jego aktualne HP
+		if get_cell_type(selected_cell) == TileTypes.WOODS:
+			var hp = null
+			if ResourceManager.forest_hp_node != null and ResourceManager.forest_hp_node.has_method("get_hp"):
+				hp = ResourceManager.forest_hp_node.get_hp(selected_cell)
+			else:
+				hp = "(no forest HP registered)"
+			print("Forest HP at (%d,%d): %s" % [selected_cell.x, selected_cell.y, str(hp)])
+
 func get_cell_type(coords: Vector2i) -> TileTypes:
 	if !get_used_rect().has_point(coords):
 		return TileTypes.NONE
@@ -53,4 +62,4 @@ func handle_select_cell(cell_coords: Vector2i):
 				if debug:
 					print("GET BACK TO WORK")
 		TileTypes.NONE:
-			plant_position_picked.emit(map_to_local(cell_coords))
+			plant_position_picked.emit(map_to_local(cell_coords), self)

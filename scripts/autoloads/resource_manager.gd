@@ -32,6 +32,7 @@ class ResourceData:
 	
 
 var resources: Dictionary[String, ResourceData] = {}
+var forest_hp_node = null
 
 
 func initialize_resources():
@@ -47,6 +48,20 @@ func calculate_stores():
 		resource.update_storage()
 	global_resources_updated.emit()
 
+	# For each worked WOODS tile, reduce its HP by 1 (same tempo as resource tick)
+	if forest_hp_node != null:
+		for faction in CityManager.get_all_factions():
+			for wt in faction.worked_tiles:
+				if wt.type == TerrainTilemapLayer.TileTypes.WOODS:
+					forest_hp_node.damage(wt.coords, 1)
+
+	# Note: forest_hp_node should be registered by the terrain generator after creation
+
+
+func register_forest_hp(node):
+	# Store reference to the ForestHP node so ResourceManager can decrement HP over time
+	forest_hp_node = node
+
 
 func on_update_resources():
 	for resource in resources.values():
@@ -54,6 +69,18 @@ func on_update_resources():
 	global_resources_updated.emit()
 	
 	
+func use_resources(type : String, number : int):
+	print("At first:")
+	print(resources[type].total_yield)			# gets number of type resource from the storage
+	var current = resources[type].total_yield
+	current = current - number
+	resources[type].total_yield = current
+	print("After:")
+	print(resources[type].total_yield)	
+	global_resources_updated.emit()
 
+func how_much_resource(type : String):
+	return resources[type].total_yield
+	
 	
 	

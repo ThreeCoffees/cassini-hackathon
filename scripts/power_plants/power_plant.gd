@@ -19,12 +19,15 @@ func _init(position : Vector2i, type : PlantTypes):
 		PlantTypes.WOOD:
 			energy_production_multiplier = 2
 			texture = load("res://assets/icons/power_plant.png")
+			ResourceManager.use_resources("wood", 20)
 		PlantTypes.SUN:
 			energy_production_multiplier = 3
 			texture = load("res://assets/icons/sun_plant.png")
+			ResourceManager.use_resources("wood", 40)
 		PlantTypes.WIND:
 			energy_production_multiplier = 4
 			texture = load("res://assets/icons/wind_plant.png")
+			ResourceManager.use_resources("wood", 80)
 	
 
 	

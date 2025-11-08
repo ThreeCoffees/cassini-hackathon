@@ -30,6 +30,7 @@ func _remove_lines():
 	print(linesArr)
 		
 
+# Aktualizuje warstwę zaznaczeń po wybraniu frakcji
 func _on_faction_picked(faction_id: int) -> void:
 	if debug:
 		print("picked faction %d" % faction_id)
@@ -55,6 +56,7 @@ func _on_faction_picked(faction_id: int) -> void:
 
 
 
+# Obsługuje kliknięcie na pole pracy (dodaje lub usuwa pracowane pole)
 func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i, cell_type: TerrainTilemapLayer.TileTypes) -> void:
 	var faction = CityManager.get_faction(faction_id)
 
