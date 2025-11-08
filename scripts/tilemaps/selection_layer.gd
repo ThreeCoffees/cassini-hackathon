@@ -97,3 +97,5 @@ func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i, cell_type: T
 		set_cell(cell_coords)
 	
 	faction_yields_changed.emit(faction_id)
+
+

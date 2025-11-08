@@ -57,10 +57,7 @@ func add_worked_tile(new_tile: WorkedTile)-> void:
 
 # Usuwa obsługiwane pole i odświeża informacje
 func remove_worked_tile(tile: WorkedTile) -> void:
-	var idx = worked_tiles.find(tile)
-	if idx == -1:
-		return
-	worked_tiles.remove_at(idx)
+	worked_tiles = worked_tiles.filter(func(w): return w.coords != tile.coords)
 	update_info()
 
 	# Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
@@ -108,13 +105,10 @@ func get_population_growth()-> int:
 
 func update_population():
 	if(population < max_population and get_population_growth() == 1): 
-		print("start population timer")
 		timer.start()
 
 func on_population_update_timeout():
-	print("finish population timer")
 	if(population < max_population and get_population_growth() == 1): 
-		print("finish population timer successfully")
 		population += get_population_growth()
 		update_info()
 

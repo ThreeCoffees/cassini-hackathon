@@ -23,3 +23,5 @@ func on_global_resources_updated():
 				food_info.set_label(res_data.get_label())
 			"energy":
 				energy_info.set_label(res_data.get_label())
+			"population":
+				population_info.set_label(res_data.get_label())
