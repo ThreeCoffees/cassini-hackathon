@@ -1,10 +1,10 @@
 class_name Faction extends Node
 
-const population_starter_multiplier: int = 2
-const food_req_mul: int = 1
-const energy_req_mul: int = 1
+const population_starter_multiplier: int = 1
+const food_req_mul: float = 0.1
+const energy_req_mul: float = 0.1
 
-const food_prod_mul: int = 4
+const food_prod_mul: int = 16
 const wood_prod_mul: int = 4
 
 static var faction_count: int = 0
@@ -18,8 +18,8 @@ var city_tiles: Array[Vector2i] = []: get = _get_city_tiles
 var worked_tiles: Array[WorkedTile] = []
 
 var population: int
-var food_requirement: int
-var energy_requirement: int
+var food_requirement: float
+var energy_requirement: float
 
 var food_yields: int
 var wood_yields: int
@@ -75,7 +75,7 @@ func get_yields(type: String) -> int:
 		_:
 			return 0
 
-func get_costs(type: String) -> int:
+func get_costs(type: String) -> float:
 	match type:
 		"wood":
 			return 0

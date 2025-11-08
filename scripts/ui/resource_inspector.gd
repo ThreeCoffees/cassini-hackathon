@@ -7,6 +7,7 @@ class_name ResourceInspector extends Control
 @export var populatio_info: PropertyInfo
 
 func _ready() -> void:
+	on_global_resources_updated()
 	ResourceManager.global_resources_updated.connect(on_global_resources_updated)
 
 func on_global_resources_updated():
