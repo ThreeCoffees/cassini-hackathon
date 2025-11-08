@@ -3,8 +3,9 @@ class_name TerrainGenerator extends Node
 @export var terrain_tilemap_layer: TerrainTilemapLayer
 @export var selection_layer: SelectionLayer
 @export var auto_assign_forest_hp := true
-@export var http:HTTPRequest
+var http
 var ForestHP = null
+@onready var http_request = $"../../HTTPRequest"
 
 var terrain_array: Array[Array] = []
 var width: int = 128
@@ -31,6 +32,9 @@ func prepare_CHAD_array(arr):
 # Pobiera/ustawia tablicę terenu (tymczasowo wywołuje prepare_dummy_array)
 func fetch_array() -> void:
 	#prepare_dummy_array()
+	if http == null:
+		http = http_request
+		http = 2
 	http.request_completed.connect(_on_request_completed)
 	var result = null
 	result = http.request("https://tileworld.electimore.xyz/api/v1/terrain/?lat=54.342149&lon=18.660278")
