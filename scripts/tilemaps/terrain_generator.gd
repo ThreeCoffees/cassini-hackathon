@@ -44,6 +44,20 @@ func generate_tilemap():
 		var fh = ForestHP.new()
 		add_child(fh)
 		fh.assign_hp_to_tilemap(terrain_tilemap_layer, selection_layer)
+
 		# Zarejestruj instancję w ResourceManager, żeby mogła być aktualizowana co tick
-		ResourceManager.register_forest_hp(fh)
+		var registered: bool = false
+		if typeof(ResourceManager) != TYPE_NIL and ResourceManager != null and ResourceManager.has_method("register_forest_hp"):
+			ResourceManager.register_forest_hp(fh)
+			registered = true
+		elif get_tree().has_node("/root/ResourceManager"):
+			var rm = get_tree().get_root().get_node("ResourceManager")
+			if rm != null and rm.has_method("register_forest_hp"):
+				rm.register_forest_hp(fh)
+				registered = true
+		else:
+			push_warning("TerrainGenerator: could not register ForestHP with ResourceManager; register_forest_hp not found")
+
+		if registered:
+			print("TerrainGenerator: registered ForestHP instance: %s" % [fh])
 			
