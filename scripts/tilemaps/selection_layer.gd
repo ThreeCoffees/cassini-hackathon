@@ -40,10 +40,7 @@ func _on_faction_picked(faction_id: int) -> void:
 	
 	for cell_coords: Vector2i in occupied_tiles:
 		set_cell(cell_coords, 0, tile_coords["occupied"])
-		if(get_cell_atlas_coords(cell_coords) == tile_coords["worked"]):
-			print(cell_coords)
-			_set_line(cell_coords, faction_id)
-
+		
 	var faction: Faction = CityManager.get_faction(faction_id)
 	if faction != null:
 		var city_tiles: Array = faction.city_tiles
@@ -54,6 +51,7 @@ func _on_faction_picked(faction_id: int) -> void:
 
 		for cell_coords: Vector2i in worked_tiles:
 			set_cell(cell_coords, 0, tile_coords["worked"])
+			_set_line(cell_coords, faction_id)
 
 
 
