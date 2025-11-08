@@ -3,7 +3,7 @@ class_name TerrainGenerator extends Node
 @export var terrain_tilemap_layer: TerrainTilemapLayer
 @export var selection_layer: SelectionLayer
 @export var auto_assign_forest_hp := true
-
+@export var http:HTTPRequest
 var ForestHP = null
 
 var terrain_array: Array[Array] = []
@@ -15,22 +15,43 @@ func prepare_dummy_array():
 	terrain_array.resize(width)
 	for i in width:
 		terrain_array[i] = []
-		terrain_array[i].resize(height)
+		terrain_array[i].resize(height)	
 		for j in height:
 			terrain_array[i][j] = randi_range(0, 4)
 
+func prepare_CHAD_array(arr):
+	terrain_array.resize(width)
+	for i in width:
+		terrain_array[i] = []
+		terrain_array[i].resize(height)	
+		for j in height:
+			terrain_array[i][j] = arr[i][j]
+
+
 # Pobiera/ustawia tablicę terenu (tymczasowo wywołuje prepare_dummy_array)
 func fetch_array() -> void:
-	# TODO: replace with fetch
-	prepare_dummy_array()
+	#prepare_dummy_array()
+	http.request_completed.connect(_on_request_completed)
+	var result = null
+	result = http.request("https://tileworld.electimore.xyz/api/v1/terrain/?lat=54.342149&lon=18.660278")
+	await http.request_completed
+	print(result)
+
+func _on_request_completed(result, response_code, headers, body):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	print(json["terrain_data"])
+	prepare_CHAD_array(json["terrain_data"])
+	
+	generate_tilemap()
+	CityManager.create_cities(terrain_tilemap_layer)
+	return result
 	
 
 # Inicjalizacja: pobranie danych i wygenerowanie tilemapy
 func _ready() -> void:
-	fetch_array()
-	generate_tilemap()
-	CityManager.create_cities(terrain_tilemap_layer)
-
+	
+	await fetch_array()
+	
 # Wypełnia tilemapę na podstawie terrain_array i przypisuje HP lasom
 func generate_tilemap():
 	for i in width:
