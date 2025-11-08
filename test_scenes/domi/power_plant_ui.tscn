@@ -53,6 +53,8 @@ layout_mode = 2
 icon = ExtResource("1_un1on")
 icon_alignment = 1
 script = ExtResource("2_xbog7")
+type = 0
+metadata/type = 0
 
 [node name="Label" type="Label" parent="PowerPlantAdder/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2

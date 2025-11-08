@@ -26,7 +26,6 @@ script = ExtResource("4_sd8ys")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 
 [node name="Camera2D" parent="." instance=ExtResource("5_oitry")]
-position = Vector2(-69, 369)
 
 [node name="GUI" type="CanvasLayer" parent="."]
 

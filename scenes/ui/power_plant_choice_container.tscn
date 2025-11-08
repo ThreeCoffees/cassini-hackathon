@@ -21,6 +21,8 @@ layout_mode = 2
 icon = ExtResource("1_kh3ia")
 icon_alignment = 1
 script = ExtResource("2_i2kvj")
+type = 0
+metadata/type = 0
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
