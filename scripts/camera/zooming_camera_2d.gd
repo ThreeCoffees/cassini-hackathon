@@ -18,7 +18,10 @@ func _ready() -> void:
 	# Ustawia wewnętrzną zmienną zoomu na minimum
 	_zoom_level = min_zoom
 	# Natychmiast ustawia faktyczny zoom kamery na tę wartość (pomijając animację startową)
-	zoom = Vector2(_zoom_level, _zoom_level)
+	#zoom = Vector2(_zoom_level, _zoom_level)
+	zoom = Vector2(max_zoom, max_zoom)
+	#ustawia pozycje kamery na srodke
+	position = Vector2(1877,1765)
 
 
 # --- Funkcja Process (Ruch) ---
