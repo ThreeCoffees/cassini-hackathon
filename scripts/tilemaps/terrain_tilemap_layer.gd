@@ -3,6 +3,7 @@ class_name TerrainTilemapLayer extends TileMapLayer
 @export var debug: bool = false
 
 signal faction_picked(faction_id: int)
+signal plant_position_picked(position :Vector2i)
 
 var selected_city: int = -1: set = _on_selected_city_set
 
@@ -48,3 +49,5 @@ func handle_select_cell(cell_coords: Vector2i):
 			if selected_city != -1:
 				if debug:
 					print("GET BACK TO WORK")
+		TileTypes.NONE:
+			plant_position_picked.emit(map_to_local(cell_coords))
