@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ck1weq6t3qglo"]
+[gd_scene load_steps=8 format=3 uid="uid://ck1weq6t3qglo"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_ros5t"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_rvmon"]
@@ -6,9 +6,7 @@
 [ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="4_bxxfh"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_ar8tl"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_yfuy2"]
-[ext_resource type="PackedScene" uid="uid://dxpgv4ohmfogx" path="res://test_scenes/domi/power_plant_ui.tscn" id="7_bxxfh"]
-[ext_resource type="Script" uid="uid://coe73blebgo2" path="res://scripts/power_plants/power_plant_placer.gd" id="7_l7ifh"]
-[ext_resource type="Script" uid="uid://df2bdyuux227f" path="res://scripts/power_plants/power_plant_signal_controller.gd" id="8_bxxfh"]
+[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="7_rvmon"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
@@ -31,15 +29,9 @@ position = Vector2(-69, 369)
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("6_yfuy2")]
 
-[node name="PowerPlantUi" parent="GUI" instance=ExtResource("7_bxxfh")]
+[node name="PowerPlantAdder" parent="GUI" instance=ExtResource("7_rvmon")]
 
 [node name="PowerPlants" type="Node" parent="."]
-
-[node name="PowerPlantPlacer" type="Node" parent="PowerPlants"]
-script = ExtResource("7_l7ifh")
-
-[node name="PowerPlantSignalController" type="Node" parent="PowerPlants"]
-script = ExtResource("8_bxxfh")
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]

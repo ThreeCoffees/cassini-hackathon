@@ -53,4 +53,4 @@ func handle_select_cell(cell_coords: Vector2i):
 				if debug:
 					print("GET BACK TO WORK")
 		TileTypes.NONE:
-			plant_position_picked.emit(map_to_local(cell_coords))
+			plant_position_picked.emit(map_to_local(cell_coords), self)
