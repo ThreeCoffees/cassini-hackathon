@@ -2,14 +2,16 @@ class_name FloatingHealthbar extends Control
 
 @export var label: Label
 @export var terrain_tilemap_layer: TerrainTilemapLayer
-
+@export var time_to_show_healthbar = 0.8
+var time_passed :float = 0
 func set_label(health: int):
 	label.text = "%d Trees Left" % health
 
 func _process(delta: float) -> void:
 	follow_cursor()
-
-	set_visibility()
+	time_passed += delta
+	if time_passed > time_to_show_healthbar:
+		set_visibility()
 
 	if self.visible:
 		set_label(ResourceManager.forest_hp_node.get_hp(get_tile_coords()))
@@ -28,3 +30,5 @@ func set_visibility() -> void:
 		show()
 	else:
 		hide()
+		time_passed=0
+		
