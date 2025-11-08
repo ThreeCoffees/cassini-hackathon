@@ -7,7 +7,7 @@ class_name TerrainGenerator extends Node
 @export var tile_set: TileSet 
 var generated_layers = {}
 
-var ForestHP = preload("res://scripts/tile_resources/forest_hp.gd")
+var ForestHP = null
 
 var terrain_array: Array[Array] = []
 var width: int = 128
@@ -72,6 +72,8 @@ func generate_tilemap(start_x, start_y, is_available=false):
 
 	# Po wygenerowaniu tilemapy — przypisz HP dla tile'y lasu, jesli wlaczone
 	if auto_assign_forest_hp:
+		if ForestHP == null:
+			ForestHP = load("res://scripts/tile_resources/forest_hp.gd")
 		var fh = ForestHP.new()
 		add_child(fh)
 		fh.assign_hp_to_tilemap(terrain_tilemap_layer)

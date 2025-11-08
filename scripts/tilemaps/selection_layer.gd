@@ -27,17 +27,30 @@ func _remove_lines():
 	for line in linesArr:
 		line.queue_free()
 	linesArr.clear()
-	print(linesArr)
-		
+
+func _remove_line(coords):
+	var line_to_delete = linesArr[linesArr.find_custom(func(line: Line2D): return line.points[0] == to_global(map_to_local(coords)))]
+	linesArr = linesArr.filter(func(line: Line2D): return line.points[0] != to_global(map_to_local(coords)))
+
+	line_to_delete.queue_free()
+
+# Public helper do bezpiecznego odznaczania pracowanego pola
+func clear_worked_tile(cell_coords: Vector2i) -> void:
+	# Usuń z listy zajętych pól, jeśli tam było
+	if occupied_tiles.has(cell_coords):
+		occupied_tiles.erase(cell_coords)
+	# Wyczyść kafel na warstwie zaznaczeń
+	set_cell(cell_coords)
+	# Usuń ewentualne linie (prosty sposób — czyści wszystkie linie)
+	_remove_lines()
+	
 
 # Aktualizuje warstwę zaznaczeń po wybraniu frakcji
 func _on_faction_picked(faction_id: int) -> void:
 	if debug:
 		print("picked faction %d" % faction_id)
-	print(linesArr)
 	_remove_lines()
 	clear()
-	print(linesArr)
 	
 	for cell_coords: Vector2i in occupied_tiles:
 		set_cell(cell_coords, 0, tile_coords["occupied"])
@@ -84,5 +97,6 @@ func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i, cell_type: T
 		faction.remove_worked_tile(new_tile)
 		occupied_tiles.erase(cell_coords)
 		set_cell(cell_coords)
+		_remove_line(cell_coords)
 	
 	faction_yields_changed.emit(faction_id)

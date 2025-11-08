@@ -41,7 +41,24 @@ func damage(cell, amount := 1) -> bool:
 		if tilemap_ref != null and tilemap_ref.has_method("set_cell"):
 			# Używamy tej samej sygnatury co przy generowaniu: (cell, layer, atlas_coords, something)
 			tilemap_ref.set_cell(cell, 1, Vector2i(0, 0), 0)
+
+		# Usuń wpis HP
 		hp_map.erase(key)
+
+		# Spróbuj usunąć pracowane pole z każdej frakcji, jeśli było przypisane.
+		if typeof(CityManager) != TYPE_NIL:
+			for faction in CityManager.get_all_factions():
+				if faction.has_method("remove_worked_tile_by_coords"):
+					faction.remove_worked_tile_by_coords(cell)
+
+		# Spróbuj wyczyścić wizualnie warstwę zaznaczeń SelectionLayer
+		var sel = get_tree().get_root().find_node("SelectionLayer", true, false)
+		if sel != null:
+			if sel.has_method("clear_worked_tile"):
+				sel.clear_worked_tile(cell)
+			else:
+				if sel.has_method("set_cell"):
+					sel.set_cell(cell)
 	return true
 
 # Zwiększa HP pola o podaną wartość, zwraca true jeśli zastosowano
