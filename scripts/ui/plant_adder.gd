@@ -1,12 +1,13 @@
 class_name PowerPlantAdder extends BaseButton
 
-@export var type : int 
+@export var type : int = -1
 
 signal plant_chosen(type : int)
 
-func _ready():
-	pressed.connect(on_press)
-	
-	
-func on_press():
-	plant_chosen.emit(type)
+func _ready() -> void:
+	# Connect pressed signal safely using Callable
+	if has_method("connect"):
+		connect("pressed", Callable(self, "_on_pressed"))
+
+func _on_pressed() -> void:
+	emit_signal("plant_chosen", type)
