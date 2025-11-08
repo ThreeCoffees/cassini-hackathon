@@ -109,6 +109,7 @@ func update_population():
 func on_population_update_timeout():
 	if(population < max_population and get_population_growth() == 1): 
 		population += get_population_growth()
+		ResourceManager.resources["population"].storage += get_population_growth()
 		update_info()
 
 # Zwraca koszty/wymagania dla danego typu zasobu
