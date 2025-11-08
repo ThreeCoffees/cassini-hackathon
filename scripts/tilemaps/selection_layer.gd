@@ -98,3 +98,30 @@ func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i, cell_type: T
 		_remove_line(cell_coords)
 	
 	faction_yields_changed.emit(faction_id)
+
+
+# Public helper: pick multiple tiles at once for a faction to work.
+# - `cells` should be an Array of Vector2i
+# - respects `faction.can_add_work()` (stops when faction can't add more)
+func pick_multiple_worked_tiles(faction_id: int, cells: Array, cell_type: TerrainTilemapLayer.TileTypes) -> void:
+	var faction: Faction = CityManager.get_faction(faction_id)
+	if faction == null:
+		return
+
+	for cell_coords in cells:
+		# Stop if faction reached its work limit
+		if not faction.can_add_work():
+			break
+
+		var tile_coord = get_cell_atlas_coords(cell_coords)
+		if tile_coord == tile_coords["none"]:
+			var new_tile: Faction.WorkedTile = Faction.WorkedTile.new()
+			new_tile.coords = cell_coords
+			new_tile.type = cell_type
+
+			faction.add_worked_tile(new_tile)
+			occupied_tiles.append(cell_coords)
+			set_cell(cell_coords, 0, tile_coords["worked"])
+			_set_line(cell_coords, faction_id)
+
+	faction_yields_changed.emit(faction_id)
