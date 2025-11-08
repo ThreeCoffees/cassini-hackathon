@@ -52,13 +52,14 @@ func damage(cell, amount := 1) -> bool:
 					faction.remove_worked_tile_by_coords(cell)
 
 		# Spróbuj wyczyścić wizualnie warstwę zaznaczeń SelectionLayer
-		var sel = get_tree().get_root().find_node("SelectionLayer", true, false)
-		if sel != null:
-			if sel.has_method("clear_worked_tile"):
-				sel.clear_worked_tile(cell)
-			else:
-				if sel.has_method("set_cell"):
-					sel.set_cell(cell)
+		if get_tree().get_root() != null:
+			var sel = get_tree().get_root().find_node("SelectionLayer", true, false)
+			if sel != null:
+				if sel.has_method("clear_worked_tile"):
+					sel.clear_worked_tile(cell)
+				else:
+					if sel.has_method("set_cell"):
+						sel.set_cell(cell)
 	return true
 
 # Zwiększa HP pola o podaną wartość, zwraca true jeśli zastosowano

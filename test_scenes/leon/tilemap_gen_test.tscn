@@ -1,13 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://b6nwjmr5iton0"]
+[gd_scene load_steps=11 format=3 uid="uid://b6nwjmr5iton0"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_ein4j"]
+[ext_resource type="PackedScene" uid="uid://dcgju43yfc7i8" path="res://scenes/ui/expand_button.tscn" id="2_c4s81"]
 [ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="2_ein4j"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_fifh3"]
 [ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_g6a3i"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="3_pmoas"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="5_pmoas"]
-[ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_g6a3i"]
-[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_qt5ed"]
+[ext_resource type="PackedScene" path="res://scenes/ui/resource_inspector.tscn" id="7_g6a3i"]
+[ext_resource type="PackedScene" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_qt5ed"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="9_qt5ed"]
 
 [node name="TilemapGenTest" type="Node2D"]
@@ -16,6 +17,8 @@
 
 [node name="TerrainTilemapLayer" parent="Tilemap" instance=ExtResource("1_ein4j")]
 
+[node name="ExpandButton" parent="Tilemap/TerrainTilemapLayer" instance=ExtResource("2_c4s81")]
+
 [node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
 tile_set = ExtResource("2_fifh3")
 script = ExtResource("3_g6a3i")
@@ -23,6 +26,7 @@ script = ExtResource("3_g6a3i")
 [node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer")]
 script = ExtResource("2_ein4j")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
+auto_assign_forest_hp = null
 
 [node name="Camera2D" parent="." instance=ExtResource("3_pmoas")]
 position = Vector2(-69, 369)
@@ -30,13 +34,11 @@ position = Vector2(-69, 369)
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("5_pmoas")]
-anchors_preset = 6
 offset_right = 0.0
 
 [node name="ResourceInspector" parent="GUI" instance=ExtResource("7_g6a3i")]
 
 [node name="PowerPlantAdder" parent="GUI" instance=ExtResource("8_qt5ed")]
-anchors_preset = 4
 offset_left = 0.0
 
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
@@ -47,6 +49,10 @@ terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
 [connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
+[connection signal="pressed" from="Tilemap/TerrainTilemapLayer/ExpandButton" to="Tilemap/TerrainGenerator" method="_on_expand_button_pressed"]
 [connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
 
 [editable path="GUI/PowerPlantAdder"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wood Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Sun Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wind Plant"]

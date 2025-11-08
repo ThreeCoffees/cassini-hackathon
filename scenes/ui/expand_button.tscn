@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcgju43yfc7i8"]
+
+[ext_resource type="Script" path="res://scenes/ui/expand_button.gd" id="1_42ff8"]
+
+[node name="ExpandButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "EXPAND"
+script = ExtResource("1_42ff8")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

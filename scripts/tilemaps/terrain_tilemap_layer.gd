@@ -30,6 +30,7 @@ func _unhandled_input(event):
 		selected_city = -1
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		var selected_cell = global_to_tilemap_coordinates(get_global_mouse_position())
+		print(selected_cell)
 		if debug: 
 			print("clicked tilemap layer (%d, %d)" % [selected_cell.x, selected_cell.y])
 
@@ -51,6 +52,7 @@ func get_cell_type(coords: Vector2i) -> TileTypes:
 		
 func handle_select_cell(cell_coords: Vector2i):
 	var cell_type = get_cell_type(cell_coords)
+	
 	match cell_type:
 		TileTypes.CITY:
 			selected_city = CityManager.get_cell_faction_id(cell_coords)
