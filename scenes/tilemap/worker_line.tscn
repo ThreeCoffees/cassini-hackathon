@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctkf2ywe2ftv6"]
+
+[ext_resource type="Script" path="res://scenes/tilemap/worker_line.gd" id="1_snax1"]
+
+[node name="WorkerLine" type="Line2D"]
+closed = true
+texture_mode = 2
+script = ExtResource("1_snax1")
