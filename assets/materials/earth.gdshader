@@ -670,7 +670,7 @@ void fragment() {
 // constant pre-rotation: rotate the whole result so the originally-centered north pole
 // maps to the equator in view (moves center to equator). Important: apply it on the left,
 // so it does not change how user_rot axes behave.
-	mat3 pre_rot = rotate_x(-PI * 0.5);
+	mat3 pre_rot = rotate_x(-PI * 0.5) * rotate_z(PI * 0.5);
 
 // final rotation applied to the sphere-sampling direction
 	mat3 rot_p = pre_rot * user_rot;
