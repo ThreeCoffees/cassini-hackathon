@@ -11,7 +11,6 @@ enum PlantTypes{
 }
 
 func _init(position : Vector2i, type : PlantTypes):
-	#plant_position = to_global(position)
 	plant_position = position
 	global_position = plant_position
 	print(plant_position)
@@ -19,11 +18,14 @@ func _init(position : Vector2i, type : PlantTypes):
 	match plant_type:
 		PlantTypes.WOOD:
 			energy_production_multiplier = 2
+			texture = load("res://assets/icons/power_plant.png")
 		PlantTypes.SUN:
 			energy_production_multiplier = 3
+			texture = load("res://assets/icons/sun_plant.png")
 		PlantTypes.WIND:
 			energy_production_multiplier = 4
-	texture = load("res://assets/icons/power_plant.png")
+			texture = load("res://assets/icons/wind_plant.png")
+	
 
 	
 	
