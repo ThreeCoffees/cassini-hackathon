@@ -4,6 +4,7 @@ class_name TerrainTilemapLayer extends TileMapLayer
 
 signal faction_picked(faction_id: int)
 signal plant_position_picked(position :Vector2i)
+signal worked_cell_picked(faction_id: int, cell_coords: Vector2i)
 
 var selected_city: int = -1: set = _on_selected_city_set
 
@@ -40,13 +41,15 @@ func get_cell_type(coords: Vector2i) -> TileTypes:
 	return get_cell_atlas_coords(coords).x as TileTypes
 		
 func handle_select_cell(cell_coords: Vector2i):
-	match get_cell_type(cell_coords):
+	var cell_type = get_cell_type(cell_coords)
+	match cell_type:
 		TileTypes.CITY:
 			selected_city = CityManager.get_cell_faction_id(cell_coords)
 			if debug:
 				print("CITY STANDS AT YOUR COMMAND: ", selected_city)
 		TileTypes.AGRI, TileTypes.WOODS:
 			if selected_city != -1:
+				worked_cell_picked.emit(selected_city, cell_coords, cell_type)
 				if debug:
 					print("GET BACK TO WORK")
 		TileTypes.NONE:
