@@ -55,7 +55,10 @@ grow_vertical = 2
 [node name="RotateController" type="Node" parent="CanvasLayer/Control/InteractiveEarth" node_paths=PackedStringArray("node")]
 script = ExtResource("2_gpw37")
 node = NodePath("..")
+min_pitch = -1.2
+max_pitch = 1.2
 invert_pitch = true
+angular_damping = 10.0
 
 [node name="Label" type="Label" parent="CanvasLayer"]
 offset_right = 40.0

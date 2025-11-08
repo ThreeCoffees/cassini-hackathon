@@ -8,7 +8,7 @@
 
 [resource]
 shader = ExtResource("1_1ms1d")
-shader_parameter/pixel_scale = 360.0
+shader_parameter/pixel_scale = 164.165
 shader_parameter/surface_radius = 0.3
 shader_parameter/surface_palette = ExtResource("4_8k571")
 shader_parameter/surface_texture = ExtResource("5_8k571")
