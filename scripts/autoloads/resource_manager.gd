@@ -53,7 +53,7 @@ func calculate_stores():
 		for faction in CityManager.get_all_factions():
 			for wt in faction.worked_tiles:
 				if wt.type == TerrainTilemapLayer.TileTypes.WOODS:
-					forest_hp_node.damage(wt.coords, 1)
+					forest_hp_node.damage(wt.coords, 2)
 
 	# Note: forest_hp_node should be registered by the terrain generator after creation
 
