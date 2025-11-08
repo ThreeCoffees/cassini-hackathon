@@ -82,7 +82,7 @@ func update_info():
 				wood_yields += wood_prod_mul
 			TerrainTilemapLayer.TileTypes.AGRI:
 				food_yields += food_prod_mul
-    
+	
 	update_resources.emit()
 
 # Zwraca produkcję (yield) dla danego typu zasobu

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="CASSINI Hackathon"
-run/main_scene="uid://ck1weq6t3qglo"
+run/main_scene="uid://dwollyrtwuedd"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
