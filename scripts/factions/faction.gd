@@ -7,8 +7,8 @@ const population_growth_time: float = 5.0
 const food_req_mul: float = 0.1
 const energy_req_mul: float = 0.1
 
-const food_prod_mul: int = 16
-const wood_prod_mul: int = 4
+const food_prod_mul: int = 2
+const wood_prod_mul: int = 1
 
 static var faction_count: int = 0
 
@@ -126,7 +126,7 @@ func get_costs(type: String) -> float:
 
 # Sprawdza, czy frakcja może dodać kolejne pracowane pole (limit: populacja)
 func can_add_work()-> bool:
-	if worked_tiles.size() >= population:
+	if worked_tiles.size() >= population*8:
 		return false
 	return true
 
