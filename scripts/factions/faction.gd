@@ -46,6 +46,8 @@ func remove_worked_tile(tile: WorkedTile) -> void:
 	worked_tiles.remove_at(idx)
 	update_info()
 
+signal update_resources
+
 func update_info():
 	population = population_starter_multiplier * city_tiles.size()
 	food_requirement = population * food_req_mul
@@ -59,6 +61,8 @@ func update_info():
 				wood_yields += wood_prod_mul
 			TerrainTilemapLayer.TileTypes.AGRI:
 				food_yields += food_prod_mul
+	
+	update_resources.emit()
 
 func get_yields(type: String) -> int:
 	match type:
@@ -94,3 +98,5 @@ func print():
 func _init():
 	id = faction_count
 	faction_count+=1
+
+	update_resources.connect(ResourceManager.on_update_resources)

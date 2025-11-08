@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6nwjmr5iton0"]
+[gd_scene load_steps=9 format=3 uid="uid://b6nwjmr5iton0"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_ein4j"]
 [ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="2_ein4j"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="3_pmoas"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="5_pmoas"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_g6a3i"]
+[ext_resource type="Script" uid="uid://c7773krbd5lqd" path="res://scripts/timers/resource_timer.gd" id="8_g0ufm"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
@@ -38,8 +39,15 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="ResourceInspector" parent="GUI" instance=ExtResource("7_g6a3i")]
+debug = true
+
+[node name="ResourceTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+script = ExtResource("8_g0ufm")
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
 [connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
 [connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
+[connection signal="timeout" from="ResourceTimer" to="ResourceTimer" method="_on_timeout"]

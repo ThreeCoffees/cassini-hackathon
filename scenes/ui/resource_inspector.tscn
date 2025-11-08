@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://ca7lotynnkupq"]
 
-[ext_resource type="Script" uid="uid://tn7llw1vwyky" path="res://scenes/ui/resource_inspector.gd" id="1_clb14"]
+[ext_resource type="Script" uid="uid://tn7llw1vwyky" path="res://scripts/ui/resource_inspector.gd" id="1_clb14"]
 [ext_resource type="PackedScene" uid="uid://c7h2x38t0mbbm" path="res://scenes/ui/property_info.tscn" id="1_n4amc"]
 [ext_resource type="Texture2D" uid="uid://b32e3x6esqrwi" path="res://assets/icons/tree.png" id="2_clb14"]
 [ext_resource type="Texture2D" uid="uid://d30ok1yq322oo" path="res://assets/icons/wheat.png" id="3_hugm3"]
 
-[node name="ResourceInspector" type="Control" node_paths=PackedStringArray("wood_info", "food_info", "population_info")]
+[node name="ResourceInspector" type="Control" node_paths=PackedStringArray("wood_info", "food_info")]
 layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
@@ -14,7 +14,6 @@ grow_horizontal = 2
 script = ExtResource("1_clb14")
 wood_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/WoodInfo")
 food_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/FoodInfo")
-population_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/PopulationInfo")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

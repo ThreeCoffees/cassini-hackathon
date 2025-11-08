@@ -1,5 +1,7 @@
 extends Node
 
+signal global_resources_updated()
+
 class ResourceData:
 	var total_yield: int
 	var total_cost: int
@@ -31,10 +33,27 @@ class ResourceData:
 
 var resources: Dictionary[String, ResourceData] = {}
 
+
 func initialize_resources():
 	resources.set("wood", ResourceData.new("wood"))
 	resources.set("food", ResourceData.new("food"))
 	resources.set("population", ResourceData.new("population"))
 
+	on_update_resources()
+
+
+func calculate_stores():
+	for resource in resources.values():
+		resource.update_storage()
+	global_resources_updated.emit()
+
+
+func on_update_resources():
 	for resource in resources.values():
 		resource.update_change()
+	global_resources_updated.emit()
+	
+	
+
+	
+	
