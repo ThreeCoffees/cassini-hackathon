@@ -17,18 +17,19 @@ func _on_faction_picked(faction_id: int) -> void:
 		print("picked faction %d" % faction_id)
 
 	clear()
-	var faction: Faction = CityManager.get_faction(faction_id)
-	var city_tiles: Array = faction.city_tiles
-	var worked_tiles: Array = faction.worked_tiles
-
-	for cell_coords: Vector2i in city_tiles:
-		set_cell(cell_coords, 0, tile_coords["city"])
-
 	for cell_coords: Vector2i in occupied_tiles:
 		set_cell(cell_coords, 0, tile_coords["occupied"])
 
-	for cell_coords: Vector2i in worked_tiles:
-		set_cell(cell_coords, 0, tile_coords["worked"])
+	var faction: Faction = CityManager.get_faction(faction_id)
+	if faction != null:
+		var city_tiles: Array = faction.city_tiles
+		var worked_tiles: Array = faction.worked_tiles
+
+		for cell_coords: Vector2i in city_tiles:
+			set_cell(cell_coords, 0, tile_coords["city"])
+
+		for cell_coords: Vector2i in worked_tiles:
+			set_cell(cell_coords, 0, tile_coords["worked"])
 
 
 
@@ -40,9 +41,10 @@ func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i) -> void:
 	if debug:
 		print("picked worked tile %d %d" % [tile_coord.x, tile_coord.y])
 	if tile_coord == tile_coords["none"]:
-		faction.add_worked_tile(cell_coords)
-		occupied_tiles.append(cell_coords)
-		set_cell(cell_coords, 0, tile_coords["worked"])
+		if faction.can_add_work():
+			faction.add_worked_tile(cell_coords)
+			occupied_tiles.append(cell_coords)
+			set_cell(cell_coords, 0, tile_coords["worked"])
 	elif tile_coord == tile_coords["worked"]:
 		faction.remove_worked_tile(cell_coords)
 		occupied_tiles.erase(cell_coords)

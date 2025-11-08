@@ -14,6 +14,9 @@ var population: int
 var food_requirement: int
 var energy_requirement: int
 
+var food_yields: int
+var wood_yields: int
+
 func _get_city_tiles() -> Array[Vector2i]:
 	return city_tiles
 
@@ -36,6 +39,11 @@ func update_info():
 	population = population_starter_multiplier * city_tiles.size()
 	food_requirement = population * food_multiplier
 	energy_requirement = population * energy_multiplier
+
+func can_add_work()-> bool:
+	if worked_tiles.size() >= population:
+		return false
+	return true
 
 func print():
 	print("Faction %d: no_city_tiles: %d, no_worked_tiles: %d, population: %d, food: %d, energy: %d" % [id , city_tiles.size() , worked_tiles.size() , population , food_requirement , energy_requirement])

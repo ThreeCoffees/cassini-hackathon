@@ -14,6 +14,8 @@ func get_faction_id_cells(faction_id: int) -> Array:
 	return _faction_infos[faction_id].city_tiles
 
 func get_faction(faction_id: int) -> Faction:
+	if faction_id >= Faction.faction_count or faction_id < 0:
+		return null
 	return _faction_infos[faction_id]
 
 func create_cities(tilemap: TileMapLayer):
