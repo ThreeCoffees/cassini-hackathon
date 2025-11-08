@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://8qhk40k3dt5s"]
+[gd_scene load_steps=5 format=3 uid="uid://8qhk40k3dt5s"]
 
 [ext_resource type="Script" uid="uid://gc7k1ktvqciw" path="res://scripts/ui/city_inspector.gd" id="1_jo5e0"]
 [ext_resource type="PackedScene" uid="uid://c7h2x38t0mbbm" path="res://scenes/ui/property_info.tscn" id="1_x1ltm"]
+[ext_resource type="Texture2D" uid="uid://d30ok1yq322oo" path="res://assets/icons/wheat.png" id="3_nbyyj"]
+[ext_resource type="Texture2D" uid="uid://b32e3x6esqrwi" path="res://assets/icons/tree.png" id="4_wij3p"]
 
 [node name="CityInspector" type="Control" node_paths=PackedStringArray("city_label", "properties_container")]
 layout_mode = 3
@@ -38,11 +40,21 @@ layout_mode = 2
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 
-[node name="PropertyInfo" parent="VBoxContainer/Properties/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="PopulationInfo" parent="VBoxContainer/Properties/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
 
-[node name="PropertyInfo2" parent="VBoxContainer/Properties/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="FoodInfo" parent="VBoxContainer/Properties/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
 
-[node name="PropertyInfo3" parent="VBoxContainer/Properties/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="PropertyIcon" parent="VBoxContainer/Properties/VBoxContainer/FoodInfo/HBoxContainer" index="0"]
+texture = ExtResource("3_nbyyj")
+
+[node name="EnergyInfo" parent="VBoxContainer/Properties/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
+
+[node name="PropertyIcon" parent="VBoxContainer/Properties/VBoxContainer/EnergyInfo/HBoxContainer" index="0"]
+texture = ExtResource("4_wij3p")
+
+[editable path="VBoxContainer/Properties/VBoxContainer/PopulationInfo"]
+[editable path="VBoxContainer/Properties/VBoxContainer/FoodInfo"]
+[editable path="VBoxContainer/Properties/VBoxContainer/EnergyInfo"]
