@@ -18,7 +18,6 @@ tile_picker = NodePath("../TilePicker")
 [node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
 tile_set = ExtResource("2_fifh3")
 script = ExtResource("3_g6a3i")
-debug = true
 
 [node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer")]
 script = ExtResource("2_ein4j")
@@ -34,7 +33,6 @@ position = Vector2(-69, 369)
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("5_pmoas")]
-debug = true
 
-[connection signal="faction_picked" from="Tilemap/TilePicker" to="GUI/CityInspector" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TilePicker" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
+[connection signal="faction_picked" from="Tilemap/TilePicker" to="GUI/CityInspector" method="_on_faction_picked"]

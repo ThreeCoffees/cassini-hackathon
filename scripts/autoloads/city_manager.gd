@@ -26,7 +26,6 @@ func create_cities(tilemap: TileMapLayer):
 		if _city_tile_faction.get(cell_coords) == -1:
 			var faction: Faction = Faction.new()
 			_flood_fill(cell_coords, faction)
-			print(faction.id)
 			_faction_infos.append(faction)
 
 	

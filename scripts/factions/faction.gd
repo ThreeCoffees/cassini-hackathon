@@ -26,6 +26,9 @@ func update_info():
 	food_requirement = population * food_multiplier
 	energy_requirement = population * energy_multiplier
 
+func print():
+	print("Faction %d: no_city_tiles: %d, no_worked_tiles: %d, population: %d, food: %d, energy: %d" % [id , city_tiles.size() , worked_tiles.size() , population , food_requirement , energy_requirement])
+
 func _init():
 	id = faction_count
 	faction_count+=1
