@@ -1,11 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6nwjmr5iton0"]
+[gd_scene load_steps=5 format=3 uid="uid://b6nwjmr5iton0"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_ein4j"]
+[ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="2_ein4j"]
+[ext_resource type="Script" uid="uid://k8g82vfnkuei" path="res://scripts/tilemaps/tile_picker.gd" id="3_34c7q"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="3_pmoas"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
-[node name="TerrainTilemapLayer" parent="." instance=ExtResource("1_ein4j")]
+[node name="Tilemap" type="Node2D" parent="."]
+
+[node name="TerrainTilemapLayer" parent="Tilemap" node_paths=PackedStringArray("tile_picker") instance=ExtResource("1_ein4j")]
+tile_picker = NodePath("../TilePicker")
+
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer")]
+script = ExtResource("2_ein4j")
+terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
+
+[node name="TilePicker" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_generator")]
+script = ExtResource("3_34c7q")
+debug = true
+terrain_generator = NodePath("../TerrainGenerator")
 
 [node name="Camera2D" parent="." instance=ExtResource("3_pmoas")]
 position = Vector2(-69, 369)
