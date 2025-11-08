@@ -62,12 +62,8 @@ func remove_worked_tile(tile: WorkedTile) -> void:
 
 # Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
 func remove_worked_tile_by_coords(coords: Vector2i) -> void:
-	for i in range(worked_tiles.size()):
-		if worked_tiles[i].coords == coords:
-			worked_tiles.remove_at(i)
-			update_info()
-			return
-	# (no additional helpers here; keep API minimal)
+	worked_tiles = worked_tiles.filter(func(w): return w.coords != coords)
+	update_info()
 
 signal update_resources(faction_id: int)
 
