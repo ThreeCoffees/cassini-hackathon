@@ -9,7 +9,7 @@ func get_cell_faction_id(cell_coords: Vector2i) -> int:
 	return _city_tile_faction.get(cell_coords, -1);
 
 # returns all city cells of a faction specified by the id.
-func get_faction_id_cells(faction_id: int) -> Array[Vector2i]:
+func get_faction_id_cells(faction_id: int) -> Array:
 	if faction_id >= faction_count:
 		return []
 	return _faction_city_tiles[faction_id]
