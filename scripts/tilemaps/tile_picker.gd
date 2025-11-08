@@ -3,6 +3,8 @@ class_name TilePicker extends Node
 @export var debug: bool = false
 @export var terrain_generator: TerrainGenerator
 
+signal faction_picked(faction_id: int)
+
 var selected_city: int = -1
 enum TileTypes{
 	NONE,
@@ -16,12 +18,15 @@ func handle_select_cell(cell_coords: Vector2i):
 	var x = cell_coords.x
 	var y = cell_coords.y
 	var selected_type = terrain_generator.terrain_array[x][y]
+
 	if debug:
 		print("Selected ", cell_coords)
+	
 
 	match selected_type:
 		TileTypes.CITY:
 			selected_city = CityManager.get_cell_faction_id(cell_coords)
+			faction_picked.emit(selected_city)
 			if debug:
 				print("CITY STANDS AT YOUR COMMAND: ", selected_city)
 		TileTypes.AGRI, TileTypes.WOODS:
