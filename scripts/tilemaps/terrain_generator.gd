@@ -3,6 +3,10 @@ class_name TerrainGenerator extends Node
 @export var terrain_tilemap_layer: TileMapLayer
 @export var auto_assign_forest_hp := true
 
+@export var tile_map: TileMapLayer 
+@export var tile_set: TileSet 
+var generated_layers = {}
+
 var ForestHP = preload("res://scripts/tile_resources/forest_hp.gd")
 
 var terrain_array: Array[Array] = []
@@ -42,12 +46,29 @@ func generate_tilemaps_around():
 	generate_tilemap(width,height)
 
 # Wypełnia tilemapę na podstawie terrain_array i przypisuje HP lasom
+#func generate_tilemap(start_x, start_y, is_available=false):
+	#for i in width:
+		#for j in height:
+			#terrain_tilemap_layer.set_cell(Vector2i(start_x+i, start_y+j), 1, Vector2i(terrain_array[i][j], 0), 0)
+	#if !is_available:		
+		#terrain_tilemap_layer.modulate = Color(0,0,0,0.55)
+
 func generate_tilemap(start_x, start_y, is_available=false):
+	var new_layer = TileMapLayer.new()
+
+	tile_map.add_child(new_layer)
+	
+	new_layer.tile_set = tile_set
+	
+	if !is_available:
+		new_layer.self_modulate = Color(1, 1, 1, 0.2)
+	
 	for i in width:
 		for j in height:
-			terrain_tilemap_layer.set_cell(Vector2i(start_x+i, start_y+j), 1, Vector2i(terrain_array[i][j], 0), 0)
-	if !is_available:		
-		terrain_tilemap_layer.modulate = Color(0,0,0,0.55)
+			new_layer.set_cell(Vector2i(start_x+i, start_y+j), 1, Vector2i(terrain_array[i][j], 0), 0)
+	
+	var chunk_pos = Vector2i(start_x, start_y)
+	generated_layers[chunk_pos] = new_layer
 
 	# Po wygenerowaniu tilemapy — przypisz HP dla tile'y lasu, jesli wlaczone
 	if auto_assign_forest_hp:

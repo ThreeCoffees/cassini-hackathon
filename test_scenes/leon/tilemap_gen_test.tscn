@@ -21,9 +21,11 @@ modulate = Color(0, 0, 0, 0.7019608)
 tile_set = ExtResource("2_fifh3")
 script = ExtResource("3_g6a3i")
 
-[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer")]
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "tile_map")]
 script = ExtResource("2_ein4j")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
+tile_map = NodePath("../TerrainTilemapLayer")
+tile_set = ExtResource("2_fifh3")
 
 [node name="Camera2D" parent="." instance=ExtResource("3_pmoas")]
 position = Vector2(-69, 369)
@@ -31,10 +33,12 @@ position = Vector2(-69, 369)
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("5_pmoas")]
+anchors_preset = 6
 
 [node name="ResourceInspector" parent="GUI" instance=ExtResource("7_g6a3i")]
 
 [node name="PowerPlantAdder" parent="GUI" instance=ExtResource("8_qt5ed")]
+anchors_preset = 4
 
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")

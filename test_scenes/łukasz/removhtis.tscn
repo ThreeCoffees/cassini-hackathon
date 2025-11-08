@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://crhq3qbxws37n"]
+
+[ext_resource type="Script" path="res://removthis.gd" id="1_6am47"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_6am47")
