@@ -2,6 +2,8 @@ class_name Faction extends Node
 
 const population_starter_multiplier: int = 1
 const population_max_multiplier: int = 3
+const food_threshhold: int = 1
+const population_growth_time: float = 5.0
 const food_req_mul: float = 0.1
 const energy_req_mul: float = 0.1
 
@@ -26,13 +28,18 @@ var energy_requirement: float
 var food_yields: int
 var wood_yields: int
 
+var timer: Timer
+
 # Zwraca listę kafli miasta
+
 func _get_city_tiles() -> Array[Vector2i]:
 	return city_tiles
 
 # Dodaje kafel miasta i odświeża informacje frakcji
 func add_city_tile(tile_coords: Vector2i)-> void:
 	city_tiles.append(tile_coords)
+	population = population_starter_multiplier * city_tiles.size()
+	max_population = population_max_multiplier * city_tiles.size()
 	update_info()
 
 # Zwraca listę obsługiwanych (worked) kafli
@@ -50,13 +57,10 @@ func add_worked_tile(new_tile: WorkedTile)-> void:
 
 # Usuwa obsługiwane pole i odświeża informacje
 func remove_worked_tile(tile: WorkedTile) -> void:
-	var idx = worked_tiles.find(tile)
-	if idx == -1:
-		return
-	worked_tiles.remove_at(idx)
+	worked_tiles = worked_tiles.filter(func(w): return w.coords != tile.coords)
 	update_info()
 
-	# Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
+# Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
 func remove_worked_tile_by_coords(coords: Vector2i) -> void:
 	for i in range(worked_tiles.size()):
 		if worked_tiles[i].coords == coords:
@@ -65,12 +69,10 @@ func remove_worked_tile_by_coords(coords: Vector2i) -> void:
 			return
 	# (no additional helpers here; keep API minimal)
 
-signal update_resources
+signal update_resources(faction_id: int)
 
 # Przelicza populację, wymagania i zbiory dla frakcji na podstawie miast i pracowanych pól
 func update_info():
-	population = population_starter_multiplier * city_tiles.size()
-	max_population = population_max_multiplier * city_tiles.size()
 	food_requirement = population * food_req_mul
 	energy_requirement = population * energy_req_mul
 
@@ -82,8 +84,8 @@ func update_info():
 				wood_yields += wood_prod_mul
 			TerrainTilemapLayer.TileTypes.AGRI:
 				food_yields += food_prod_mul
-    
-	update_resources.emit()
+	update_resources.emit(id)
+	update_population()
 
 # Zwraca produkcję (yield) dla danego typu zasobu
 func get_yields(type: String) -> int:
@@ -92,10 +94,22 @@ func get_yields(type: String) -> int:
 			return wood_yields
 		"food":
 			return food_yields
-		"energy":
-			return 0
+		"population":
+			return get_population_growth()
 		_:
 			return 0
+
+func get_population_growth()-> int:
+	return 1 if food_yields >= food_requirement + food_threshhold else 0
+
+func update_population():
+	if(population < max_population and get_population_growth() == 1): 
+		timer.start()
+
+func on_population_update_timeout():
+	if(population < max_population and get_population_growth() == 1): 
+		population += get_population_growth()
+		update_info()
 
 # Zwraca koszty/wymagania dla danego typu zasobu
 func get_costs(type: String) -> float:
@@ -126,3 +140,11 @@ func _init():
 	faction_count+=1
 
 	update_resources.connect(ResourceManager.on_update_resources)
+
+	timer = Timer.new()
+	add_child(timer)
+	timer.wait_time = population_growth_time
+	timer.one_shot = true
+	timer.timeout.connect(on_population_update_timeout)
+
+

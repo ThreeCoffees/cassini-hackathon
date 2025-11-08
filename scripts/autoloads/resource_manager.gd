@@ -22,7 +22,11 @@ class ResourceData:
 		storage += get_change()
 	
 	func calculate_total_yield():
-		total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
+		match type:
+			"energy":
+				total_yield = ResourceManager.plants.reduce(func(sum: int, plant: PowerPlant): return sum + plant.energy_production_multiplier, 0) 
+			_:
+				total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
 
 	func calculate_total_cost():
 		total_cost = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_costs(type), 0)
@@ -34,10 +38,12 @@ class ResourceData:
 var resources: Dictionary[String, ResourceData] = {}
 var forest_hp_node = null
 
+var plants: Array[PowerPlant] = []
 
 func initialize_resources():
 	resources.set("wood", ResourceData.new("wood"))
 	resources.set("food", ResourceData.new("food"))
+	resources.set("energy", ResourceData.new("energy"))
 	resources.set("population", ResourceData.new("population"))
 
 	on_update_resources()
@@ -63,24 +69,27 @@ func register_forest_hp(node):
 	forest_hp_node = node
 
 
-func on_update_resources():
+signal faction_info_changed(faction_id: int)
+
+func on_update_resources(faction_id: int = -1):
 	for resource in resources.values():
 		resource.update_change()
 	global_resources_updated.emit()
+	faction_info_changed.emit(faction_id)
 	
 	
 func use_resources(type : String, number : int):
 	print("At first:")
-	print(resources[type].total_yield)			# gets number of type resource from the storage
-	var current = resources[type].total_yield
+	print(resources[type].storage)			# gets number of type resource from the storage
+	var current = resources[type].storage
 	current = current - number
-	resources[type].total_yield = current
+	resources[type].storage = current
 	print("After:")
-	print(resources[type].total_yield)	
+	print(resources[type].storage)	
 	global_resources_updated.emit()
 
 func how_much_resource(type : String):
-	return resources[type].total_yield
+	return resources[type].storage
 	
 	
 	
