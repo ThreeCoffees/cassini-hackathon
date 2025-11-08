@@ -4,7 +4,8 @@ class_name ResourceInspector extends Control
 
 @export var wood_info: PropertyInfo
 @export var food_info: PropertyInfo
-@export var populatio_info: PropertyInfo
+@export var population_info: PropertyInfo
+@export var energy_info: PropertyInfo
 
 func _ready() -> void:
 	on_global_resources_updated()
@@ -20,3 +21,5 @@ func on_global_resources_updated():
 				wood_info.set_label(res_data.get_label())
 			"food":
 				food_info.set_label(res_data.get_label())
+			"energy":
+				energy_info.set_label(res_data.get_label())

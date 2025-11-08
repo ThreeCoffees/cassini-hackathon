@@ -22,7 +22,11 @@ class ResourceData:
 		storage += get_change()
 	
 	func calculate_total_yield():
-		total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
+		match type:
+			"energy":
+				total_yield = ResourceManager.plants.reduce(func(sum: int, plant: PowerPlant): return sum + plant.energy_production_multiplier, 0) 
+			_:
+				total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
 
 	func calculate_total_cost():
 		total_cost = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_costs(type), 0)
@@ -34,10 +38,12 @@ class ResourceData:
 var resources: Dictionary[String, ResourceData] = {}
 var forest_hp_node = null
 
+var plants: Array[PowerPlant] = []
 
 func initialize_resources():
 	resources.set("wood", ResourceData.new("wood"))
 	resources.set("food", ResourceData.new("food"))
+	resources.set("energy", ResourceData.new("energy"))
 	resources.set("population", ResourceData.new("population"))
 
 	on_update_resources()
