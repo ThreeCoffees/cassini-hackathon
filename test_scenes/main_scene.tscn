@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_o3e0c"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_pf31u"]
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="7_sd8ys"]
+[ext_resource type="Script" uid="uid://c7773krbd5lqd" path="res://scripts/timers/resource_timer.gd" id="9_oqvsx"]
 
 [node name="MainScene" type="Node2D"]
 
@@ -41,7 +42,15 @@ terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 
 [node name="PowerPlants" type="Node" parent="."]
 
+[node name="ResourceTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+script = ExtResource("9_oqvsx")
+
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/PowerPlantAdder/CityInspector" method="_on_faction_picked"]
+[connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
+[connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/PowerPlantAdder/CityInspector" method="_on_faction_info_changed"]
+[connection signal="timeout" from="ResourceTimer" to="ResourceTimer" method="_on_timeout"]
 
 [editable path="GUI/PowerPlantAdder"]
