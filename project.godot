@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 CityManager="*res://scripts/autoloads/city_manager.gd"
+ResourceManager="*res://scripts/autoloads/resource_manager.gd"
 
 [dotnet]
 

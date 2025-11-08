@@ -1,8 +1,8 @@
 class_name Faction extends Node
 
 const population_starter_multiplier: int = 2
-const food_req_mul: int = 2
-const energy_req_mul: int = 2
+const food_req_mul: int = 1
+const energy_req_mul: int = 1
 
 const food_prod_mul: int = 4
 const wood_prod_mul: int = 4
@@ -59,6 +59,28 @@ func update_info():
 				wood_yields += wood_prod_mul
 			TerrainTilemapLayer.TileTypes.AGRI:
 				food_yields += food_prod_mul
+
+func get_yields(type: String) -> int:
+	match type:
+		"wood":
+			return wood_yields
+		"food":
+			return food_yields
+		"energy":
+			return 0
+		_:
+			return 0
+
+func get_costs(type: String) -> int:
+	match type:
+		"wood":
+			return 0
+		"food":
+			return food_requirement
+		"energy":
+			return energy_requirement
+		_:
+			return 0
 	
 
 func can_add_work()-> bool:

@@ -17,9 +17,17 @@ food_requirement_info = NodePath("VBoxContainer/Properties/MarginContainer/MainB
 energy_requirement_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/EnergyInfo")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -132.0
+offset_top = -153.5
+offset_bottom = 153.5
+grow_horizontal = 0
+grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="CityHeader" type="PanelContainer" parent="VBoxContainer"]
