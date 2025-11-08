@@ -14,6 +14,7 @@ const tile_coords: Dictionary = {
 var occupied_tiles: Array = []
 
 
+# Aktualizuje warstwę zaznaczeń po wybraniu frakcji
 func _on_faction_picked(faction_id: int) -> void:
 	if debug:
 		print("picked faction %d" % faction_id)
@@ -35,6 +36,7 @@ func _on_faction_picked(faction_id: int) -> void:
 
 
 
+# Obsługuje kliknięcie na pole pracy (dodaje lub usuwa pracowane pole)
 func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i, cell_type: TerrainTilemapLayer.TileTypes) -> void:
 	var faction = CityManager.get_faction(faction_id)
 
@@ -53,7 +55,7 @@ func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i, cell_type: T
 		occupied_tiles.append(cell_coords)
 		set_cell(cell_coords, 0, tile_coords["worked"])
 
-		
+
 	elif tile_coord == tile_coords["worked"]:
 		var new_tile: Faction.WorkedTile = Faction.WorkedTile.new()
 		new_tile.coords = cell_coords
