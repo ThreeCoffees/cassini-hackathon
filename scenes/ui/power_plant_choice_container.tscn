@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://ob1fl03y7hnv"]
+
+[ext_resource type="Texture2D" uid="uid://dttp0nhfw60md" path="res://assets/icons/power_plant.png" id="1_kh3ia"]
+[ext_resource type="Script" path="res://scripts/ui/plant_adder.gd" id="2_i2kvj"]
+[ext_resource type="Texture2D" uid="uid://b32e3x6esqrwi" path="res://assets/icons/tree.png" id="3_dsacc"]
+[ext_resource type="Texture2D" uid="uid://rjcikbm6818l" path="res://assets/icons/power.png" id="4_3bh24"]
+
+[node name="PowerPlantChoiceContainer" type="PanelContainer"]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("1_kh3ia")
+icon_alignment = 1
+script = ExtResource("2_i2kvj")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Wood Plant"
+
+[node name="Wood Plant Cost" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Wood Plant Cost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("3_dsacc")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer"]
+layout_mode = 2
+text = "20"
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Wood Plant Cost"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("4_3bh24")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2"]
+layout_mode = 2
+text = "+2"
+horizontal_alignment = 2

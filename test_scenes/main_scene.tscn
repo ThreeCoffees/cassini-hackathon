@@ -46,3 +46,6 @@ terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 [connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
 
 [editable path="GUI/PowerPlantAdder"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wood Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Sun Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wind Plant"]

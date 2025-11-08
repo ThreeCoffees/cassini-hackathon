@@ -30,23 +30,10 @@ position = Vector2(-69, 369)
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("6_yfuy2")]
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_right = -32.0
-grow_horizontal = 0
-grow_vertical = 2
 
 [node name="ResourceInspector" parent="GUI" instance=ExtResource("7_bxxfh")]
 
 [node name="PowerPlantAdder" parent="GUI" instance=ExtResource("7_rvmon")]
-anchors_preset = -1
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 32.0
-grow_vertical = 2
 
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")

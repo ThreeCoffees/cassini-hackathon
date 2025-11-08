@@ -146,5 +146,3 @@ func _init():
 	timer.wait_time = population_growth_time
 	timer.one_shot = true
 	timer.timeout.connect(on_population_update_timeout)
-
-

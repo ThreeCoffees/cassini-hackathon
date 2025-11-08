@@ -1,6 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ca7lotynnkupq"]
 
-[ext_resource type="Script" uid="uid://tn7llw1vwyky" path="res://scripts/ui/resource_inspector.gd" id="1_clb14"]
+[ext_resource type="Script" path="res://scripts/ui/resource_inspector.gd" id="1_clb14"]
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="1_hugm3"]
 [ext_resource type="PackedScene" uid="uid://c7h2x38t0mbbm" path="res://scenes/ui/property_info.tscn" id="1_n4amc"]
 [ext_resource type="Texture2D" uid="uid://b32e3x6esqrwi" path="res://assets/icons/tree.png" id="2_clb14"]
 [ext_resource type="Texture2D" uid="uid://d30ok1yq322oo" path="res://assets/icons/wheat.png" id="3_hugm3"]
@@ -12,6 +13,7 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 grow_horizontal = 2
+theme = ExtResource("1_hugm3")
 script = ExtResource("1_clb14")
 wood_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/WoodInfo")
 food_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/FoodInfo")
