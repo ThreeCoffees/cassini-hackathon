@@ -8,11 +8,13 @@ extends Node
 @export var forest_atlas_index := 2
 
 var hp_map := {} # klucz: "(x,y)" -> int HP
+var tilemap_ref = null
 
 # Przypisuje domyślne HP dla wszystkich pól lasu na podanej TileMap
 func assign_hp_to_tilemap(tilemap) -> Dictionary:
     # Zakładamy, że tilemap ma metodę get_used_rect() i get_cell_atlas_coords(cell: Vector2i)
     hp_map.clear()
+    tilemap_ref = tilemap
     var rect = tilemap.get_used_rect()
     for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
         for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
@@ -34,6 +36,12 @@ func damage(cell, amount := 1) -> bool:
     if not hp_map.has(key):
         return false
     hp_map[key] = max(0, hp_map[key] - int(amount))
+    # Jeśli HP spadło do 0, podmień kafelek na czarny (atlas index 0,0) i usuń z mapy HP
+    if hp_map[key] <= 0:
+        if tilemap_ref != null and tilemap_ref.has_method("set_cell"):
+            # Używamy tej samej sygnatury co przy generowaniu: (cell, layer, atlas_coords, something)
+            tilemap_ref.set_cell(cell, 1, Vector2i(0, 0), 0)
+        hp_map.erase(key)
     return true
 
 # Zwiększa HP pola o podaną wartość, zwraca true jeśli zastosowano
