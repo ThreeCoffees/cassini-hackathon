@@ -51,8 +51,19 @@ func add_worked_tile(new_tile: WorkedTile)-> void:
 # Usuwa obsługiwane pole i odświeża informacje
 func remove_worked_tile(tile: WorkedTile) -> void:
 	var idx = worked_tiles.find(tile)
+	if idx == -1:
+		return
 	worked_tiles.remove_at(idx)
 	update_info()
+
+	# Bezpieczny helper: usuwa worked tile po współrzędnych (przydatne z zewnątrz)
+func remove_worked_tile_by_coords(coords: Vector2i) -> void:
+	for i in range(worked_tiles.size()):
+		if worked_tiles[i].coords == coords:
+			worked_tiles.remove_at(i)
+			update_info()
+			return
+	# (no additional helpers here; keep API minimal)
 
 signal update_resources
 
