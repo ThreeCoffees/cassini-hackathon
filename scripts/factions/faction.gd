@@ -1,18 +1,28 @@
 class_name Faction extends Node
 
 const population_starter_multiplier: int = 2
-const food_multiplier: int = 2
-const energy_multiplier: int = 2
+const food_req_mul: int = 2
+const energy_req_mul: int = 2
+
+const food_prod_mul: int = 4
+const wood_prod_mul: int = 4
 
 static var faction_count: int = 0
 
+class WorkedTile:
+	var coords: Vector2i
+	var type: TerrainTilemapLayer.TileTypes
+
 var id: int
 var city_tiles: Array[Vector2i] = []: get = _get_city_tiles
-var worked_tiles: Array[Vector2i] = []
+var worked_tiles: Array[WorkedTile] = []
 
 var population: int
 var food_requirement: int
 var energy_requirement: int
+
+var food_yields: int
+var wood_yields: int
 
 func _get_city_tiles() -> Array[Vector2i]:
 	return city_tiles
@@ -21,10 +31,40 @@ func add_city_tile(tile_coords: Vector2i)-> void:
 	city_tiles.append(tile_coords)
 	update_info()
 
+func _get_worked_tiles() -> Array[WorkedTile]:
+	return worked_tiles
+
+func get_worked_tiles_coords() -> Array:
+	return worked_tiles.map(func(tile: WorkedTile): return tile.coords)
+
+func add_worked_tile(new_tile: WorkedTile)-> void:
+	worked_tiles.append(new_tile)
+	update_info()
+
+func remove_worked_tile(tile: WorkedTile) -> void:
+	var idx = worked_tiles.find(tile)
+	worked_tiles.remove_at(idx)
+	update_info()
+
 func update_info():
 	population = population_starter_multiplier * city_tiles.size()
-	food_requirement = population * food_multiplier
-	energy_requirement = population * energy_multiplier
+	food_requirement = population * food_req_mul
+	energy_requirement = population * energy_req_mul
+
+	food_yields = 0
+	wood_yields = 0
+	for tile in worked_tiles:
+		match tile.type:
+			TerrainTilemapLayer.TileTypes.WOODS:
+				wood_yields += wood_prod_mul
+			TerrainTilemapLayer.TileTypes.AGRI:
+				food_yields += food_prod_mul
+	
+
+func can_add_work()-> bool:
+	if worked_tiles.size() >= population:
+		return false
+	return true
 
 func print():
 	print("Faction %d: no_city_tiles: %d, no_worked_tiles: %d, population: %d, food: %d, energy: %d" % [id , city_tiles.size() , worked_tiles.size() , population , food_requirement , energy_requirement])
