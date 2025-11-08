@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7h2x38t0mbbm"]
+[gd_scene load_steps=4 format=3 uid="uid://c7h2x38t0mbbm"]
 
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="1_aipq1"]
 [ext_resource type="Texture2D" uid="uid://c32qdssgr4551" path="res://assets/icons/population.png" id="1_f7tcu"]
 [ext_resource type="Script" uid="uid://uignotyvpww1" path="res://scripts/ui/property_info.gd" id="1_stp7p"]
 
 [node name="PropertyInfo" type="MarginContainer" node_paths=PackedStringArray("label")]
+theme = ExtResource("1_aipq1")
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 20

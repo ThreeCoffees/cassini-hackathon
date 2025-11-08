@@ -1,12 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://8qhk40k3dt5s"]
+[gd_scene load_steps=6 format=3 uid="uid://8qhk40k3dt5s"]
 
 [ext_resource type="Script" uid="uid://gc7k1ktvqciw" path="res://scripts/ui/city_inspector.gd" id="1_jo5e0"]
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="1_wij3p"]
 [ext_resource type="PackedScene" uid="uid://c7h2x38t0mbbm" path="res://scenes/ui/property_info.tscn" id="1_x1ltm"]
 [ext_resource type="Texture2D" uid="uid://d30ok1yq322oo" path="res://assets/icons/wheat.png" id="3_nbyyj"]
 [ext_resource type="Texture2D" uid="uid://b32e3x6esqrwi" path="res://assets/icons/tree.png" id="4_wij3p"]
 
 [node name="CityInspector" type="Control" node_paths=PackedStringArray("city_label", "population_info", "food_yield_info", "wood_yield_info", "food_requirement_info", "energy_requirement_info")]
 layout_mode = 3
+anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -14,6 +16,7 @@ anchor_bottom = 0.5
 offset_right = -32.0
 grow_horizontal = 0
 grow_vertical = 2
+theme = ExtResource("1_wij3p")
 script = ExtResource("1_jo5e0")
 city_label = NodePath("VBoxContainer/CityHeader/MarginContainer/Label")
 population_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/PopulationInfo")
