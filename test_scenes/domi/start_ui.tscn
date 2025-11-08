@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwollyrtwuedd"]
+
+[ext_resource type="Theme" uid="uid://xdlsookcp48p" path="res://resources/start_ui.tres" id="1_1d3wy"]
+[ext_resource type="Script" uid="uid://bum4t4h3slpul" path="res://scripts/ui/start.gd" id="2_0cbgb"]
+
+[node name="StartUi" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1d3wy")
+script = ExtResource("2_0cbgb")
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -79.0
+offset_top = -44.0
+offset_right = 79.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+pivot_offset = Vector2(79, 44)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 5
+
+[node name="Button3" type="Button" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_1d3wy")
+text = "START"
+
+[node name="PanelContainer3" type="PanelContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 5
+
+[node name="Button2" type="Button" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer3/MarginContainer"]
+layout_mode = 2
+text = "EXIT"
+
+[connection signal="pressed" from="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/Button3" to="Control" method="_on_button_3_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer3/MarginContainer/Button2" to="Control" method="_on_button_2_pressed"]

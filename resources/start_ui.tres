@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://xdlsookcp48p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hms4q"]
+
+[resource]
+Button/constants/h_separation = 4
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = null
+Button/styles/normal = SubResource("StyleBoxEmpty_hms4q")

@@ -83,12 +83,9 @@ func on_update_resources(faction_id: int = -1):
 	for resource in resources.values():
 		resource.update_change()
 	global_resources_updated.emit()
-	faction_info_changed.emit(faction_id)
-
-
-func use_resources(type : String, number : int):
-	print("At first:")
-	print(resources[type].storage)			# gets number of type resource from the storage
+	
+	
+func use_resources(type : String, number : int):# gets number of type resource from the storage
 	var current = resources[type].storage
 	current = current - number
 	resources[type].storage = current
