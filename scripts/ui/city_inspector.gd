@@ -48,4 +48,4 @@ func _on_faction_info_changed(faction_id: int) -> void:
 	food_yield_info.set_label(str(faction_info.food_yields))
 	wood_yield_info.set_label(str(faction_info.wood_yields))
 
-	
+

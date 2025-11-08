@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d30ok1yq322oo" path="res://assets/icons/wheat.png" id="3_hugm3"]
 [ext_resource type="Texture2D" uid="uid://rjcikbm6818l" path="res://assets/icons/power.png" id="5_hugm3"]
 
-[node name="ResourceInspector" type="Control" node_paths=PackedStringArray("wood_info", "food_info", "energy_info")]
+[node name="ResourceInspector" type="Control" node_paths=PackedStringArray("wood_info", "food_info", "population_info", "energy_info")]
 layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
@@ -15,6 +15,7 @@ grow_horizontal = 2
 script = ExtResource("1_clb14")
 wood_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/WoodInfo")
 food_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/FoodInfo")
+population_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/PopulationInfo")
 energy_info = NodePath("PanelContainer/MarginContainer/HBoxContainer/EnergyInfo")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
