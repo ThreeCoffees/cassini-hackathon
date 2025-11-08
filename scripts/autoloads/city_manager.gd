@@ -1,6 +1,4 @@
-class_name CityManager extends Node
-
-@export var tilemap: TileMapLayer
+extends Node
 
 var faction_count = 0
 var _city_tile_faction: Dictionary[Vector2i, int] = {}
@@ -16,7 +14,7 @@ func get_all_cells_of_faction(faction_id: int) -> Array[Vector2i]:
 		return []
 	return _faction_city_tiles[faction_id]
 
-func create_cities():
+func create_cities(tilemap: TileMapLayer):
 	var all_city_cells = tilemap.get_used_cells_by_id(1, Vector2i(4,0));
 
 	for cell in all_city_cells:
@@ -25,11 +23,11 @@ func create_cities():
 	for cell_coords in _city_tile_faction.keys():
 		if _city_tile_faction.get(cell_coords) == -1:
 			_faction_city_tiles.append([])
-			flood_fill(cell_coords)
+			_flood_fill(cell_coords)
 			faction_count+=1
 
 
-func flood_fill(cell_coords: Vector2i):
+func _flood_fill(cell_coords: Vector2i):
 	var cell_factions = _city_tile_faction.get(cell_coords);
 	if cell_factions == null or cell_factions != -1:
 		return
@@ -40,10 +38,7 @@ func flood_fill(cell_coords: Vector2i):
 	var x = cell_coords.x
 	var y = cell_coords.y
 
-	flood_fill(Vector2i(x+1, y))
-	flood_fill(Vector2i(x-1, y))
-	flood_fill(Vector2i(x, y+1))
-	flood_fill(Vector2i(x, y-1))
-
-func _ready():
-	create_cities()
+	_flood_fill(Vector2i(x+1, y))
+	_flood_fill(Vector2i(x-1, y))
+	_flood_fill(Vector2i(x, y+1))
+	_flood_fill(Vector2i(x, y-1))

@@ -1,15 +1,16 @@
 class_name TileMapGenerator extends TileMapLayer
 
 var tmp_array: Array = []
-var tmp_array_height = 12
-var tmp_array_width = 12
+var tmp_array_height = 128
+var tmp_array_width = 128
 
 var selected_city = null
 enum TileTypes{
-	CITY,
-	AGRI,
+	NONE,
+	WATER,
 	WOODS,
-	WATER
+	AGRI,
+	CITY,
 }
 # CREATE TILEMAP
 
@@ -25,6 +26,8 @@ func prepare_dummy_array():
 func _init() -> void:
 	prepare_dummy_array()
 	generate_tilemap()
+	CityManager.create_cities(self)
+	
 
 func generate_tilemap():
 	for i in tmp_array_width:
@@ -50,8 +53,8 @@ func _unhandled_input(event):
 		print("Selected ", selected_cell)
 		
 		if selected_type == TileTypes.CITY:
-			print("CITY STANDS AT YOUR COMMAND")
-			selected_city = selected_cell
+			selected_city = CityManager.get_faction_of_cell(selected_cell)
+			print("CITY STANDS AT YOUR COMMAND: ", selected_city)
 		
 		if (selected_city != null) and (selected_type == TileTypes.AGRI or selected_type == TileTypes.WOODS):
 			print("GET BACK TO WORK")

@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhjlsbeqdqyby"]
-
-[ext_resource type="Script" uid="uid://drfcabfsbwlfg" path="res://scripts/tilemaps/city_manger.gd" id="1_ebcsl"]
-
-[node name="CityManger" type="Node" node_paths=PackedStringArray("tilemap")]
-script = ExtResource("1_ebcsl")
-tilemap = NodePath("")

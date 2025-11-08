@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://drttlxlck2el7"]
 
-[ext_resource type="Script" uid="uid://yxy1kke5cnmd" path="res://scenes/test_scenes/wiktoria/zoom.gd" id="1_2xjyq"]
+[ext_resource type="Script" uid="uid://yxy1kke5cnmd" path="res://scripts/camera/zooming_camera_2d.gd" id="1_2xjyq"]
 
 [node name="Camera2D" type="Camera2D"]
 script = ExtResource("1_2xjyq")
