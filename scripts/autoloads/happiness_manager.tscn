@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm40isphpgh4t"]
+
+[ext_resource type="Script" uid="uid://vf0p8h2s5her" path="res://scripts/autoloads/happiness_manager.gd" id="1_61rng"]
+[ext_resource type="PackedScene" uid="uid://c7h2x38t0mbbm" path="res://scenes/ui/property_info.tscn" id="2_ylrmy"]
+
+[node name="HappinessInspector" type="Control" node_paths=PackedStringArray("happiness_info")]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+script = ExtResource("1_61rng")
+happiness_info = NodePath("VBoxContainer/Properties/VBoxContainer/HappinessInfo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 0
+
+[node name="CityHeader" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CityHeader"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CityHeader/MarginContainer"]
+layout_mode = 2
+text = "Happiness"
+
+[node name="Properties" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Properties"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+
+[node name="HappinessInfo" parent="VBoxContainer/Properties/VBoxContainer" instance=ExtResource("2_ylrmy")]
+layout_mode = 2
+
+[editable path="VBoxContainer/Properties/VBoxContainer/HappinessInfo"]

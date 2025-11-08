@@ -1,5 +1,7 @@
 class_name Faction extends Node
 
+signal happiness_changed(value)
+
 const population_starter_multiplier: int = 2
 const food_multiplier: int = 2
 const energy_multiplier: int = 2
@@ -25,6 +27,7 @@ func update_info():
 	population = population_starter_multiplier * city_tiles.size()
 	food_requirement = population * food_multiplier
 	energy_requirement = population * energy_multiplier
+	happiness_changed.emit(food_requirement * -1)
 
 func print():
 	print("Faction %d: no_city_tiles: %d, no_worked_tiles: %d, population: %d, food: %d, energy: %d" % [id , city_tiles.size() , worked_tiles.size() , population , food_requirement , energy_requirement])
