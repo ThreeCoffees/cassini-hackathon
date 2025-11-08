@@ -22,7 +22,11 @@ class ResourceData:
 		storage += get_change()
 	
 	func calculate_total_yield():
-		total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
+		match type:
+			"energy":
+				total_yield = ResourceManager.plants.reduce(func(sum: int, plant: PowerPlant): return sum + plant.energy_production_multiplier, 0) 
+			_:
+				total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
 
 	func calculate_total_cost():
 		total_cost = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_costs(type), 0)
@@ -34,11 +38,18 @@ class ResourceData:
 var resources: Dictionary[String, ResourceData] = {}
 var forest_hp_node = null
 
-
+var plants: Array[PowerPlant] = []
+ 
+var population_happiness: int = -1
 func initialize_resources():
 	resources.set("wood", ResourceData.new("wood"))
 	resources.set("food", ResourceData.new("food"))
+	resources.set("energy", ResourceData.new("energy"))
 	resources.set("population", ResourceData.new("population"))
+
+	# Initialize population happiness once at game start
+	if population_happiness == -1:
+		population_happiness = 100
 
 	on_update_resources()
 
@@ -47,6 +58,9 @@ func calculate_stores():
 	for resource in resources.values():
 		resource.update_storage()
 	global_resources_updated.emit()
+
+	# After storages changed, check population happiness
+	check_population_happiness()
 
 	# For each worked WOODS tile, reduce its HP by 1 (same tempo as resource tick)
 	if forest_hp_node != null:
@@ -63,7 +77,9 @@ func register_forest_hp(node):
 	forest_hp_node = node
 
 
-func on_update_resources():
+signal faction_info_changed(faction_id: int)
+
+func on_update_resources(faction_id: int = -1):
 	for resource in resources.values():
 		resource.update_change()
 	global_resources_updated.emit()
@@ -74,9 +90,34 @@ func use_resources(type : String, number : int):# gets number of type resource f
 	current = current - number
 	resources[type].storage = current
 	print("After:")
+	print(resources[type].storage)	
+	global_resources_updated.emit()
 
+	# resource changed manually -> evaluate happiness
+	check_population_happiness()
 func how_much_resource(type : String):
 	return resources[type].storage
+
+
+func check_population_happiness() -> void:
+	# Ensure happiness initialized
+	if population_happiness == -1:
+		population_happiness = 100
+
+	if population_happiness <= 0:
+		print("GAME OVER! Population happiness dropped below 0")
+		
+	# If either food or energy is negative, reduce happiness by 5 (floor 0)
+	if how_much_resource("food") < 0 or how_much_resource("energy") < 0:
+		population_happiness = max(0, population_happiness - 5)
+		print("WARNING! Population happiness is dropping: %d" % population_happiness)
+
+	if population_happiness < 50:
+		print("Warning: Population happiness is low!")
+
 	
-	
-	
+
+	if (how_much_resource("food") /2 > how_much_resource("population")) and how_much_resource("energy")/2> how_much_resource("population"):
+		population_happiness += 5
+		print("Population happiness increased: %d" % population_happiness)
+		

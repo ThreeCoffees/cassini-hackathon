@@ -32,6 +32,7 @@ func create_cities(tilemap: TileMapLayer):
 			var faction: Faction = Faction.new()
 			_flood_fill(cell_coords, faction)
 			_faction_infos.append(faction)
+			add_child(faction)
 
 	ResourceManager.initialize_resources()
 
