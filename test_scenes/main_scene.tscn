@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
-[ext_resource type="Script" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
+[ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
 
@@ -23,9 +23,10 @@
 tile_set = ExtResource("2_2c4qf")
 script = ExtResource("3_ioya4")
 
-[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer")]
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer")]
 script = ExtResource("4_auybo")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
+selection_layer = NodePath("../SelectionLayer")
 
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 

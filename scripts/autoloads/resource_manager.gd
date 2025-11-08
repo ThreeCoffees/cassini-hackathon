@@ -72,7 +72,7 @@ func calculate_stores():
 	# For each worked WOODS tile, reduce its HP by 1 (same tempo as resource tick)
 	if forest_hp_node != null:
 		for faction in CityManager.get_all_factions():
-			for wt in faction.worked_tiles:
+			for wt in faction.worked_tiles.values():
 				if wt.type == TerrainTilemapLayer.TileTypes.WOODS:
 					forest_hp_node.damage(wt.coords, 2)
 
@@ -111,8 +111,8 @@ func check_population_happiness() -> void:
 	if population_happiness == -1:
 		population_happiness = 100
 
-	if population_happiness <= 0:
-		print("GAME OVER! Population happiness dropped below 0")
+	#if population_happiness <= 0:
+	#	print("GAME OVER! Population happiness dropped below 0")
 		
 	# If either food or energy is negative, reduce happiness by 5 (floor 0)
 	if how_much_resource("food") < 0 or how_much_resource("energy") < 0:
@@ -125,7 +125,7 @@ func check_population_happiness() -> void:
 	if (how_much_resource("food") /2 > how_much_resource("population")) and how_much_resource("energy")/2> how_much_resource("population"):
 		population_happiness += 5
 		#print("Population happiness increased: %d" % population_happiness)
-		print("Population happiness increased: %d" % population_happiness)
+		#print("Population happiness increased: %d" % population_happiness)
 
 func get_happiness():
 	return population_happiness
