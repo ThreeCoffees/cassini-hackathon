@@ -35,6 +35,15 @@ func _unhandled_input(event):
 
 		handle_select_cell(selected_cell)
 
+		# Jeśli kliknięty kafel to las (WOODS), wypisz jego aktualne HP
+		if get_cell_type(selected_cell) == TileTypes.WOODS:
+			var hp = null
+			if ResourceManager.forest_hp_node != null and ResourceManager.forest_hp_node.has_method("get_hp"):
+				hp = ResourceManager.forest_hp_node.get_hp(selected_cell)
+			else:
+				hp = "(no forest HP registered)"
+			print("Forest HP at (%d,%d): %s" % [selected_cell.x, selected_cell.y, str(hp)])
+
 func get_cell_type(coords: Vector2i) -> TileTypes:
 	if !get_used_rect().has_point(coords):
 		return TileTypes.NONE
