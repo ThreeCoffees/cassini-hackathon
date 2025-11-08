@@ -35,4 +35,17 @@ func _on_faction_picked(faction_id: int) -> void:
 	food_requirement_info.set_label(str(faction_info.food_requirement))
 	energy_requirement_info.set_label(str(faction_info.energy_requirement))
 
+	food_yield_info.set_label(str(faction_info.food_yields))
+	wood_yield_info.set_label(str(faction_info.wood_yields))
+
+func _on_faction_info_changed(faction_id: int) -> void:
+	var faction_info: Faction = CityManager.get_faction(faction_id)
+
+	population_info.set_label(str(faction_info.population))
+	food_requirement_info.set_label(str(faction_info.food_requirement))
+	energy_requirement_info.set_label(str(faction_info.energy_requirement))
+
+	food_yield_info.set_label(str(faction_info.food_yields))
+	wood_yield_info.set_label(str(faction_info.wood_yields))
+
 	

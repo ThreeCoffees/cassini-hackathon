@@ -30,7 +30,6 @@ func create_cities(tilemap: TileMapLayer):
 			_flood_fill(cell_coords, faction)
 			_faction_infos.append(faction)
 
-	
 
 func _flood_fill(cell_coords: Vector2i, faction: Faction):
 	var cell_factions = _city_tile_faction.get(cell_coords);

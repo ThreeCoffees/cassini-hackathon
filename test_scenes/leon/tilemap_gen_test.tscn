@@ -27,7 +27,9 @@ position = Vector2(-69, 369)
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("5_pmoas")]
+debug = null
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
 [connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
+[connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
