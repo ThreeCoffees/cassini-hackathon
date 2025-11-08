@@ -119,8 +119,7 @@ func check_population_happiness() -> void:
 		population_happiness = max(0, population_happiness - 5)
 		#print("WARNING! Population happiness is dropping: %d" % population_happiness)
 
-	if population_happiness < 50:
-		#print("Warning: Population happiness is low!")
+
 
 	
 	if (how_much_resource("food") /2 > how_much_resource("population")) and how_much_resource("energy")/2> how_much_resource("population"):
