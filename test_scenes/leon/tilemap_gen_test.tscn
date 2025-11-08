@@ -6,9 +6,9 @@
 [ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_g6a3i"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="3_pmoas"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="5_pmoas"]
-[ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_g6a3i"]
+[ext_resource type="PackedScene" path="res://scenes/ui/resource_inspector.tscn" id="7_g6a3i"]
 [ext_resource type="Script" uid="uid://c7773krbd5lqd" path="res://scripts/timers/resource_timer.gd" id="8_g0ufm"]
-[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_qt5ed"]
+[ext_resource type="PackedScene" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_qt5ed"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
@@ -17,6 +17,7 @@
 [node name="TerrainTilemapLayer" parent="Tilemap" instance=ExtResource("1_ein4j")]
 
 [node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
+modulate = Color(0, 0, 0, 0.7019608)
 tile_set = ExtResource("2_fifh3")
 script = ExtResource("3_g6a3i")
 
@@ -30,23 +31,10 @@ position = Vector2(-69, 369)
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="CityInspector" parent="GUI" instance=ExtResource("5_pmoas")]
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_right = -32.0
-grow_horizontal = 0
-grow_vertical = 2
 
 [node name="ResourceInspector" parent="GUI" instance=ExtResource("7_g6a3i")]
 
 [node name="PowerPlantAdder" parent="GUI" instance=ExtResource("8_qt5ed")]
-anchors_preset = -1
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 32.0
-grow_vertical = 2
 
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")

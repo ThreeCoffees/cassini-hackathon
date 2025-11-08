@@ -27,14 +27,27 @@ func fetch_array() -> void:
 # Inicjalizacja: pobranie danych i wygenerowanie tilemapy
 func _ready() -> void:
 	fetch_array()
-	generate_tilemap()
+	generate_tilemaps_around()
 	CityManager.create_cities(terrain_tilemap_layer)
 
+func generate_tilemaps_around():
+	generate_tilemap(0,0, true)
+	generate_tilemap(-width,0)
+	generate_tilemap(0,-height)
+	generate_tilemap(width, 0)
+	generate_tilemap(0,height)
+	generate_tilemap(-width,height)
+	generate_tilemap(width,-height)
+	generate_tilemap(-width,-height)
+	generate_tilemap(width,height)
+
 # Wypełnia tilemapę na podstawie terrain_array i przypisuje HP lasom
-func generate_tilemap():
+func generate_tilemap(start_x, start_y, is_available=false):
 	for i in width:
 		for j in height:
-			terrain_tilemap_layer.set_cell(Vector2i(i, j), 1, Vector2i(terrain_array[i][j], 0), 0)
+			terrain_tilemap_layer.set_cell(Vector2i(start_x+i, start_y+j), 1, Vector2i(terrain_array[i][j], 0), 0)
+	if !is_available:		
+		terrain_tilemap_layer.modulate = Color(0,0,0,0.55)
 
 	# Po wygenerowaniu tilemapy — przypisz HP dla tile'y lasu, jesli wlaczone
 	if auto_assign_forest_hp:

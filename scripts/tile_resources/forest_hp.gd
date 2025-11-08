@@ -12,43 +12,42 @@ var tilemap_ref = null
 
 # Przypisuje domyślne HP dla wszystkich pól lasu na podanej TileMap
 func assign_hp_to_tilemap(tilemap) -> Dictionary:
-    # Zakładamy, że tilemap ma metodę get_used_rect() i get_cell_atlas_coords(cell: Vector2i)
-    hp_map.clear()
-    tilemap_ref = tilemap
-    var rect = tilemap.get_used_rect()
-    for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
-        for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
-            var cell = Vector2i(x, y)
-            var atlas = tilemap.get_cell_atlas_coords(cell)
-            # atlas.x przechowuje indeks kafla (0..n)
-            if atlas.x == int(forest_atlas_index):
-                hp_map["(" + str(x) + "," + str(y) + ")"] = int(forest_hp)
-    return hp_map
+	# Zakładamy, że tilemap ma metodę get_used_rect() i get_cell_atlas_coords(cell: Vector2i)
+	hp_map.clear()
+	tilemap_ref = tilemap
+	var rect = tilemap.get_used_rect()
+	for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
+		for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
+			var cell = Vector2i(x, y)
+			var atlas = tilemap.get_cell_atlas_coords(cell)
+			# atlas.x przechowuje indeks kafla (0..n)
+			if atlas.x == int(forest_atlas_index):
+				hp_map["(" + str(x) + "," + str(y) + ")"] = int(forest_hp)
+	return hp_map
 
 # Zwraca HP pola (lub null jeśli brak)
 func get_hp(cell) -> int:
-    var key = "(" + str(int(cell.x)) + "," + str(int(cell.y)) + ")"
-    return hp_map.get(key)
+	var key = "(" + str(int(cell.x)) + "," + str(int(cell.y)) + ")"
+	return hp_map.get(key)
 
 # Zmniejsza HP pola o podaną wartość, zwraca true jeśli zastosowano
 func damage(cell, amount := 1) -> bool:
-    var key = "(" + str(int(cell.x)) + "," + str(int(cell.y)) + ")"
-    if not hp_map.has(key):
-        return false
-    hp_map[key] = max(0, hp_map[key] - int(amount))
-    # Jeśli HP spadło do 0, podmień kafelek na czarny (atlas index 0,0) i usuń z mapy HP
-    if hp_map[key] <= 0:
-        if tilemap_ref != null and tilemap_ref.has_method("set_cell"):
-            # Używamy tej samej sygnatury co przy generowaniu: (cell, layer, atlas_coords, something)
-            tilemap_ref.set_cell(cell, 1, Vector2i(0, 0), 0)
-        hp_map.erase(key)
-    return true
+	var key = "(" + str(int(cell.x)) + "," + str(int(cell.y)) + ")"
+	if not hp_map.has(key):
+		return false
+	hp_map[key] = max(0, hp_map[key] - int(amount))
+	# Jeśli HP spadło do 0, podmień kafelek na czarny (atlas index 0,0) i usuń z mapy HP
+	if hp_map[key] <= 0:
+		if tilemap_ref != null and tilemap_ref.has_method("set_cell"):
+			# Używamy tej samej sygnatury co przy generowaniu: (cell, layer, atlas_coords, something)
+			tilemap_ref.set_cell(cell, 1, Vector2i(0, 0), 0)
+		hp_map.erase(key)
+	return true
 
 # Zwiększa HP pola o podaną wartość, zwraca true jeśli zastosowano
 func restore_hp(cell, amount := 1) -> bool:
-    var key = "(" + str(int(cell.x)) + "," + str(int(cell.y)) + ")"
-    if not hp_map.has(key):
-        return false
-    hp_map[key] += int(amount)
-    return true
-
+	var key = "(" + str(int(cell.x)) + "," + str(int(cell.y)) + ")"
+	if not hp_map.has(key):
+		return false
+	hp_map[key] += int(amount)
+	return true
