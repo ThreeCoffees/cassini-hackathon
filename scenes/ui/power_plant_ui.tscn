@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxpgv4ohmfogx"]
+
+[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="1_12t6u"]
+
+[node name="PowerPlantUi" type="Node2D"]
+
+[node name="PowerPlantAdder" parent="." instance=ExtResource("1_12t6u")]
