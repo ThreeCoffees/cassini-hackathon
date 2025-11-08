@@ -26,12 +26,10 @@ func _get_worked_tiles() -> Array[Vector2i]:
 
 func add_worked_tile(tile_coords: Vector2i)-> void:
 	worked_tiles.append(tile_coords)
-	print(worked_tiles)
 	update_info()
 
 func remove_worked_tile(tile_coords: Vector2i) -> void:
 	worked_tiles.erase(tile_coords)
-	print(worked_tiles)
 	update_info()
 
 func update_info():
