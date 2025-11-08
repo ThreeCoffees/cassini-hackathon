@@ -25,8 +25,9 @@ func _set_line(coords, faction_id):
 	
 func _remove_lines():
 	for line in linesArr:
-		linesArr.remove_at(linesArr.find(line))
 		line.queue_free()
+	linesArr.clear()
+	print(linesArr)
 		
 
 func _on_faction_picked(faction_id: int) -> void:
