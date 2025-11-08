@@ -109,7 +109,7 @@ func check_population_happiness() -> void:
 
 	if population_happiness <= 0:
 		print("GAME OVER! Population happiness dropped below 0")
-		exit
+		
 	# If either food or energy is negative, reduce happiness by 5 (floor 0)
 	if how_much_resource("food") < 0 or how_much_resource("energy") < 0:
 		population_happiness = max(0, population_happiness - 5)
