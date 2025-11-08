@@ -27,16 +27,21 @@ position = Vector2(-69, 369)
 
 [node name="GUI" type="CanvasLayer" parent="."]
 
-[node name="CityInspector" parent="GUI" instance=ExtResource("6_pf31u")]
-
 [node name="PowerPlantAdder" parent="GUI" instance=ExtResource("7_sd8ys")]
 
-[node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
+[node name="CityInspector" parent="GUI/PowerPlantAdder" instance=ExtResource("6_pf31u")]
+layout_mode = 0
+offset_left = -504.0
+offset_top = 367.0
+offset_right = -504.0
+offset_bottom = 367.0
+
+[node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="3" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 
 [node name="PowerPlants" type="Node" parent="."]
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
-[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
+[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/PowerPlantAdder/CityInspector" method="_on_faction_picked"]
 
 [editable path="GUI/PowerPlantAdder"]

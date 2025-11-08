@@ -52,6 +52,8 @@ func _on_worked_tile_picked(faction_id: int, cell_coords: Vector2i, cell_type: T
 		faction.add_worked_tile(new_tile)
 		occupied_tiles.append(cell_coords)
 		set_cell(cell_coords, 0, tile_coords["worked"])
+
+		
 	elif tile_coord == tile_coords["worked"]:
 		var new_tile: Faction.WorkedTile = Faction.WorkedTile.new()
 		new_tile.coords = cell_coords
