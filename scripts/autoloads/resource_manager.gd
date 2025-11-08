@@ -22,7 +22,11 @@ class ResourceData:
 		storage += get_change()
 	
 	func calculate_total_yield():
-		total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
+		match type:
+			"energy":
+				total_yield = ResourceManager.plants.reduce(func(sum: int, plant: PowerPlant): return sum + plant.energy_production_multiplier, 0) 
+			_:
+				total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
 
 	func calculate_total_cost():
 		total_cost = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_costs(type), 0)
@@ -32,11 +36,14 @@ class ResourceData:
 	
 
 var resources: Dictionary[String, ResourceData] = {}
+var forest_hp_node = null
 
+var plants: Array[PowerPlant] = []
 
 func initialize_resources():
 	resources.set("wood", ResourceData.new("wood"))
 	resources.set("food", ResourceData.new("food"))
+	resources.set("energy", ResourceData.new("energy"))
 	resources.set("population", ResourceData.new("population"))
 
 	on_update_resources()
@@ -47,25 +54,42 @@ func calculate_stores():
 		resource.update_storage()
 	global_resources_updated.emit()
 
+	# For each worked WOODS tile, reduce its HP by 1 (same tempo as resource tick)
+	if forest_hp_node != null:
+		for faction in CityManager.get_all_factions():
+			for wt in faction.worked_tiles:
+				if wt.type == TerrainTilemapLayer.TileTypes.WOODS:
+					forest_hp_node.damage(wt.coords, 2)
 
-func on_update_resources():
+	# Note: forest_hp_node should be registered by the terrain generator after creation
+
+
+func register_forest_hp(node):
+	# Store reference to the ForestHP node so ResourceManager can decrement HP over time
+	forest_hp_node = node
+
+
+signal faction_info_changed(faction_id: int)
+
+func on_update_resources(faction_id: int = -1):
 	for resource in resources.values():
 		resource.update_change()
 	global_resources_updated.emit()
+	faction_info_changed.emit(faction_id)
 	
 	
 func use_resources(type : String, number : int):
 	print("At first:")
-	print(resources[type].total_yield)			# gets number of type resource from the storage
-	var current = resources[type].total_yield
+	print(resources[type].storage)			# gets number of type resource from the storage
+	var current = resources[type].storage
 	current = current - number
-	resources[type].total_yield = current
+	resources[type].storage = current
 	print("After:")
-	print(resources[type].total_yield)	
+	print(resources[type].storage)	
 	global_resources_updated.emit()
 
 func how_much_resource(type : String):
-	return resources[type].total_yield
+	return resources[type].storage
 	
 	
 	

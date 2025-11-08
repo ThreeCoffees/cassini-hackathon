@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_4gsma"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
-[ext_resource type="PackedScene" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
+[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
 [ext_resource type="Script" uid="uid://c7773krbd5lqd" path="res://scripts/timers/resource_timer.gd" id="9_v54x0"]
 
 [node name="TilemapGenTest" type="Node2D"]
