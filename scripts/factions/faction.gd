@@ -1,10 +1,10 @@
 class_name Faction extends Node
 
-const population_starter_multiplier: int = 2
-const food_req_mul: int = 2
-const energy_req_mul: int = 2
+const population_starter_multiplier: int = 1
+const food_req_mul: float = 0.1
+const energy_req_mul: float = 0.1
 
-const food_prod_mul: int = 4
+const food_prod_mul: int = 16
 const wood_prod_mul: int = 4
 
 static var faction_count: int = 0
@@ -18,8 +18,8 @@ var city_tiles: Array[Vector2i] = []: get = _get_city_tiles
 var worked_tiles: Array[WorkedTile] = []
 
 var population: int
-var food_requirement: int
-var energy_requirement: int
+var food_requirement: float
+var energy_requirement: float
 
 var food_yields: int
 var wood_yields: int
@@ -46,6 +46,8 @@ func remove_worked_tile(tile: WorkedTile) -> void:
 	worked_tiles.remove_at(idx)
 	update_info()
 
+signal update_resources
+
 func update_info():
 	population = population_starter_multiplier * city_tiles.size()
 	food_requirement = population * food_req_mul
@@ -60,6 +62,30 @@ func update_info():
 			TerrainTilemapLayer.TileTypes.AGRI:
 				food_yields += food_prod_mul
 	
+	update_resources.emit()
+
+func get_yields(type: String) -> int:
+	match type:
+		"wood":
+			return wood_yields
+		"food":
+			return food_yields
+		"energy":
+			return 0
+		_:
+			return 0
+
+func get_costs(type: String) -> float:
+	match type:
+		"wood":
+			return 0
+		"food":
+			return food_requirement
+		"energy":
+			return energy_requirement
+		_:
+			return 0
+	
 
 func can_add_work()-> bool:
 	if worked_tiles.size() >= population:
@@ -72,3 +98,5 @@ func print():
 func _init():
 	id = faction_count
 	faction_count+=1
+
+	update_resources.connect(ResourceManager.on_update_resources)
