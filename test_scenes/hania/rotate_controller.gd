@@ -1,5 +1,6 @@
 # drag_yaw_pitch.gd
 # Godot 4
+class_name RotateController
 extends Node
 
 @export var node: ColorRect
@@ -14,7 +15,7 @@ extends Node
 @export var invert_pitch = false
 # Duplicate the material to avoid changing shared resource
 @export var duplicate_material := true
-
+@export var _zoom_controller: ZoomController
 # Internal state
 var _dragging := false
 var _last_pos := Vector2.ZERO
@@ -59,7 +60,7 @@ func _ready():
 				node.material_override = _shader_material
 
 	# initialize shader uniforms
-	_push_to_shader()
+	push_to_shader()
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -87,8 +88,8 @@ func _handle_drag(delta: Vector2, pos: Vector2) -> void:
 		return
 
 	# convert pixel delta to angle change (radians)
-	var ang_dx = -delta.x * sensitivity   # horizontal -> yaw
-	var ang_dy = -delta.y * sensitivity   # vertical -> pitch
+	var ang_dx = -delta.x * sensitivity / _zoom_controller.get_scale()  # horizontal -> yaw
+	var ang_dy = -delta.y * sensitivity / _zoom_controller.get_scale()   # vertical -> pitch
 
 	# apply instantly so the globe follows the mouse
 	yaw += ang_dx
@@ -102,7 +103,7 @@ func _handle_drag(delta: Vector2, pos: Vector2) -> void:
 	pitch_vel = ang_dy / dt
 	_last_drag_time_ms = now_ms
 
-	_push_to_shader()
+	push_to_shader()
 	_last_pos = pos
 
 	
@@ -126,11 +127,10 @@ func _process(delta: float) -> void:
 				yaw_vel = 0.0
 			if abs(pitch_vel) < VELOCITY_EPS:
 				pitch_vel = 0.0
+			push_to_shader()
 
-			_push_to_shader()
 
-
-func _push_to_shader() -> void:
+func push_to_shader() -> void:
 	if _shader_material == null:
 		return
 	# shader uniforms: surface_rotation_x = pitch; surface_rotation_z = yaw
