@@ -63,3 +63,8 @@ func _flood_fill(cell_coords: Vector2i, faction: Faction):
 	_flood_fill(Vector2i(x-1, y), faction)
 	_flood_fill(Vector2i(x, y+1), faction)
 	_flood_fill(Vector2i(x, y-1), faction)
+
+	_flood_fill(Vector2i(x+1, y+1), faction)
+	_flood_fill(Vector2i(x+1, y-1), faction)
+	_flood_fill(Vector2i(x-1, y+1), faction)
+	_flood_fill(Vector2i(x-1, y-1), faction)
