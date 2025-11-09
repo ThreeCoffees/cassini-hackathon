@@ -5,6 +5,12 @@ extends Node
 @export var earth_node: ColorRect
 var shader_material
 var latlon:Vector2
+var city: String = ""
+
+@onready var choose_city = $"../UI/PanelContainer2/MarginContainer/Label"
+@onready var launch_button = $"../UI/Control/TextureRect"
+
+
 func _ready() -> void:
 	shader_material = earth_node.material as ShaderMaterial
 
@@ -14,7 +20,25 @@ func _input(event: InputEvent) -> void:
 		var y = shader_material.get_shader_parameter("surface_rotation_z")
 		var latlonlocal = pitch_yaw_to_latlon(-p, y)
 		latlon = latlonlocal
-		print("lat %s lon %s" % [latlon.x, latlon.y])
+		city = await _get_location()
+		choose_city.text = city
+		launch_button.visible = true
+		
+func _get_location() -> String:
+	var http = $/root/InteractivePlanet/HTTPRequest
+	http.request_completed.connect(_on_request_completed2)
+	var result = null
+	result = http.request(
+		"https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="
+		+str(latlon.x)+"&longitude="+str(latlon.y))
+	await http.request_completed
+	http.request_completed.disconnect(_on_request_completed2)
+	print(city)
+	return city
+	
+func _on_request_completed2(result, response_code, headers, body):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	city = (json["city"])
 
 # maps pitch/yaw -> (lat_deg, lon_deg)
 func pitch_yaw_to_latlon(pitch: float, yaw: float) -> Vector2:
