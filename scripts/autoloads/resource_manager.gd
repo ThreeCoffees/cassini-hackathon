@@ -28,12 +28,18 @@ class ResourceData:
 	func calculate_total_yield():
 		match type:
 			"energy":
-				total_yield = ResourceManager.plants.reduce(func(sum: int, plant: PowerPlant): return sum + plant.energy_production_multiplier, 0) 
+				var sum_fn = func(sum: int, plant: PowerPlant) -> int:
+					return sum + plant.energy_production_multiplier
+				total_yield = ResourceManager.plants.reduce(sum_fn, 0)
 			_:
-				total_yield = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_yields(type), 0)
+				var sum_fn2 = func(sum: int, faction) -> int:
+					return sum + faction.get_yields(type)
+				total_yield = CityManager.get_all_factions().reduce(sum_fn2, 0)
 
 	func calculate_total_cost():
-		total_cost = CityManager.get_all_factions().reduce(func(sum: int, faction): return sum + faction.get_costs(type), 0)
+		var cost_fn = func(sum: int, faction) -> int:
+			return sum + faction.get_costs(type)
+		total_cost = CityManager.get_all_factions().reduce(cost_fn, 0)
 	
 	func _init(new_type: String):
 		type = new_type
@@ -75,6 +81,10 @@ func calculate_stores():
 			for wt in faction.worked_tiles.values():
 				if wt.type == TerrainTilemapLayer.TileTypes.WOODS:
 					forest_hp_node.damage(wt.coords, 2)
+
+	# Let planted trees grow a bit each tick (non-worked planted entries)
+	if forest_hp_node != null:
+		forest_hp_node.growth_tick(1)
 
 	# Note: forest_hp_node should be registered by the terrain generator after creation
 

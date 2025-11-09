@@ -6,8 +6,7 @@ signal plant_chosen(type : int)
 
 func _ready() -> void:
 	# Connect pressed signal safely using Callable
-	if has_method("connect"):
-		connect("pressed", Callable(self, "_on_pressed"))
+	connect("pressed", Callable(self, "_on_pressed"))
 
 func _on_pressed() -> void:
 	emit_signal("plant_chosen", type)

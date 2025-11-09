@@ -44,12 +44,29 @@ func _unhandled_input(event):
 		# check the global Input state instead.
 		if Input.is_key_pressed(KEY_CTRL):
 			var t_check = get_cell_type(selected_cell)
+
+			if debug:
+				print("Ctrl pressed; cell type=%s" % [str(t_check)])
+			if t_check == TileTypes.AGRI:
+				if ResourceManager.forest_hp_node != null:
+					var planted: bool = ResourceManager.forest_hp_node.plant_forest(selected_cell)
+					if debug:
+						print("Attempted to plant at %s -> result=%s" % [selected_cell, str(planted)])
+					if planted:
+						# planted — don't run normal select/drag logic for this click
+						return
+				else:
+					if debug:
+						print("No forest_hp_node registered or plant_forest missing")
+
+
 			if t_check == TileTypes.AGRI:
 				if ResourceManager.forest_hp_node != null and ResourceManager.forest_hp_node.has_method("plant_forest"):
 					var planted: bool = ResourceManager.forest_hp_node.plant_forest(selected_cell)
 					if planted:
 						# planted — don't run normal select/drag logic for this click
 						return
+
 
 		# Record drag start (we still handle single clicks immediately)
 		_drag_start_cell = selected_cell
@@ -119,8 +136,7 @@ func _unhandled_input(event):
 			var sel_path = "../SelectionLayer"
 			if has_node(sel_path):
 				var sel = get_node(sel_path)
-				if sel.has_method("pick_multiple_worked_tiles"):
-					sel.pick_multiple_worked_tiles(selected_city, cells, _drag_start_type)
+				sel.pick_multiple_worked_tiles(selected_city, cells, _drag_start_type)
 
 		_drag_start_cell = null
 		_dragging = false
