@@ -23,7 +23,6 @@ func try_propagation():
 
 func propagate():
 	var arr_position = tilemap.local_to_map(position)
-	print(arr_position)
 	var rand = rng.randf()
 	if rand < 0.25:
 		if not pollution_manager.is_polluted(Vector2(arr_position.x+1,arr_position.y)):
