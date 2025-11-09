@@ -8,7 +8,7 @@ var latlon:Vector2
 var city: String = ""
 
 @onready var choose_city = $"../UI/PanelContainer/MarginContainer/ChooseCity"
-@onready var texture_rect = $"../UI/Control/TextureRect"
+@onready var launch_button = $"../UI/Control/TextureRect"
 
 
 func _ready() -> void:
@@ -22,6 +22,7 @@ func _input(event: InputEvent) -> void:
 		latlon = latlonlocal
 		city = await _get_location()
 		choose_city.text = city
+		launch_button.visible = true
 		
 func _get_location() -> String:
 	var http = $/root/InteractivePlanet/HTTPRequest
