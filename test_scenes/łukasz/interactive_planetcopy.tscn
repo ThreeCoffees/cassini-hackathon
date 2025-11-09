@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cdwp6wcnpq7yt"]
+[gd_scene load_steps=11 format=3 uid="uid://cdwp6wcnpq7yt"]
 
 [ext_resource type="Texture2D" uid="uid://dxj0wcg0fhh8u" path="res://assets/textures/planet_background.png" id="1_y6dwp"]
 [ext_resource type="Material" uid="uid://ct8o1piifhaxj" path="res://assets/materials/earth_shader.tres" id="2_rncst"]
@@ -6,8 +6,7 @@
 [ext_resource type="Script" path="res://test_scenes/hania/zoom_controller.gd" id="4_7w4n3"]
 [ext_resource type="Texture2D" uid="uid://diptpn5q4b6nq" path="res://assets/icons/pin_medium.png" id="5_e6kop"]
 [ext_resource type="Texture2D" uid="uid://c6lelgmdlt3bc" path="res://assets/textures/launch.png" id="6_1egqv"]
-[ext_resource type="Script" uid="uid://bmj3npumuq6jb" path="res://test_scenes/łukasz/launch.gd" id="7_5fec5"]
-[ext_resource type="Script" path="res://test_scenes/hania/latitude_picker.gd" id="7_d3u4j"]
+[ext_resource type="Script" uid="uid://3hqlrevwrxla" path="res://test_scenes/hania/latitude_picker.gd" id="7_d3u4j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lqivt"]
 resource_local_to_scene = true
@@ -141,7 +140,6 @@ texture = ExtResource("6_1egqv")
 layout_mode = 0
 offset_right = 257.0
 offset_bottom = 123.0
-script = ExtResource("7_5fec5")
 
 [node name="Control" type="Control" parent="UI/Control"]
 anchors_preset = 0
@@ -169,4 +167,5 @@ earth_node = NodePath("../UI/Control/InteractiveEarth")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
+[connection signal="pressed" from="UI/Control/TextureRect/Button" to="LatitudePicker" method="_on_button_pressed"]
 [connection signal="pressed" from="UI/Control/TextureRect/Button" to="UI/Control/TextureRect/Button" method="_on_pressed"]

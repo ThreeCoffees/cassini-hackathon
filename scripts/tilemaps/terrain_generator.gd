@@ -17,7 +17,7 @@ func prepare_dummy_array():
 		terrain_array[i] = []
 		terrain_array[i].resize(height)
 		for j in height:
-			terrain_array[i][j] = randi_range(0, 4)
+			terrain_array[i][j] = MapDataGlobal.data[i][j]
 
 # Pobiera/ustawia tablicę terenu (tymczasowo wywołuje prepare_dummy_array)
 func fetch_array() -> void:
