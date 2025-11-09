@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="CASSINI Hackathon"
+config/name="TileWorld"
 run/main_scene="uid://dwollyrtwuedd"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://p8hcue5w3ih2"
 
 [autoload]
 
