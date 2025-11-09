@@ -8,7 +8,7 @@
 
 [resource]
 shader = ExtResource("1_1ms1d")
-shader_parameter/pixel_scale = 100.0
+shader_parameter/pixel_scale = 50.0
 shader_parameter/surface_radius = 0.3
 shader_parameter/surface_palette = ExtResource("4_8k571")
 shader_parameter/surface_texture = ExtResource("5_8k571")
@@ -47,12 +47,12 @@ shader_parameter/atmosphere_radius = 0.34
 shader_parameter/atmosphere_palette = ExtResource("2_8k571")
 shader_parameter/posterise = false
 shader_parameter/shading_mode = 3
-shader_parameter/maximum_brightness = 1.0
-shader_parameter/sun_strength = 2.0
-shader_parameter/shade_transition = 6.135
-shader_parameter/shade_step = 5.775
+shader_parameter/maximum_brightness = 1.10000001639132
+shader_parameter/sun_strength = 2.325
+shader_parameter/shade_transition = 6.775
+shader_parameter/shade_step = 9.18
 shader_parameter/sun_direction = Vector3(1.15, 2.52, -0.255)
 shader_parameter/dither_levels = 0
 shader_parameter/shading_noise_cell_amount = 640
-shader_parameter/shading_noise_strength = 0.31999997049536
+shader_parameter/shading_noise_strength = -0.07000002078736
 shader_parameter/shading_noise_period = Vector3(9.5, 9.5, 9.5)

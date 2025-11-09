@@ -142,7 +142,6 @@ func apply_scale_and_shader(skip_pixels:bool) -> void:
 		_shader_material.set_shader_parameter("pixel_scale", effective_pixel_scale)
 	if _shader_material:
 		var percentage = (_zoom_log - log(zoom_fadeout_begin_scale)) / (log(zoom_fadeout_end_scale) - log(zoom_fadeout_begin_scale))
-		print(percentage)
 		if percentage >= 0:
 			#_shader_material.set_shader_parameter("cloud_1_cover", lerp(_cloud_coverage_1, 0.0, percentage));
 			_shader_material.set_shader_parameter("cloud_2_cover", lerp(_cloud_coverage_2, 0.0, percentage));
