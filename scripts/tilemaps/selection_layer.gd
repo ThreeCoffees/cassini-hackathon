@@ -1,7 +1,7 @@
 class_name SelectionLayer extends TileMapLayer
 
 @export var debug: bool = false
-var line_scene: = preload("uid://ctkf2ywe2ftv6")
+@export var line_scene: PackedScene
 var linesArr : Array
 
 signal faction_yields_changed(faction_id: int)
