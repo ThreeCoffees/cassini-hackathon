@@ -1,10 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=17 format=3 uid="uid://5gydacn7c0o3"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
+[ext_resource type="Script" uid="uid://basvar1y6uoyh" path="res://scripts/pollution/pollution_layer.gd" id="3_8te4h"]
 [ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_ioya4"]
 [ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="4_auybo"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_4gsma"]
+[ext_resource type="PackedScene" uid="uid://cht0coa7q2bpj" path="res://scenes/tilemap/dual_grid/dual_grid_layer.tscn" id="5_evp1v"]
 [ext_resource type="PackedScene" uid="uid://bnoftrd0i8mr8" path="res://scenes/tilemap/dual_grid/dual_grid_setup.tscn" id="5_iu3lp"]
 [ext_resource type="PackedScene" uid="uid://cdde5nk2a5ajp" path="res://test_scenes/domi/happiness_ui.tscn" id="6_bvtse"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
@@ -39,6 +41,16 @@ reference_tilemap = NodePath("../../TerrainTilemapLayer")
 [node name="DualGridLayerCity" parent="Tilemap/DualGridSetup" index="4" node_paths=PackedStringArray("reference_tilemap")]
 reference_tilemap = NodePath("../../TerrainTilemapLayer")
 
+[node name="DualGridLayerPollution" parent="Tilemap/DualGridSetup" node_paths=PackedStringArray("reference_tilemap") instance=ExtResource("5_evp1v")]
+reference_tilemap = NodePath("../../PollutionLayer")
+terrain_type = 0
+source_id = 5
+
+[node name="PollutionLayer" type="TileMapLayer" parent="Tilemap"]
+visible = false
+tile_set = ExtResource("2_2c4qf")
+script = ExtResource("3_8te4h")
+
 [node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
 tile_set = ExtResource("2_2c4qf")
 script = ExtResource("3_ioya4")
@@ -49,8 +61,7 @@ terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 selection_layer = NodePath("../SelectionLayer")
 pollution_manager = NodePath("../../PollutionManager")
 
-[node name="PollutionLayer" type="TileMapLayer" parent="Tilemap"]
-tile_set = ExtResource("2_2c4qf")
+[node name="PowerPlantsSpawnPoint" type="Node2D" parent="Tilemap"]
 
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 
@@ -67,6 +78,9 @@ offset_bottom = 82.0
 [node name="ResourceInspector" parent="GUI" instance=ExtResource("7_yatwd")]
 
 [node name="PowerPlantAdder" parent="GUI" instance=ExtResource("8_cyouv")]
+
+[node name="PowerPlantPlacer" parent="GUI/PowerPlantAdder" index="1" node_paths=PackedStringArray("power_plant_spawnpoint")]
+power_plant_spawnpoint = NodePath("../../../Tilemap/PowerPlantsSpawnPoint")
 
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cey7fj5awof23"
-path="res://.godot/imported/tileset_pollution.png-9a54408fe2cebb9e5aa12912522995a0.ctex"
+path="res://.godot/imported/tileset_pollution.png-d52087394f571f15f7605be8757375d0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/tileset_pollution.png"
-dest_files=["res://.godot/imported/tileset_pollution.png-9a54408fe2cebb9e5aa12912522995a0.ctex"]
+source_file="res://assets/tilesets/dual_grid/tileset_pollution.png"
+dest_files=["res://.godot/imported/tileset_pollution.png-d52087394f571f15f7605be8757375d0.ctex"]
 
 [params]
 

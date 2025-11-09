@@ -3,6 +3,8 @@ class_name PowerPlantPlacer extends Node
 var plant_type : int = -1
 var is_placing : bool = false
 
+@export var power_plant_spawnpoint: Node2D
+
 signal plant_placed(type : PowerPlant.PlantTypes, position : Vector2, tilemap_layer: TerrainTilemapLayer)
 
 func OnPlantPicked(type : int) -> void:
@@ -47,7 +49,7 @@ func OnPositionPicked(position : Vector2i, tilemap_layer: TerrainTilemapLayer) -
 		return false
 
 	var new_plant = PowerPlant.new(position, plant_type as PowerPlant.PlantTypes)
-	tilemap_layer.add_child(new_plant)
+	power_plant_spawnpoint.add_child(new_plant)
 	ResourceManager.plants.append(new_plant)
 	# keep placing mode on until user toggles off per requirement
 	plant_placed.emit(plant_type, position)

@@ -30,7 +30,7 @@ const tile_dict: Dictionary[String, Vector2i] = {
 }
 
 func _ready():
-	reference_tilemap.tile_changed.connect(_redraw_all)
+	reference_tilemap.tile_changed.connect(_redraw_tile)
 	reference_tilemap.terrain_generated.connect(_redraw_all)
 	generate_layer()
 
@@ -60,10 +60,22 @@ func get_neighbors(coords: Vector2i)-> String:
 
 	return neighbors
 
-func _redraw_all(tmp = 0):
+func _redraw_all():
 	generate_layer()
 
 # redraws all corner tiles attatched to coords
 func _redraw_tile(tile_coords: Vector2i):
+	print("redrawing tile", tile_coords)
+	var neighbor_coords: Array[Vector2i] = [
+		Vector2i(tile_coords.x, tile_coords.y),
+		Vector2i(tile_coords.x+1, tile_coords.y),
+		Vector2i(tile_coords.x, tile_coords.y+1),
+		Vector2i(tile_coords.x+1, tile_coords.y+1),
+	]
 
-	set_cell(tile_coords, source_id, get_cell_atlas_coords(tile_coords), 0)
+	print(neighbor_coords)
+
+	set_cell(neighbor_coords[0], source_id, get_atlas_coords(neighbor_coords[0]), 0)
+	set_cell(neighbor_coords[1], source_id, get_atlas_coords(neighbor_coords[1]), 0)
+	set_cell(neighbor_coords[2], source_id, get_atlas_coords(neighbor_coords[2]), 0)
+	set_cell(neighbor_coords[3], source_id, get_atlas_coords(neighbor_coords[3]), 0)
