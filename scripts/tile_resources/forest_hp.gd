@@ -257,4 +257,7 @@ func growth_tick(amount: int = 1) -> void:
 				_remove_overlay(c)
 			else:
 				_update_overlay_for_cell(c)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
