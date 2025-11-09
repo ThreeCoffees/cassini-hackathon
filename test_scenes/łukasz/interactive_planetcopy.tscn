@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://byqywnhqyc3hc"]
+[gd_scene load_steps=12 format=3 uid="uid://cdwp6wcnpq7yt"]
 
 [ext_resource type="Texture2D" uid="uid://dxj0wcg0fhh8u" path="res://assets/textures/planet_background.png" id="1_y6dwp"]
 [ext_resource type="Material" uid="uid://ct8o1piifhaxj" path="res://assets/materials/earth_shader.tres" id="2_rncst"]
-[ext_resource type="Script" path="res://test_scenes/hania/rotate_controller.gd" id="3_7a7sk"]
-[ext_resource type="Script" path="res://test_scenes/hania/zoom_controller.gd" id="4_7w4n3"]
+[ext_resource type="Script" uid="uid://b6s6xj04rvg5b" path="res://test_scenes/hania/rotate_controller.gd" id="3_7a7sk"]
+[ext_resource type="Script" uid="uid://p1gxkdanj60y" path="res://test_scenes/hania/zoom_controller.gd" id="4_7w4n3"]
 [ext_resource type="Texture2D" uid="uid://diptpn5q4b6nq" path="res://assets/icons/pin_medium.png" id="5_e6kop"]
 [ext_resource type="Texture2D" uid="uid://c6lelgmdlt3bc" path="res://assets/textures/launch.png" id="6_1egqv"]
 [ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="7_5fec5"]
@@ -114,10 +114,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
+offset_left = -75.0
+offset_top = -149.0
+offset_right = 75.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_e6kop")
