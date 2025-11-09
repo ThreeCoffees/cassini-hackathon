@@ -6,8 +6,11 @@ extends Control
 var speeds := [0.0, 1.0, 2.0, 4.0]
 var index := 1
 
-@onready var pause_button: Button = $PauseSpeedButton if has_node("PauseSpeedButton") else null
-@onready var speed_label: Label = $PauseSpeedButton/GameSpeedLabel if has_node("PauseSpeedButton/GameSpeedLabel") else null
+#@onready var pause_button: Button = $PauseSpeedButton if has_node("PauseSpeedButton") else null
+#@onready var speed_label: Label = $PauseSpeedButton/GameSpeedLabel if has_node("PauseSpeedButton/GameSpeedLabel") else null
+@export var pause_button: Button
+@export var speed_label: Label
+
 
 func _ready() -> void:
 	_update_speed()
