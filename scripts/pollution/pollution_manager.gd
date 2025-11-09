@@ -14,9 +14,9 @@ func _ready() -> void:
 	prepare_dummy_array()
 
 func add_polution(position : Vector2):
-	var arr_position = tilemap_layer.local_to_map(position)
-	var pollution = Pollution.new(0.2, position, 4, self)
-	pollutions[arr_position.x][arr_position.y] = 1
+	var arr_position = tilemap_layer.map_to_local(position)
+	var pollution = Pollution.new(0.2, arr_position, 4, self)
+	pollutions[position.x][position.y] = 1
 	pollutions_items.append(pollution)
 	tilemap_layer.add_child(pollution)
 	
@@ -50,12 +50,12 @@ func _on_plant_placed(type :PowerPlant.PlantTypes, position : Vector2, tilemap: 
 			tilemap_layer.add_child(pollution)
 
 func is_polluted(position : Vector2):
-	var arr_position = tilemap_layer.local_to_map(position)
-	if (pollutions[arr_position.x][arr_position.y] == 1):
+	if (pollutions[position.x][position.y] == 1):
 		return true
 	return false
 	
 func propagate_all():
+	print("starting propagation")
 	for pollution in pollutions_items:
 		pollution.try_propagation()
 	
