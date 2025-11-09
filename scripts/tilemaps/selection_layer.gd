@@ -29,11 +29,15 @@ func _remove_lines():
 	linesArr.clear()
 
 func _remove_line(coords):
-	var line_idx = linesArr.find_custom(func(line: Line2D): return line.points[0] == to_global(map_to_local(coords)))
+	var cmp = func(line: Line2D) -> bool:
+		return line.points[0] == to_global(map_to_local(coords))
+	var line_idx = linesArr.find_custom(cmp)
 	if line_idx == -1:
 		return
 	var line_to_delete = linesArr[line_idx]
-	linesArr = linesArr.filter(func(line: Line2D): return line.points[0] != to_global(map_to_local(coords)))
+	var keep = func(line: Line2D) -> bool:
+		return line.points[0] != to_global(map_to_local(coords))
+	linesArr = linesArr.filter(keep)
 
 	line_to_delete.queue_free()
 

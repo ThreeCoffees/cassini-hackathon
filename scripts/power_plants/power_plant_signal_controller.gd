@@ -22,15 +22,14 @@ func _ready() -> void:
 			b.plant_chosen.connect(Callable(self, "_on_button_chosen"))
 		else:
 			# fallback: connect pressed and expect `type` exported on script
-			if b.has_method("connect"):
-				b.connect("pressed", Callable(self, "_on_button_pressed"), [b])
+			b.connect("pressed", Callable(self, "_on_button_pressed"), [b])
 
 	_update_button_states()
 
 func _on_button_pressed(b: Button) -> void:
 	# fallback pressed handler: try to read exported `type` from the button script
 	var t: int = -1
-	if b.get_script() != null and b.has_method("get"):
+	if b.get_script() != null:
 		var maybe = b.get("type")
 		if typeof(maybe) == TYPE_INT:
 			t = maybe
@@ -68,6 +67,5 @@ func _update_button_states() -> void:
 	for b in [button1, button2, button3]:
 		if b == null:
 			continue
-		if b.has_method("set_pressed"):
-			var pressed_state: bool = placing_mode and current_type == b.type
-			b.set_pressed(pressed_state)
+		var pressed_state: bool = placing_mode and current_type == b.type
+		b.set_pressed(pressed_state)

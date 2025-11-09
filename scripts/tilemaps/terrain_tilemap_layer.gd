@@ -39,6 +39,28 @@ func _unhandled_input(event):
 		if debug:
 			print("clicked tilemap layer (%d, %d)" % [selected_cell.x, selected_cell.y])
 
+<<<<<<< Updated upstream
+=======
+		# Quick forest planting: Ctrl+LeftClick on AGRI to plant a forest (minimal UX)
+		# `event.control` isn't available on InputEventMouseButton in all engine versions;
+		# check the global Input state instead.
+		if Input.is_key_pressed(KEY_CTRL):
+			var t_check = get_cell_type(selected_cell)
+			if debug:
+				print("Ctrl pressed; cell type=%s" % [str(t_check)])
+			if t_check == TileTypes.AGRI:
+				if ResourceManager.forest_hp_node != null:
+					var planted: bool = ResourceManager.forest_hp_node.plant_forest(selected_cell)
+					if debug:
+						print("Attempted to plant at %s -> result=%s" % [selected_cell, str(planted)])
+					if planted:
+						# planted — don't run normal select/drag logic for this click
+						return
+				else:
+					if debug:
+						print("No forest_hp_node registered or plant_forest missing")
+
+>>>>>>> Stashed changes
 		# Record drag start (we still handle single clicks immediately)
 		_drag_start_cell = selected_cell
 		_dragging = false
@@ -107,8 +129,7 @@ func _unhandled_input(event):
 			var sel_path = "../SelectionLayer"
 			if has_node(sel_path):
 				var sel = get_node(sel_path)
-				if sel.has_method("pick_multiple_worked_tiles"):
-					sel.pick_multiple_worked_tiles(selected_city, cells, _drag_start_type)
+				sel.pick_multiple_worked_tiles(selected_city, cells, _drag_start_type)
 
 		_drag_start_cell = null
 		_dragging = false
