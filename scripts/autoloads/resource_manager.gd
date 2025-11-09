@@ -37,9 +37,17 @@ class ResourceData:
 					return sum + faction.get_yields(type)
 				total_yield = CityManager.get_all_factions().reduce(sum_fn2, 0)
 
+	func get_total_energy_consumption(faction: Faction) -> int:
+		var sum = 0
+		#for faction in CityManager._faction_infos:
+		sum += faction.worked_tiles.size()
+		return sum
+			
 	func calculate_total_cost():
 		var cost_fn = func(sum: int, faction) -> int:
-			return sum + faction.get_costs(type)
+			var energy_cost = get_total_energy_consumption(faction) if type == "energy" else 0
+		
+			return sum + faction.get_costs(type) + energy_cost
 		total_cost = CityManager.get_all_factions().reduce(cost_fn, 0)
 	
 	func _init(new_type: String):
@@ -112,7 +120,6 @@ func on_update_resources(faction_id: int = -1):
 		resource.update_change()
 	global_resources_updated.emit()
 	faction_info_changed.emit(faction_id)
-	
 	
 func use_resources(type : String, number : int):# gets number of type resource from the storage
 	var current = resources[type].storage
