@@ -14,11 +14,14 @@ var _bigger_tree_texture: Texture2D = null
 var overlay_map: Dictionary[Vector2i, Sprite2D] = {}
 var pollution_manager : PollutionManager
 
-func assign_hp_to_tilemap(tilemap: TerrainTilemapLayer, sel: SelectionLayer, poll : PollutionManager) -> Dictionary:
+var half_tree_spawn: Node2D
+
+func assign_hp_to_tilemap(tilemap: TerrainTilemapLayer, sel: SelectionLayer, poll : PollutionManager, spawn: Node2D) -> Dictionary:
 	hp_map.clear()
 	tilemap_ref = tilemap
 	selection_layer = sel
 	pollution_manager = poll
+	half_tree_spawn = spawn
 
 	print("forest_hp: assign_hp_to_tilemap called")
 	print("forest_hp: tilemap_ref=%s selection_layer=%s" % [tilemap_ref, selection_layer])
@@ -127,10 +130,11 @@ func _set_overlay(cell: Vector2i, tex: Texture2D) -> void:
 	if sprite == null:
 		sprite = Sprite2D.new()
 		sprite.z_index = 1
-		tilemap_ref.add_child(sprite)
+		half_tree_spawn.add_child(sprite)
 		overlay_map[cell] = sprite
 	sprite.texture = tex
 	sprite.position = _get_tile_center_local(cell)
+	sprite.position += Vector2(16, 16)
 
 func _remove_overlay(cell: Vector2i) -> void:
 	if not overlay_map.has(cell):
@@ -202,8 +206,9 @@ func _show_temporary_marker(cell: Vector2i) -> void:
 	var sprite := Sprite2D.new()
 	sprite.texture = tex
 	sprite.position = _get_tile_center_local(cell)
-	sprite.z_index = 100
-	tilemap_ref.add_child(sprite)
+	sprite.z_index = 1
+	sprite.position += Vector2(16, 16)
+	half_tree_spawn.add_child(sprite)
 	var t := Timer.new()
 	t.wait_time = 0.6
 	t.one_shot = true

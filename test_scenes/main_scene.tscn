@@ -1,8 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=22 format=3 uid="uid://5gydacn7c0o3"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
-[ext_resource type="Script" uid="uid://basvar1y6uoyh" path="res://scripts/pollution/pollution_layer.gd" id="3_8te4h"]
+[ext_resource type="Script" path="res://scripts/pollution/pollution_layer.gd" id="3_8te4h"]
 [ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_ioya4"]
 [ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="4_auybo"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_4gsma"]
@@ -18,6 +18,9 @@
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
 [ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_upf00"]
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="15_4rwl4"]
+[ext_resource type="Texture2D" uid="uid://dscxhpjtdu8k2" path="res://assets/icons/speed_button.png" id="16_w8crt"]
+[ext_resource type="Texture2D" uid="uid://5wfd4vw08bqd" path="res://assets/icons/pause.png" id="17_axttf"]
 
 [node name="TilemapGenTest2" type="Node2D"]
 
@@ -60,16 +63,20 @@ tile_set = ExtResource("2_2c4qf")
 script = ExtResource("3_ioya4")
 line_scene = ExtResource("7_evp1v")
 
-[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager")]
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager", "tree_spawn")]
 script = ExtResource("4_auybo")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 selection_layer = NodePath("../SelectionLayer")
 pollution_manager = NodePath("../../PollutionManager")
+tree_spawn = NodePath("../TreeSpawn")
 
 [node name="PowerPlantsSpawnPoint" type="Node2D" parent="Tilemap"]
 z_index = 1
 
 [node name="Border" parent="Tilemap" instance=ExtResource("9_v3i1k")]
+
+[node name="TreeSpawn" type="Node2D" parent="Tilemap"]
+z_index = 1
 
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 
@@ -93,27 +100,35 @@ power_plant_spawnpoint = NodePath("../../../Tilemap/PowerPlantsSpawnPoint")
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 
-[node name="GameSpeed" type="Control" parent="GUI"]
+[node name="GameSpeed" type="Control" parent="GUI" node_paths=PackedStringArray("pause_button", "speed_label", "end_button")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme = ExtResource("15_4rwl4")
 script = ExtResource("9_2c4qf")
+pause_button = NodePath("PanelContainer/HBoxContainer/PauseSpeedButton")
+speed_label = NodePath("PanelContainer/HBoxContainer/GameSpeedLabel")
+end_button = NodePath("PanelContainer/HBoxContainer/EndGameButton")
 
-[node name="PauseSpeedButton" type="Button" parent="GUI/GameSpeed"]
+[node name="PanelContainer" type="PanelContainer" parent="GUI/GameSpeed"]
 layout_mode = 0
-offset_left = 44.0
-offset_top = 31.0
-offset_right = 113.0
-offset_bottom = 101.0
-text = ">"
+offset_right = 32.0
+offset_bottom = 32.0
 
-[node name="GameSpeedLabel" type="Label" parent="GUI/GameSpeed/PauseSpeedButton"]
-layout_mode = 0
-offset_left = 79.0
-offset_top = 20.0
-offset_right = 266.0
-offset_bottom = 65.0
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/GameSpeed/PanelContainer"]
+layout_mode = 2
+
+[node name="EndGameButton" type="Button" parent="GUI/GameSpeed/PanelContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("17_axttf")
+
+[node name="PauseSpeedButton" type="Button" parent="GUI/GameSpeed/PanelContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("16_w8crt")
+
+[node name="GameSpeedLabel" type="Label" parent="GUI/GameSpeed/PanelContainer/HBoxContainer"]
+layout_mode = 2
 text = "Game speed: 1x"
 
 [node name="FloatingHealthbar" parent="GUI" node_paths=PackedStringArray("terrain_tilemap_layer") instance=ExtResource("10_kwpv6")]
