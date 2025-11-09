@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dpvqbye37cjmd"]
+[gd_scene load_steps=14 format=3 uid="uid://qjhho81t05jv"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_yqvx6"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_o3e0c"]
@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="8_m0osf"]
 [ext_resource type="PackedScene" uid="uid://cdde5nk2a5ajp" path="res://test_scenes/domi/happiness_ui.tscn" id="9_g2sh1"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="10_hm1eh"]
-[ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="10_pf31u"]
+[ext_resource type="Script" path="res://scripts/ui/game_speed.gd" id="10_pf31u"]
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="11_sd8ys"]
 [ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_sd8ys"]
 
@@ -24,10 +24,11 @@
 tile_set = ExtResource("2_o3e0c")
 script = ExtResource("3_pf31u")
 
-[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer")]
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager")]
 script = ExtResource("4_sd8ys")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 selection_layer = NodePath("../SelectionLayer")
+pollution_manager = NodePath("../../PollutionManager")
 
 [node name="Camera2D" parent="." instance=ExtResource("5_oitry")]
 

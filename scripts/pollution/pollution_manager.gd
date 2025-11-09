@@ -15,11 +15,22 @@ func _ready() -> void:
 
 func add_polution(position : Vector2):
 	var arr_position = tilemap_layer.map_to_local(position)
-	var pollution = Pollution.new(0.2, arr_position, 4, self)
+	var pollution = Pollution.new(0.2, arr_position, 4.5, self)
 	pollutions[position.x][position.y] = 1
 	pollutions_items.append(pollution)
 	tilemap_layer.add_child(pollution)
-	
+
+func generate_pollution_from_array(array : Array[Array]):
+	for i in 128:
+		for j in 128:
+			if array[i][j] > 0:
+				pollutions[i][j] = 1
+				var arr_position = Vector2(i,j)
+				var position = tilemap_layer.map_to_local(arr_position)
+				var pollution = Pollution.new(0.2, position, 4, self)
+				pollutions_items.append(pollution)
+				tilemap_layer.add_child(pollution)
+		
 
 func prepare_dummy_array():
 	pollutions.resize(width)
@@ -34,17 +45,17 @@ func _on_plant_placed(type :PowerPlant.PlantTypes, position : Vector2, tilemap: 
 	# tilemap_layer = tilemap
 	match type:
 		PowerPlant.PlantTypes.WOOD:
-			var pollution = Pollution.new(0.8, position, 2, self)
+			var pollution = Pollution.new(0.8, position, 3, self)
 			pollutions[arr_position.x][arr_position.y] = 1
 			pollutions_items.append(pollution)
 			tilemap_layer.add_child(pollution)
 		PowerPlant.PlantTypes.SUN:
-			var pollution = Pollution.new(0.5, position, 3, self)
+			var pollution = Pollution.new(0.5, position, 4, self)
 			pollutions[arr_position.x][arr_position.y] = 1
 			pollutions_items.append(pollution)
 			tilemap_layer.add_child(pollution)
 		PowerPlant.PlantTypes.WIND:
-			var pollution = Pollution.new(0.2, position, 4, self)
+			var pollution = Pollution.new(0.2, position, 4.5, self)
 			pollutions[arr_position.x][arr_position.y] = 1
 			pollutions_items.append(pollution)
 			tilemap_layer.add_child(pollution)

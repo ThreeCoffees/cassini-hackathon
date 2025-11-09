@@ -12,11 +12,13 @@ var selection_layer: SelectionLayer
 var _half_tree_texture: Texture2D = null
 var _bigger_tree_texture: Texture2D = null
 var overlay_map: Dictionary[Vector2i, Sprite2D] = {}
+var pollution_manager : PollutionManager
 
-func assign_hp_to_tilemap(tilemap: TerrainTilemapLayer, sel: SelectionLayer) -> Dictionary:
+func assign_hp_to_tilemap(tilemap: TerrainTilemapLayer, sel: SelectionLayer, poll : PollutionManager) -> Dictionary:
 	hp_map.clear()
 	tilemap_ref = tilemap
 	selection_layer = sel
+	pollution_manager = poll
 
 	print("forest_hp: assign_hp_to_tilemap called")
 	print("forest_hp: tilemap_ref=%s selection_layer=%s" % [tilemap_ref, selection_layer])
@@ -36,7 +38,10 @@ func get_hp(cell: Vector2i) -> int:
 func damage(cell: Vector2i, amount: int = 1) -> bool:
 	if not hp_map.has(cell):
 		return false
-
+	
+	if pollution_manager.is_polluted(cell):
+		amount += 2			#debuff drzew - przyspieszenie niszczenia gdy pollution
+	
 	hp_map[cell] = max(0, hp_map[cell] - int(amount))
 
 	if hp_map[cell] <= 0:
@@ -61,6 +66,10 @@ func damage(cell: Vector2i, amount: int = 1) -> bool:
 func restore_hp(cell: Vector2i, amount: int = 1) -> bool:
 	if not hp_map.has(cell):
 		return false
+		
+	if pollution_manager.is_polluted(cell):
+		amount -= 1			#debuff drzew - przyspieszenie niszczenia gdy pollution
+	
 	hp_map[cell] += int(amount)
 	_update_overlay_for_cell(cell)
 	return true
