@@ -1,0 +1,172 @@
+[gd_scene load_steps=12 format=3 uid="uid://cdwp6wcnpq7yt"]
+
+[ext_resource type="Texture2D" uid="uid://dxj0wcg0fhh8u" path="res://assets/textures/planet_background.png" id="1_y6dwp"]
+[ext_resource type="Material" uid="uid://ct8o1piifhaxj" path="res://assets/materials/earth_shader.tres" id="2_rncst"]
+[ext_resource type="Script" uid="uid://b6s6xj04rvg5b" path="res://test_scenes/hania/rotate_controller.gd" id="3_7a7sk"]
+[ext_resource type="Script" path="res://test_scenes/hania/zoom_controller.gd" id="4_7w4n3"]
+[ext_resource type="Texture2D" uid="uid://diptpn5q4b6nq" path="res://assets/icons/pin_medium.png" id="5_e6kop"]
+[ext_resource type="Texture2D" uid="uid://c6lelgmdlt3bc" path="res://assets/textures/launch.png" id="6_1egqv"]
+[ext_resource type="Script" uid="uid://bmj3npumuq6jb" path="res://test_scenes/łukasz/launch.gd" id="7_5fec5"]
+[ext_resource type="Script" path="res://test_scenes/hania/latitude_picker.gd" id="7_d3u4j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lqivt"]
+resource_local_to_scene = true
+texture_filter = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_yr14o"]
+material = SubResource("StandardMaterial3D_lqivt")
+
+[sub_resource type="LabelSettings" id="LabelSettings_j6fjt"]
+font_size = 64
+
+[node name="InteractivePlanet" type="Node3D"]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(1000, 500)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
+mesh = SubResource("SphereMesh_yr14o")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.8832197)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_y6dwp")
+expand_mode = 2
+stretch_mode = 1
+
+[node name="Control" type="Control" parent="UI"]
+material = ExtResource("2_rncst")
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InteractiveEarth" type="ColorRect" parent="UI/Control"]
+material = ExtResource("2_rncst")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RotateController" type="Node" parent="UI/Control/InteractiveEarth" node_paths=PackedStringArray("node", "_zoom_controller")]
+script = ExtResource("3_7a7sk")
+node = NodePath("..")
+sensitivity = 0.5
+min_pitch = -1.2
+max_pitch = 1.2
+invert_pitch = true
+duplicate_material = false
+_zoom_controller = NodePath("../ZoomController")
+angular_damping = 10.0
+
+[node name="ZoomController" type="Node" parent="UI/Control/InteractiveEarth" node_paths=PackedStringArray("_control")]
+script = ExtResource("4_7w4n3")
+wheel_strength = 2.0
+damping = 10.0
+min_scale = 1.0
+max_scale = 120.0
+zoom_fadeout_begin_scale = 20
+zoom_fadeout_end_scale = 30
+initial_scale = 4.0
+duplicate_material = false
+STOP_RECALCULATING_VELOCITY = 2.0
+_control = NodePath("..")
+
+[node name="Pin" type="Control" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Control/Pin"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_e6kop")
+
+[node name="TextureRect" type="TextureRect" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = 98.0
+offset_right = 128.0
+offset_bottom = 226.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_1egqv")
+
+[node name="Button" type="Button" parent="UI/Control/TextureRect"]
+layout_mode = 0
+offset_right = 257.0
+offset_bottom = 123.0
+script = ExtResource("7_5fec5")
+
+[node name="Control" type="Control" parent="UI/Control"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -189.0
+offset_top = -23.0
+offset_right = 189.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "< Press SPACE to select a location on the planet >"
+label_settings = SubResource("LabelSettings_j6fjt")
+
+[node name="LatitudePicker" type="Node" parent="." node_paths=PackedStringArray("earth_node")]
+script = ExtResource("7_d3u4j")
+earth_node = NodePath("../UI/Control/InteractiveEarth")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="UI/Control/TextureRect/Button" to="UI/Control/TextureRect/Button" method="_on_pressed"]
