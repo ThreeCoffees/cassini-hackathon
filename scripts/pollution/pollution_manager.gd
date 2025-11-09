@@ -43,7 +43,7 @@ func prepare_dummy_array():
 		for j in height:
 			pollutions[i][j] = 0
 
-func _on_plant_placed(type :PowerPlant.PlantTypes, position : Vector2, tilemap: TerrainTilemapLayer):
+func _on_plant_placed(type :PowerPlant.PlantTypes, position : Vector2):
 	var arr_position = tilemap_layer.local_to_map(position)
 	# tilemap_layer = tilemap
 	match type:
@@ -72,7 +72,6 @@ func is_polluted(position : Vector2):
 	return false
 	
 func propagate_all():
-	print("starting propagation")
 	for pollution in pollutions_items:
 		pollution.try_propagation()
 

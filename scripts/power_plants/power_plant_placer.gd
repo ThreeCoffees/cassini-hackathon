@@ -50,7 +50,7 @@ func OnPositionPicked(position : Vector2i, tilemap_layer: TerrainTilemapLayer) -
 	tilemap_layer.add_child(new_plant)
 	ResourceManager.plants.append(new_plant)
 	# keep placing mode on until user toggles off per requirement
-	plant_placed.emit(plant_type, position, tilemap_layer)
+	plant_placed.emit(plant_type, position)
 	return true
 	
 	
