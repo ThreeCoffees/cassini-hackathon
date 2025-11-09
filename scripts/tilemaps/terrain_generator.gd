@@ -35,7 +35,7 @@ func _ready() -> void:
 func generate_tilemap():
 	for i in width:
 		for j in height:
-			terrain_tilemap_layer.set_cell(Vector2i(i, j), 1, Vector2i(terrain_array[i][j], 0), 0)
+			terrain_tilemap_layer.set_cell(Vector2i(j, i), 1, Vector2i(terrain_array[i][j], 0), 0)
 	
 	terrain_tilemap_layer.on_generation_finished()
 
