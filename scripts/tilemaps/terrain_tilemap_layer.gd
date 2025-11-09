@@ -86,6 +86,7 @@ func _unhandled_input(event):
 			# create a Line2D to draw marquee if possible
 			if _marquee_line == null:
 				_marquee_line = Line2D.new()
+				_marquee_line.z_index = 4
 				_marquee_line.width = 2.0
 				_marquee_line.default_color = Color(0.5, 0.5, 0.5)
 				add_child(_marquee_line)

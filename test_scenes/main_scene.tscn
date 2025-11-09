@@ -60,16 +60,20 @@ tile_set = ExtResource("2_2c4qf")
 script = ExtResource("3_ioya4")
 line_scene = ExtResource("7_evp1v")
 
-[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager")]
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager", "tree_spawn")]
 script = ExtResource("4_auybo")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 selection_layer = NodePath("../SelectionLayer")
 pollution_manager = NodePath("../../PollutionManager")
+tree_spawn = NodePath("../TreeSpawn")
 
 [node name="PowerPlantsSpawnPoint" type="Node2D" parent="Tilemap"]
 z_index = 1
 
 [node name="Border" parent="Tilemap" instance=ExtResource("9_v3i1k")]
+
+[node name="TreeSpawn" type="Node2D" parent="Tilemap"]
+z_index = 1
 
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 
