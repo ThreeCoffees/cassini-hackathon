@@ -58,4 +58,20 @@ func propagate_all():
 	print("starting propagation")
 	for pollution in pollutions_items:
 		pollution.try_propagation()
+
+func calculate_debuffs():
+	var wood_debuffs : int = 0
+	var agri_debuffs : int = 0
+	var city_debuffs : int = 0
+	for pollution in pollutions_items:
+		var type : TerrainTilemapLayer.TileTypes = tilemap_layer.get_cell_type(pollution.position)
+		match type:
+			TerrainTilemapLayer.TileTypes.WOODS:
+				wood_debuffs += 1
+			TerrainTilemapLayer.TileTypes.AGRI:
+				agri_debuffs += 1
+			TerrainTilemapLayer.TileTypes.CITY:
+				city_debuffs += 1
+	var return_arr : Array[int] = [wood_debuffs, agri_debuffs, city_debuffs]
+	return return_arr
 	

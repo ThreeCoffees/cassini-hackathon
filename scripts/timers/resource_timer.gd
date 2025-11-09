@@ -8,3 +8,4 @@ func _on_timeout():
 	ResourceManager.calculate_stores()
 	happiness_bar.set_value_no_signal(ResourceManager.get_happiness())
 	pollution_manager.propagate_all()
+	ResourceManager.add_debuffs(pollution_manager.calculate_debuffs())
