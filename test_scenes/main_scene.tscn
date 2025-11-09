@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=22 format=3 uid="uid://5gydacn7c0o3"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_upf00"]
 [ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="15_4rwl4"]
 [ext_resource type="Texture2D" uid="uid://dscxhpjtdu8k2" path="res://assets/icons/speed_button.png" id="16_w8crt"]
+[ext_resource type="Texture2D" uid="uid://5wfd4vw08bqd" path="res://assets/icons/pause.png" id="17_axttf"]
 
 [node name="TilemapGenTest2" type="Node2D"]
 
@@ -95,7 +96,7 @@ power_plant_spawnpoint = NodePath("../../../Tilemap/PowerPlantsSpawnPoint")
 [node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
 terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
 
-[node name="GameSpeed" type="Control" parent="GUI" node_paths=PackedStringArray("pause_button", "speed_label")]
+[node name="GameSpeed" type="Control" parent="GUI" node_paths=PackedStringArray("pause_button", "speed_label", "end_button")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -104,6 +105,7 @@ theme = ExtResource("15_4rwl4")
 script = ExtResource("9_2c4qf")
 pause_button = NodePath("PanelContainer/HBoxContainer/PauseSpeedButton")
 speed_label = NodePath("PanelContainer/HBoxContainer/GameSpeedLabel")
+end_button = NodePath("PanelContainer/HBoxContainer/EndGameButton")
 
 [node name="PanelContainer" type="PanelContainer" parent="GUI/GameSpeed"]
 layout_mode = 0
@@ -112,6 +114,10 @@ offset_bottom = 32.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GUI/GameSpeed/PanelContainer"]
 layout_mode = 2
+
+[node name="EndGameButton" type="Button" parent="GUI/GameSpeed/PanelContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("17_axttf")
 
 [node name="PauseSpeedButton" type="Button" parent="GUI/GameSpeed/PanelContainer/HBoxContainer"]
 layout_mode = 2
