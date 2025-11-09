@@ -74,6 +74,8 @@ wheel_strength = 2.0
 damping = 10.0
 min_scale = 1.0
 max_scale = 120.0
+zoom_fadeout_begin_scale = 20
+zoom_fadeout_end_scale = 30
 initial_scale = 4.0
 duplicate_material = false
 STOP_RECALCULATING_VELOCITY = 2.0
@@ -110,7 +112,7 @@ grow_vertical = 2
 texture = ExtResource("4_j6fjt")
 
 [node name="Label" type="Label" parent="CanvasLayer"]
-anchors_preset = -1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5

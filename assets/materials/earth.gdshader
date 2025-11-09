@@ -51,6 +51,8 @@ uniform float surface_bump_strength : hint_range(-1.0, 1.0, 0.01) = 0.3;
 //// Clouds
 uniform bool display_cloud_shadows = true;
 uniform float cloud_shadow_darkness : hint_range(0.0, 1.0, 0.05) = 0.25;
+uniform float cloud_alpha : hint_range(0.0, 1.0) = 1.0;
+
 
 // First cloud layer
 uniform float cloud_1_cover : hint_range(0.0, 1.0, 0.01) = 0.3;
@@ -67,7 +69,7 @@ uniform vec3 cloud_1_period = vec3(9.5, 9.5, 9.5);
 uniform vec3 cloud_1_secondary_period = vec3(9.5, 9.5, 9.5);
 uniform int cloud_1_secondary_cell_amount = 10;
 // Factor by which to multiply the generated noise.
-uniform float cloud_1_secondary_strength : hint_range(-1.0, 1.0, 0.01) = 0.3;
+uniform float cloud_1_secondary_strength : hint_range(-10.0, 10.0, 0.01) = 0.3;
 
 // Second cloud layer
 uniform float cloud_2_cover : hint_range(0.0, 1.0, 0.01) = 0.0;
@@ -522,68 +524,99 @@ vec4 surface(vec2 uv, mat3 rot_p){
     color.a = 1.0;
     return color;
 }
+// returns rotated direction (rdir). Use this for noise sampling.
+// If the point is outside the visible sphere, return vec3(0.0) and let caller handle it.
+vec3 rotated_direction(mat3 rot_p, vec2 uv, float radius) {
+    vec2 normalized_uv = (uv - vec2(0.5)) / radius;
+    float portal = dot(normalized_uv, normalized_uv);
+    if (portal > 1.0) {
+        return vec3(0.0); // outside sphere
+    }
+    float y = sqrt(max(0.0, 1.0 - portal));
+    vec3 dir = vec3(normalized_uv.x, y, normalized_uv.y);
+    vec3 rdir = normalize(rot_p * dir);
+    return rdir;
+}
+
+// convenience to get equirectangular UV from a direction
+vec2 dir_to_equirect_uv(vec3 rdir) {
+    float lon = atan(rdir.z, rdir.x);
+    float lat = asin(clamp(rdir.y, -1.0, 1.0));
+    float u_s = 0.5 + lon / (2.0 * PI);
+    float v_s = 0.5 - lat / PI;
+    u_s = fract(u_s);
+    return vec2(u_s, v_s);
+}
 
 
 // Generate clouds
+// clouds now takes rotated direction (rdir) instead of screen uv for noise sampling.
+// `rdir` should be vec3(0,0,0) for points outside the sphere (caller should check).
 vec4 clouds(
 	float cover,
-	vec2 uv,
+	vec3 rdir,                // rotated 3D direction on the sphere (unit vector)
 	vec3 period,
 	int cell_amount,
 	vec3 noise_period,
 	int noise_cell_amount,
 	float noise_strength,
-	mat3 rot_p,
 	float radius,
 	sampler2D palette,
 	float fluctuation_speed,
 	bool shadow
 ){
-
 	if (cover == 0.0) {
 		return vec4(0.0);
 	}
+	// outside sphere sentinel
+	if (rdir == vec3(0.0)) {
+		return vec4(0.0);
+	}
 
-	float w = calculate_z(uv, radius);
+	// derive an equirectangular UV for palette/bump sampling
+	vec2 sample_uv = dir_to_equirect_uv(rdir);
+
+	// derive a 'w' and build a sample vector from the rotated direction
+	// Optionally rotate rdir for local cloud fluctuation (wind)
 	float theta = TIME * fluctuation_speed;
-	// rotate about 0,0 on UV coords and with the rot_p matrix (see below)
 	mat3 rot_0 = mat3(
 		vec3(1, 0, 0),
 		vec3(0, cos(theta), -sin(theta)),
 		vec3(0, sin(theta), cos(theta))
 	);
+	// apply only local fluctuation rotation — DO NOT apply user rotation here
+	vec3 sample_dir = rot_0 * rdir;
 
+	// Use the 3D direction components as the coordinates for seamless_noise:
+	// (x,z) -> uv, y -> w. Use mat3(1.0) for noise-space rotation to avoid warping.
 	float perlin = seamless_noise(
-		uv,
-		w,
+		vec2(sample_dir.x, sample_dir.z),
+		sample_dir.y,
 		period,
-		rot_0*rot_p,
+		mat3(1.0),
 		cell_amount
 	);
 	float noise = seamless_noise(
-		uv,
-		w,
+		vec2(sample_dir.x, sample_dir.z),
+		sample_dir.y,
 		noise_period,
-		rot_0*rot_p,
+		mat3(1.0),
 		noise_cell_amount
 	);
 	if (!isnan(perlin)) {
-		perlin = clamp (
-			perlin + ((noise - 0.5) * noise_strength),
-			0.0,
-			1.0
-		);
+		perlin = clamp(perlin + ((noise - 0.5) * noise_strength), 0.0, 1.0);
 	}
 
 	float base_cutoff = 1.0 - cover;
-	vec4 color = vec4(0.);
+	vec4 color = vec4(0.0);
 
 	if (shadow) {
-		if (perlin < base_cutoff){
-			color = vec4(.00);
-		}else if (perlin <= 1.0){
-			color = vec4(0.0, 0.0, 0.0, cloud_shadow_darkness);
-		};
+		// Shadows only where cloud exists
+		if (perlin < base_cutoff) {
+			color = vec4(0.0);
+		} else {
+			color = vec4(0.0, 0.0, 0.0, cloud_shadow_darkness * cloud_alpha);
+		}
 	} else {
 		ivec2 palette_size = textureSize(palette, 0);
 
@@ -594,46 +627,37 @@ vec4 clouds(
 
 			if (palette_size.y > 1) {
 				vec4 spec = get_colour(palette, palette_size, column, 1);
-				// The red channel in the second row of the texture indicates
-				// the cutoff. In this case the range is between the base cutoff
-				// and 1.
 				cutoff = base_cutoff + ((1.0-base_cutoff) * spec.r);
-				// The last colour has to have a cutoff of 1.0 or the clouds
-				// will have weird holes in them.
 				if (column == palette_size.x - 1) {
 					cutoff = 1.0;
 				}
-
-				// The green channel controls how much to animate each colour,
-				// in a swelling/shrinking manner.
 				animation_factor = spec.g;
 				if (animation_factor > 0.0) {
-					// Is 512 a good value here? Original code had 300 and 250
-					// for two of the colours, so I thought it was high enough
-					// to allow that to be reproduced.
 					cutoff = cutoff + sin(TIME)/(512.0 * (1.0 - animation_factor));
 				}
 			} else {
-				// No explicit cutoffs provided - just split the colours equally.
-				// In this case the range is between the base cutoff and 1.
 				cutoff = base_cutoff + (
 					(1.0 - base_cutoff) / float(palette_size.x)
 				) * float(column + 1);
 			}
 
-			if (perlin < base_cutoff){
+			if (perlin < base_cutoff) {
 				color = vec4(0.0);
-			}else if (perlin > last_cutoff && perlin <= cutoff){
+			} else if (perlin > last_cutoff && perlin <= cutoff) {
+				// sample palette for cloud colour — use sample_uv for any texture lookups
 				color = get_colour(palette, palette_size, column, 0);
-			};
+				color.a = cloud_alpha;
+			}
 			last_cutoff = cutoff;
 		}
 	}
 
-	float light = calculate_light(uv, radius);
+	// apply lighting (use same light calc as surface; pass sample_uv->calculate_light if needed)
+	float light = calculate_light(sample_uv, radius);
 	color.rgb = color.rgb * light;
 	return color;
 }
+
 
 vec4 atmosphere(vec2 uv) {
 	vec4 result = vec4(0.0);
@@ -660,132 +684,183 @@ vec4 atmosphere(vec2 uv) {
 	}
 	return result;
 }
+vec2 rotated_spherical_uv(mat3 rot_p, vec2 uv, float radius) {
+    // convert 2D UV to 3D direction on unit sphere
+    vec2 normalized_uv = (uv - vec2(0.5)) / radius;
+    float portal = dot(normalized_uv, normalized_uv);
+    if (portal > 1.0) {
+        return vec2(-1.0); // outside sphere sentinel
+    }
+    float y = sqrt(max(0.0, 1.0 - portal));
+    vec3 dir = vec3(normalized_uv.x, y, normalized_uv.y);
 
+    // rotate the 3D direction with the provided rotation matrix
+    vec3 rdir = normalize(rot_p * dir);
+
+    // convert rotated direction to lon/lat -> equirectangular uv
+    float lon = atan(rdir.z, rdir.x);
+    float lat = asin(clamp(rdir.y, -1.0, 1.0));
+
+    float u_s = 0.5 + lon / (2.0 * PI);
+    float v_s = 0.5 - lat / PI;
+    u_s = fract(u_s);
+    return vec2(u_s, v_s);
+}
 void fragment() {
 	// Put the UV on a pixel grid.
 	vec2 grid_uv = calculate_grid_uv(UV);
 
 	mat3 user_rot = rotate_z(surface_rotation_z) * rotate_x(surface_rotation_x);
 
-// constant pre-rotation: rotate the whole result so the originally-centered north pole
-// maps to the equator in view (moves center to equator). Important: apply it on the left,
-// so it does not change how user_rot axes behave.
+	// constant pre-rotation: rotate the whole result so the originally-centered north pole
+	// maps to the equator in view (moves center to equator). Important: apply it on the left,
+	// so it does not change how user_rot axes behave.
 	mat3 pre_rot = rotate_x(-PI * 0.5) * rotate_z(PI * 0.5);
 
-// final rotation applied to the sphere-sampling direction
+	// final rotation applied to the sphere-sampling direction
 	mat3 rot_p = pre_rot * user_rot;
+	// compute equirectangular UVs (rotated) for the two cloud layers
+vec3 cloud1_rdir = rotated_direction(rot_p, grid_uv, cloud_1_radius);
+vec3 cloud2_rdir = rotated_direction(rot_p, grid_uv, cloud_2_radius);
+
+
+
 
 
 	// Surface rotation matrices (apply user_rot so they affect sampling & noise)
 	mat3 srot = user_rot * generate_rotation_matrix(
 		surface_base_rotation + (TIME * surface_rotation_speed)
 	);
-
+	mat3 cloud_rot = mat3(1.0f);
 	vec4 color = surface(grid_uv, rot_p);
 	vec4 clouds_1_shadows = vec4(0.0);
 	vec4 clouds_1 = vec4(0.0);
-	if (cloud_1_cover > 0.0) {
-		// Cloud rotation matrix
-		mat3 crot = user_rot * generate_rotation_matrix(
-			TIME * cloud_1_rotation_speed
-		);
-		if (display_cloud_shadows) {
-			// Get shadow colors
-			clouds_1_shadows = clouds(
-				cloud_1_cover,
-				grid_uv,
-				cloud_1_period,
-				cloud_1_cell_amount,
-				cloud_1_secondary_period,
-				cloud_1_secondary_cell_amount,
-				cloud_1_secondary_strength,
-				crot,
-				surface_radius,
-				cloud_1_palette,
-				cloud_1_fluctuation_speed,
-				true
-			);
-		}
-		// Get cloud colors
-		clouds_1 = clouds(
-			cloud_1_cover,
-			grid_uv,
-			cloud_1_period,
-			cloud_1_cell_amount,
-			cloud_1_secondary_period,
-			cloud_1_secondary_cell_amount,
-			cloud_1_secondary_strength,
-			crot,
-			cloud_1_radius,
-			cloud_1_palette,
-			cloud_1_fluctuation_speed,
-			false
-		);
-	}
+
+// shadows
+if (cloud_1_cover > 0.0) {
+    mat3 crot1 = mat3(1.0); // local cloud rotation handled inside clouds() via rot_0
+    if (display_cloud_shadows) {
+        clouds_1_shadows = clouds(
+            cloud_1_cover,
+            cloud1_rdir,
+            cloud_1_period,
+            cloud_1_cell_amount,
+            cloud_1_secondary_period,
+            cloud_1_secondary_cell_amount,
+            cloud_1_secondary_strength,
+            surface_radius,
+            cloud_1_palette,
+            cloud_1_fluctuation_speed,
+            true
+        );
+    }
+    clouds_1 = clouds(
+        cloud_1_cover,
+        cloud1_rdir,
+        cloud_1_period,
+        cloud_1_cell_amount,
+        cloud_1_secondary_period,
+        cloud_1_secondary_cell_amount,
+        cloud_1_secondary_strength,
+        surface_radius,
+        cloud_1_palette,
+        cloud_1_fluctuation_speed,
+        false
+    );
+}
 
 	vec4 clouds_2_shadows = vec4(0.0);
-	vec4 clouds_2 = vec4(0.0);
-	if (cloud_2_cover > 0.0) {
-		// Cloud rotation matrix
-		mat3 crot = user_rot * generate_rotation_matrix(
-			TIME * cloud_2_rotation_speed
-		);
-		if (display_cloud_shadows) {
-			// Get shadow colors
-			clouds_2_shadows = clouds(
-				cloud_2_cover,
-				grid_uv,
-				cloud_2_period,
-				cloud_2_cell_amount,
-				cloud_2_secondary_period,
-				cloud_2_secondary_cell_amount,
-				cloud_2_secondary_strength,
-				crot,
-				surface_radius,
-				cloud_2_palette,
-				cloud_2_fluctuation_speed,
-				true
-			);
-		}
-		// Get cloud colors
-		clouds_2 = clouds(
-			cloud_2_cover,
-			grid_uv,
-			cloud_2_period,
-			cloud_2_cell_amount,
-			cloud_2_secondary_period,
-			cloud_2_secondary_cell_amount,
-			cloud_2_secondary_strength,
-			crot,
-			cloud_2_radius,
-			cloud_2_palette,
-			cloud_2_fluctuation_speed,
-			false
-		);
-	}
+	vec4 clouds_2 = vec4(0.0);if (cloud_2_cover > 0.0) {
+    if (display_cloud_shadows) {
+        clouds_2_shadows = clouds(
+            cloud_2_cover,
+            cloud2_rdir,
+            cloud_2_period,
+            cloud_2_cell_amount,
+            cloud_2_secondary_period,
+            cloud_2_secondary_cell_amount,
+            cloud_2_secondary_strength,
+            surface_radius,
+            cloud_2_palette,
+            cloud_2_fluctuation_speed,
+            true
+        );
+    }
+    clouds_2 = clouds(
+        cloud_2_cover,
+        cloud2_rdir,
+        cloud_2_period,
+        cloud_2_cell_amount,
+        cloud_2_secondary_period,
+        cloud_2_secondary_cell_amount,
+        cloud_2_secondary_strength,
+        surface_radius,
+        cloud_2_palette,
+        cloud_2_fluctuation_speed,
+        false
+    );
+}
 
 	COLOR = vec4(0., 0., 0., 0.);
 
 	COLOR.rgba = atmosphere(grid_uv);
 	if (color.a > 0.0) {
 		COLOR.rgba = color.rgba; // draw the world
+
 		// Darken for the cloud shadows.
-		COLOR.rgb = COLOR.rgb * (1.0 - clouds_1_shadows.a);
-		COLOR.rgb = COLOR.rgb * (1.0 - clouds_2_shadows.a);
+		// - clouds_2_shadows apply normally (shadow where mask exists)
+		// - clouds_1_shadows are only applied where clouds_2 exists (masking)
+		if (display_cloud_shadows) {
+			// apply clouds_2 shadows
+			//COLOR.rgb = COLOR.rgb * (1.0 - clouds_2_shadows.a);
+			// apply clouds_1 shadows only where clouds_2 is present (using clouds_2.a as mask)
+			COLOR.rgb = COLOR.rgb * (1.0 - (clouds_1_shadows.a * clouds_2.a));
+		}
 	}
 
 	// Add the clouds
-	// This requires fully opaque clouds because the partially
-	// transparent clouds were not behaving well with the lighting.
-	if (clouds_1.a >= 1.0) {
-		COLOR.rgba = clouds_1.rgba;
+	// New behaviour: clouds_2 acts as a mask for clouds_1.
+	// Only display clouds_1 where clouds_2 is present.
+	// If clouds_2 is disabled (cover == 0), clouds_1 is drawn as before.
+		// Compute mask (use clouds_2 as mask if present)
+	float mask = 1.0;
+	if (cloud_2_cover > 0.0) {
+		// clouds_2.a is the per-pixel mask strength (0..1)
+		mask = clouds_2.a;
+		// apply clouds_2 shadows normally
+		if (display_cloud_shadows) {
+			COLOR.rgb = COLOR.rgb * (1.0 - clouds_2_shadows.a);
+		}
 	}
-	if (clouds_2.a >= 1.0) {
-		COLOR.rgba = clouds_2.rgba;
+
+	// apply clouds_1 shadows only where mask is >0
+	if (display_cloud_shadows) {
+		COLOR.rgb = COLOR.rgb * (1.0 - (clouds_1_shadows.a * mask));
 	}
+
+	// Mask clouds_1 by mask value; result alpha = clouds_1.a * mask
+	vec4 masked_clouds_1 = vec4(clouds_1.rgb, clouds_1.a * mask);
+
+	// Standard "over" composite: out = src*src.a + dst*(1-src.a)
+	if (masked_clouds_1.a > 0.0) {
+		COLOR.rgb = masked_clouds_1.rgb * masked_clouds_1.a + COLOR.rgb * (1.0 - masked_clouds_1.a);
+		// keep alpha conservative (optional)
+		COLOR.a = max(COLOR.a, masked_clouds_1.a);
+	}
+
+	// Note: clouds_2 is only used as mask. If you want clouds_2 visible too, composite it similarly.
+
+	// NOTE: we no longer draw clouds_2 separately; it is only used as a mask for clouds_1.
 
 	// Posterise
 	if (posterise) {
 		COLOR.rgb = get_nearest_colour(posterisation_palette, COLOR.rgb);
 	}
 }
+
+// Given the final rotation matrix (rot_p) and the "screen" uv (0..1),
+// return the equirectangular / texture UV (u_s, v_s) that corresponds to the
+// rotated direction on the sphere. This duplicates the logic in surface(),
+// but is separated for reuse by clouds.
+
+

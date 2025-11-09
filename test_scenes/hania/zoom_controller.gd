@@ -16,6 +16,8 @@ extends Node
 @export var min_scale := 0.25
 @export var max_scale := 8.0
 
+@export var zoom_fadeout_begin_scale := 40
+@export var zoom_fadeout_end_scale := 90
 # initial scale (if control already scaled we read it on ready)
 @export var initial_scale := 1.0
 
@@ -40,6 +42,10 @@ var _zoom_vel := 0.0       # d(ln(scale))/dt, i.e. fractional speed (1.0 means s
 
 # base pixel_scale read from shader on ready (if available)
 var _base_pixel_scale := 360.0
+var _cloud_coverage_1:float
+var _cloud_coverage_2:float
+
+
 
 func _ready() -> void:
 	# read initial scale
@@ -59,6 +65,7 @@ func _ready() -> void:
 
 	if mat and mat is ShaderMaterial:
 		_shader_material = mat
+		print(mat)
 		if duplicate_material:
 			_shader_material = mat.duplicate() as ShaderMaterial
 			if "material" in _control:
@@ -69,6 +76,8 @@ func _ready() -> void:
 
 	# apply initial visuals
 	apply_scale_and_shader(0.1)
+	_cloud_coverage_1 = _shader_material.get_shader_parameter("cloud_1_cover")
+	_cloud_coverage_2 = _shader_material.get_shader_parameter("cloud_2_cover")
 
 func _input(event):
 	# wheel up/down (scroll). Godot exposes constants BUTTON_WHEEL_UP / BUTTON_WHEEL_DOWN
@@ -131,7 +140,13 @@ func apply_scale_and_shader(skip_pixels:bool) -> void:
 	# update shader pixel_scale (bigger visual scale -> bigger pixel_scale as discussed)
 	if _shader_material and not skip_pixels:
 		_shader_material.set_shader_parameter("pixel_scale", effective_pixel_scale)
-
+	if _shader_material:
+		var percentage = (_zoom_log - log(zoom_fadeout_begin_scale)) / (log(zoom_fadeout_end_scale) - log(zoom_fadeout_begin_scale))
+		print(percentage)
+		if percentage >= 0:
+			#_shader_material.set_shader_parameter("cloud_1_cover", lerp(_cloud_coverage_1, 0.0, percentage));
+			_shader_material.set_shader_parameter("cloud_2_cover", lerp(_cloud_coverage_2, 0.0, percentage));
+			_shader_material.set_shader_parameter("cloud_alpha", lerp(1.0, 0.0, percentage))
 	# Compute the current global center of the control BEFORE changing scale.
 	# global_position + (rect_size * rect_scale) * 0.5
 	var old_pos = _control.get_rect().position
@@ -150,3 +165,34 @@ func apply_scale_and_shader(skip_pixels:bool) -> void:
 	#var cur_global_pos = _control.get_global_position()
 	#var new_global_pos = cur_global_pos.lerp(target_global_pos, t)
 	_control.set_position(target_pos)
+	
+func _make_alpha_mod(orig: Texture, mul: float) -> Texture:
+	if orig == null:
+		return null
+
+	# get an Image copy from the texture (work with ImageTexture or other types)
+	var img: Image = null
+	if "get_image" in orig:
+		img = orig.get_image().duplicate()
+	elif "get_data" in orig:
+		img = orig.get_data().duplicate()
+	else:
+		# cannot handle this texture type
+		return null
+
+	# modify alpha in place
+	img.lock()
+	var w := img.get_width()
+	var h := img.get_height()
+	for yy in range(h):
+		for xx in range(w):
+			var c: Color = img.get_pixel(xx, yy)
+			c.a = clamp(c.a * mul, 0.0, 1.0)
+			img.set_pixel(xx, yy, c)
+	img.unlock()
+
+	# create a new ImageTexture from the modified image (Godot 4)
+	var tex := ImageTexture.create_from_image(img)
+	# disable filtering so palette stays crisp
+	#tex.set_flags(tex.get_flags() & ~Texture.FLAG_FILTER)
+	return tex

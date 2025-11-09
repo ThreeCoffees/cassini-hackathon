@@ -23,6 +23,8 @@ script = ExtResource("3_g6a3i")
 script = ExtResource("2_ein4j")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 
+[node name="HTTPRequest" type="HTTPRequest" parent="Tilemap/TerrainGenerator"]
+
 [node name="Camera2D" parent="." instance=ExtResource("3_pmoas")]
 position = Vector2(-69, 369)
 
