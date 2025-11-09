@@ -15,6 +15,8 @@ func _ready() -> void:
 	prepare_dummy_array()
 
 func add_polution(position : Vector2, value : float):
+	if position.x >= width or position.x<0 or position.y >= height or position.y<0:
+		return
 	var arr_position = tilemap_layer.map_to_local(position)
 	pollution_layer.set_cell(position,2, Vector2(0,0))
 	var pollution = Pollution.new(0.2, arr_position, value, self)
@@ -67,6 +69,8 @@ func _on_plant_placed(type :PowerPlant.PlantTypes, position : Vector2):
 			#tilemap_layer.add_child(pollution)
 
 func is_polluted(position : Vector2):
+	if position.x >= width or position.x<0 or position.y >= height or position.y<0:
+		return false
 	if (pollutions[position.x][position.y] == 1):
 		return true
 	return false
