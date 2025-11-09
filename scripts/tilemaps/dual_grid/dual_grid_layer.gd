@@ -30,6 +30,8 @@ const tile_dict: Dictionary[String, Vector2i] = {
 }
 
 func _ready():
+	reference_tilemap.tile_changed.connect(_redraw_all)
+	reference_tilemap.terrain_generated.connect(_redraw_all)
 	generate_layer()
 
 func generate_layer():
@@ -57,3 +59,11 @@ func get_neighbors(coords: Vector2i)-> String:
 	neighbors[3] = "1" if reference_tilemap.get_cell_atlas_coords(Vector2i(coords.x, coords.y)).x == terrain_type else "0"
 
 	return neighbors
+
+func _redraw_all(tmp = 0):
+	generate_layer()
+
+# redraws all corner tiles attatched to coords
+func _redraw_tile(tile_coords: Vector2i):
+
+	set_cell(tile_coords, source_id, get_cell_atlas_coords(tile_coords), 0)

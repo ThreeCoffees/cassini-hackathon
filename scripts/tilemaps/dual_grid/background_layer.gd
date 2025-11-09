@@ -8,6 +8,7 @@ var width: int
 var height: int
 
 func _ready():
+	reference_tilemap.terrain_generated.connect(_redraw_all)
 	generate_layer()
 
 func generate_layer():
@@ -19,3 +20,5 @@ func generate_layer():
 		for j in height:
 			set_cell(Vector2i(i,j), source_id, Vector2i(0,0), 0)
 
+func _redraw_all():
+	generate_layer()

@@ -46,7 +46,7 @@ func damage(cell: Vector2i, amount: int = 1) -> bool:
 
 	if hp_map[cell] <= 0:
 		if tilemap_ref != null:
-			tilemap_ref.set_cell(cell, 1, Vector2i(0, 0), 0)
+			tilemap_ref.set_cell_emit(cell, 1, Vector2i(0, 0), 0)
 
 		hp_map.erase(cell)
 
@@ -183,7 +183,7 @@ func plant_forest(cell: Vector2i) -> bool:
 
 	hp_map[cell] = 0
 	if tilemap_ref != null:
-		tilemap_ref.set_cell(cell, 1, Vector2i(2, 0), 0)
+		tilemap_ref.set_cell_emit(cell, 1, Vector2i(2, 0), 0)
 
 	if selection_layer != null:
 		selection_layer.set_cell(cell, 0, Vector2i(1, 0))
@@ -222,7 +222,7 @@ func growth_tick(amount: int = 1) -> void:
 			hp_map[c] = newhp
 			if newhp >= int(forest_hp):
 				if tilemap_ref != null:
-					tilemap_ref.set_cell(c, 1, Vector2i(2, 0), 0)
+					tilemap_ref.set_cell_emit(c, 1, Vector2i(2, 0), 0)
 				_remove_overlay(c)
 			else:
 				_update_overlay_for_cell(c)
@@ -232,7 +232,7 @@ func growth_tick(amount: int = 1) -> void:
 			# if fully grown, convert tile to WOODS and remove overlay
 			if newhp >= int(forest_hp):
 				if tilemap_ref != null:
-					tilemap_ref.set_cell(c, 1, Vector2i(2, 0), 0)
+					tilemap_ref.set_cell_emit(c, 1, Vector2i(2, 0), 0)
 				_remove_overlay(c)
 			else:
 				_update_overlay_for_cell(c)
