@@ -149,25 +149,27 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="PanelContainer" type="PanelContainer" parent="UI"]
+[node name="PanelContainer2" type="PanelContainer" parent="UI"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -561.0
-offset_top = -134.0
-offset_right = 561.0
+offset_left = -27.5
+offset_top = -59.0
+offset_right = 27.5
 grow_horizontal = 2
 grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("7_5fec5")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer2"]
 layout_mode = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_right = 32
 
-[node name="ChooseCity" type="Label" parent="UI/PanelContainer/MarginContainer"]
+[node name="Label" type="Label" parent="UI/PanelContainer2/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("7_5fec5")
 text = "< Press SPACE to select a location >"

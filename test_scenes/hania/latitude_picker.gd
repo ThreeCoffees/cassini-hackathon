@@ -7,7 +7,7 @@ var shader_material
 var latlon:Vector2
 var city: String = ""
 
-@onready var choose_city = $"../UI/PanelContainer/MarginContainer/ChooseCity"
+@onready var choose_city = $"../UI/PanelContainer2/MarginContainer/Label"
 @onready var launch_button = $"../UI/Control/TextureRect"
 
 
