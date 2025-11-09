@@ -1,7 +1,7 @@
 class_name BackgroundLayer extends TileMapLayer
 
 @export var reference_tilemap: TileMapLayer
-@export var terrain_type: TerrainTilemapLayer.TileTypes
+@export var terrain_type: int
 @export var source_id: int
 
 var width: int
@@ -12,8 +12,8 @@ func _ready():
 
 func generate_layer():
 	var rect = reference_tilemap.get_used_rect()
-	width = rect.size.x+2
-	height = rect.size.y+2
+	width = rect.size.x+1
+	height = rect.size.y+1
 
 	for i in width:
 		for j in height:
