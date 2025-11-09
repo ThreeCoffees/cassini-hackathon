@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://byqywnhqyc3hc"]
+[gd_scene load_steps=12 format=3 uid="uid://byqywnhqyc3hc"]
 
 [ext_resource type="Texture2D" uid="uid://dxj0wcg0fhh8u" path="res://assets/textures/planet_background.png" id="1_y6dwp"]
 [ext_resource type="Material" uid="uid://ct8o1piifhaxj" path="res://assets/materials/earth_shader.tres" id="2_rncst"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://test_scenes/hania/zoom_controller.gd" id="4_7w4n3"]
 [ext_resource type="Texture2D" uid="uid://diptpn5q4b6nq" path="res://assets/icons/pin_medium.png" id="5_e6kop"]
 [ext_resource type="Texture2D" uid="uid://c6lelgmdlt3bc" path="res://assets/textures/launch.png" id="6_1egqv"]
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="7_5fec5"]
 [ext_resource type="Script" uid="uid://3hqlrevwrxla" path="res://test_scenes/hania/latitude_picker.gd" id="7_d3u4j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lqivt"]
@@ -137,6 +138,7 @@ grow_vertical = 2
 texture = ExtResource("6_1egqv")
 
 [node name="Button" type="Button" parent="UI/Control/TextureRect"]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 0
 offset_right = 257.0
 offset_bottom = 123.0
@@ -146,19 +148,28 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="UI"]
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -189.0
-offset_top = -23.0
-offset_right = 189.0
-offset_bottom = -27.0
+offset_left = -561.0
+offset_top = -134.0
+offset_right = 561.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "< Press SPACE to select a location on the planet >"
+theme = ExtResource("7_5fec5")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = 32
+
+[node name="ChooseCity" type="Label" parent="UI/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("7_5fec5")
+text = "< Press SPACE to select a location >"
 label_settings = SubResource("LabelSettings_j6fjt")
 
 [node name="LatitudePicker" type="Node" parent="." node_paths=PackedStringArray("earth_node")]
