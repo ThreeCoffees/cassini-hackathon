@@ -60,19 +60,15 @@ func _unhandled_input(event):
 						print("No forest_hp_node registered or plant_forest missing")
 
 
-			if t_check == TileTypes.AGRI:
-				if ResourceManager.forest_hp_node != null and ResourceManager.forest_hp_node.has_method("plant_forest"):
-					var planted: bool = ResourceManager.forest_hp_node.plant_forest(selected_cell)
-					if planted:
-						# planted — don't run normal select/drag logic for this click
-						return
+			#if t_check == TileTypes.AGRI:
+				# (planting handled above when ResourceManager.forest_hp_node is present)
 
 
-		# Record drag start (we still handle single clicks immediately)
+		
 		_drag_start_cell = selected_cell
 		_dragging = false
 		var t = get_cell_type(selected_cell)
-		# allow drag-selection only for AGRI and WOODS
+		
 		if t == TileTypes.AGRI or t == TileTypes.WOODS:
 			_drag_start_type = t
 			_drag_start_global = get_global_mouse_position()
@@ -89,15 +85,7 @@ func _unhandled_input(event):
 
 		handle_select_cell(selected_cell)
 
-		# Jeśli kliknięty kafel to las (WOODS), wypisz jego aktualne HP
-		# if get_cell_type(selected_cell) == TileTypes.WOODS:
-		#	var hp = null
-		#	if ResourceManager.forest_hp_node != null and ResourceManager.forest_hp_node.has_method("get_hp"):
-		#		hp = ResourceManager.forest_hp_node.get_hp(selected_cell)
-		#	else:
-		#		hp = "(no forest HP registered)"
-		#	print("Forest HP at (%d,%d): %s" % [selected_cell.x, selected_cell.y, str(hp)])
-
+	
 	# Detect dragging while left button is held
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and _drag_start_cell != null:
 		# only start dragging if we allowed a drag type

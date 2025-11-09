@@ -1,8 +1,7 @@
 extends Node
 
 
-# w tym projekcie tilemapy używają atlasowych współrzędnych,
-# gdzie indeks "2" odpowiada typowi WOODS/forest (zgodnie z TerrainTilemapLayer.TileTypes).
+# Clean, single-definition implementation for forest_hp.gd
 
 @export var forest_hp: int = 50
 @export var plantable_atlases := [Vector2i(0, 0), Vector2i(3, 0)]
@@ -14,7 +13,6 @@ var _half_tree_texture: Texture2D = null
 var _bigger_tree_texture: Texture2D = null
 var overlay_map: Dictionary[Vector2i, Sprite2D] = {}
 
-# Przypisuje domyślne HP dla wszystkich pól lasu na podanej TileMap
 func assign_hp_to_tilemap(tilemap: TerrainTilemapLayer, sel: SelectionLayer) -> Dictionary:
 	hp_map.clear()
 	tilemap_ref = tilemap
@@ -30,54 +28,68 @@ func assign_hp_to_tilemap(tilemap: TerrainTilemapLayer, sel: SelectionLayer) -> 
 
 	return hp_map
 
-# Zwraca HP pola (lub -1 jeśli brak)
 func get_hp(cell: Vector2i) -> int:
 	if !hp_map.has(cell):
 		return -1
 	return hp_map.get(cell)
 
-# Zmniejsza HP pola o podaną wartość, zwraca true jeśli zastosowano
 func damage(cell: Vector2i, amount: int = 1) -> bool:
 	if not hp_map.has(cell):
 		return false
 
 	hp_map[cell] = max(0, hp_map[cell] - int(amount))
 
-	# Jeśli HP spadło do 0, podmień kafelek na czarny (atlas index 0,0) i usuń z mapy HP
 	if hp_map[cell] <= 0:
 		if tilemap_ref != null:
 			tilemap_ref.set_cell(cell, 1, Vector2i(0, 0), 0)
 
-		# Usuń wpis HP
 		hp_map.erase(cell)
 
-		# Spróbuj usunąć pracowane pole z każdej frakcji, jeśli było przypisane.
 		var faction = CityManager.get_cell_exploatation_faction(cell)
 		if faction != null:
 			faction.remove_worked_tile_by_coords(cell)
 			if selection_layer != null:
 				selection_layer.clear_worked_tile(cell, faction.id)
 
-		# Ensure any overlay sprite for this cell is removed when the forest is gone
 		_remove_overlay(cell)
 		return true
 
-	# After applying damage, update overlay state for this cell (none/bigger/half)
 	_update_overlay_for_cell(cell)
 
 	return true
 
-# Zwiększa HP pola o podaną wartość, zwraca true jeśli zastosowano
 func restore_hp(cell: Vector2i, amount: int = 1) -> bool:
 	if not hp_map.has(cell):
 		return false
 	hp_map[cell] += int(amount)
-	# After restoring, update overlay state for this cell (none/bigger/half)
 	_update_overlay_for_cell(cell)
 	return true
 
+func _get_tile_size() -> Vector2:
+	if tilemap_ref == null:
+		return Vector2(64, 64)
+	var p = tilemap_ref.get("cell_size")
+	if p != null:
+		return p
+	var a = tilemap_ref.map_to_local(Vector2i(1, 1))
+	var b = tilemap_ref.map_to_local(Vector2i(0, 0))
+	var tile_offset = a - b
+	if tile_offset == Vector2.ZERO:
+		return Vector2(64, 64)
+	return Vector2(abs(tile_offset.x), abs(tile_offset.y))
 
+func _get_tile_center_local(cell: Vector2i) -> Vector2:
+	if tilemap_ref == null:
+		return Vector2.ZERO
 
+	var local = tilemap_ref.map_to_local(cell)
+	var tile_sz := _get_tile_size()
+	var tile_offset := tilemap_ref.map_to_local(Vector2i(1, 1)) - tilemap_ref.map_to_local(Vector2i(0, 0))
+	if tile_offset != Vector2.ZERO:
+		if abs(tile_offset.x - tile_sz.x) < 1.0 and abs(tile_offset.y - tile_sz.y) < 1.0:
+			local -= tile_offset
+
+	return local + tile_sz * 0.5
 
 func _load_overlay_textures() -> void:
 	if _half_tree_texture == null:
@@ -91,12 +103,9 @@ func _load_overlay_textures() -> void:
 		if ResourceLoader.exists(big_path):
 			_bigger_tree_texture = load(big_path)
 		else:
-			# not critical
-			#push_warning("forest_hp: bigger_half_tree texture not found at %s" % big_path)
 			null
 
 func _set_overlay(cell: Vector2i, tex: Texture2D) -> void:
-	# tex==null means remove overlay
 	if tex == null:
 		_remove_overlay(cell)
 		return
@@ -112,9 +121,7 @@ func _set_overlay(cell: Vector2i, tex: Texture2D) -> void:
 		tilemap_ref.add_child(sprite)
 		overlay_map[cell] = sprite
 	sprite.texture = tex
-	# position centered on tile (use helper to correct possible +1,+1 map_to_local offset)
-	var center := _get_tile_center_local(cell)
-	sprite.position = center
+	sprite.position = _get_tile_center_local(cell)
 
 func _remove_overlay(cell: Vector2i) -> void:
 	if not overlay_map.has(cell):
@@ -125,7 +132,6 @@ func _remove_overlay(cell: Vector2i) -> void:
 	overlay_map.erase(cell)
 
 func _update_overlay_for_cell(cell: Vector2i) -> void:
-	# decide which overlay (none / bigger / half) based on current HP
 	if not hp_map.has(cell):
 		_remove_overlay(cell)
 		return
@@ -134,50 +140,11 @@ func _update_overlay_for_cell(cell: Vector2i) -> void:
 	var three_quarters = int(forest_hp * 3 / 4)
 	_load_overlay_textures()
 	if current > three_quarters:
-		# healthy enough, remove overlay
 		_remove_overlay(cell)
 	elif current > half_threshold and _bigger_tree_texture != null:
 		_set_overlay(cell, _bigger_tree_texture)
 	else:
-		# at or below half
 		_set_overlay(cell, _half_tree_texture)
-
-
-func _get_tile_center_local(cell: Vector2i) -> Vector2:
-	# Return the corrected center (local coordinates) for a tile.
-	# Some TileMap wrappers return map_to_local(cell) pointing to the bottom-right
-	# of the tile (or otherwise offset). Detect a one-tile offset and correct it.
-	if tilemap_ref == null:
-		return Vector2.ZERO
-
-	# base local position
-	var local = tilemap_ref.map_to_local(cell)
-
-	# get tile size defensively
-	var tile_sz := Vector2(64, 64)
-	var p = tilemap_ref.get("cell_size")
-	if p != null:
-		tile_sz = p
-	else:
-		tile_sz = tilemap_ref.get_cell_size()
-
-	# attempt to compute a map_to_local(1,1)-map_to_local(0,0) offset
-	var ok = false
-	var tile_offset := Vector2.ZERO
-	# compute offset between (1,1) and (0,0)
-	var a = tilemap_ref.map_to_local(Vector2i(1, 1))
-	var b = tilemap_ref.map_to_local(Vector2i(0, 0))
-	tile_offset = a - b
-	ok = true
-
-	# If tile_offset looks like a full-tile offset, subtract it
-	if ok and tile_offset != Vector2.ZERO:
-		if abs(tile_offset.x - tile_sz.x) < 1.0 and abs(tile_offset.y - tile_sz.y) < 1.0:
-			local -= tile_offset
-
-	# return centered position
-	return local + tile_sz * 0.5
-
 
 func _is_plantable_atlas(atlas: Vector2i) -> bool:
 	for a in plantable_atlases:
@@ -185,15 +152,11 @@ func _is_plantable_atlas(atlas: Vector2i) -> bool:
 			return true
 	return false
 
-
-# Plant a forest at the given tile coordinates.
-# Returns true if planted, false if already forest or cannot plant.
 func plant_forest(cell: Vector2i) -> bool:
 	if tilemap_ref == null:
 		push_warning("forest_hp: tilemap_ref not set, can't plant")
 		return false
 
-	# Debug: trace attempts to plant
 	print("forest_hp: plant_forest called for %s" % [cell])
 	var atlas := Vector2i(-1, -1)
 	if tilemap_ref != null:
@@ -202,44 +165,25 @@ func plant_forest(cell: Vector2i) -> bool:
 	else:
 		print("forest_hp: can't read atlas coords for cell")
 
-	# If tile already has HP entry, consider it already a forest
 	if hp_map.has(cell):
-		print("forest_hp: plant_forest -> already has hp entry, abort")
 		return false
 
-	# Allow planting only on allowed atlas coords (configurable)
-	if tilemap_ref != null and tilemap_ref.has_method("get_cell_atlas_coords"):
-		if not _is_plantable_atlas(atlas):
-			print("forest_hp: plant_forest -> not plantable tile, abort (atlas=%s)" % [str(atlas)])
-			return false
+	if not _is_plantable_atlas(atlas):
+		print("forest_hp: plant_forest -> not plantable tile, abort (atlas=%s)" % [str(atlas)])
+		return false
 
-	# Create a planted entry with HP = 0 (will grow over time)
 	hp_map[cell] = 0
-
-	# Mark the tile as forest type immediately so other systems see it as forest
-	# (visual will still be driven by overlays until fully grown)
 	if tilemap_ref != null:
 		tilemap_ref.set_cell(cell, 1, Vector2i(2, 0), 0)
-		print("forest_hp: plant_forest -> marked tile as WOODS at %s" % [cell])
 
-	# If selection layer exists, refresh visuals for this cell
 	if selection_layer != null:
 		selection_layer.set_cell(cell, 0, Vector2i(1, 0))
 
-	# Quick visual feedback so user sees planting worked
-	print("forest_hp: planted forest at %s — updating visuals" % [cell])
 	_show_temporary_marker(cell)
-
-	# Also attempt to set the tile atlas explicitly so the tile visual updates
-	if tilemap_ref != null:
-		# Update overlay for newly planted cell (we don't convert to WOODS until fully grown)
-		print("forest_hp: hp_map has cell = %s value=%s" % [str(hp_map.has(cell)), str(hp_map.get(cell))])
-		_update_overlay_for_cell(cell)
-
+	_update_overlay_for_cell(cell)
 	return true
 
 func _show_temporary_marker(cell: Vector2i) -> void:
-	# Create a small colored square texture at runtime and show it briefly
 	if tilemap_ref == null:
 		return
 	var size := 16
@@ -248,23 +192,9 @@ func _show_temporary_marker(cell: Vector2i) -> void:
 	var tex := ImageTexture.create_from_image(img)
 	var sprite := Sprite2D.new()
 	sprite.texture = tex
-	# center the sprite on the tile (use helper to correct possible offset)
 	sprite.position = _get_tile_center_local(cell)
-	# center the sprite on the tile
-	var local = tilemap_ref.map_to_local(cell)
-	# Defensive access to tile size (see above)
-	var tile_sz2 := Vector2(64, 64)
-	if tilemap_ref != null:
-		if tilemap_ref.has_method("get_cell_size"):
-			tile_sz2 = tilemap_ref.get_cell_size()
-		else:
-			var prop2 = tilemap_ref.get("cell_size")
-			if prop2 != null:
-				tile_sz2 = prop2
-	sprite.position = local + Vector2(tile_sz2.x / 2.0, tile_sz2.y / 2.0)
 	sprite.z_index = 100
 	tilemap_ref.add_child(sprite)
-
 	var t := Timer.new()
 	t.wait_time = 0.6
 	t.one_shot = true
@@ -272,17 +202,23 @@ func _show_temporary_marker(cell: Vector2i) -> void:
 	sprite.add_child(t)
 	t.timeout.connect(Callable(sprite, "queue_free"))
 
-
 func growth_tick(amount: int = 1) -> void:
-	# Increase HP for planted (non-full) entries and update visuals.
 	if tilemap_ref == null:
 		return
 	var to_cells := hp_map.keys()
 	for c in to_cells:
 		var cur = hp_map.get(c)
-		# only grow those that are not full
 		if cur < int(forest_hp):
 			var newhp = min(int(forest_hp), cur + int(amount))
+			hp_map[c] = newhp
+			if newhp >= int(forest_hp):
+				if tilemap_ref != null:
+					tilemap_ref.set_cell(c, 1, Vector2i(2, 0), 0)
+				_remove_overlay(c)
+			else:
+				_update_overlay_for_cell(c)
+
+			newhp = min(int(forest_hp), cur + int(amount))
 			hp_map[c] = newhp
 			# if fully grown, convert tile to WOODS and remove overlay
 			if newhp >= int(forest_hp):
