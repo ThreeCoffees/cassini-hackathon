@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6l16sh7lyvvt"]
+
+[ext_resource type="Texture2D" uid="uid://dk50qd31fdluf" path="res://assets/ui/frame_textur_empty.png" id="1_mk52v"]
+
+[node name="Border" type="NinePatchRect"]
+z_index = 4
+custom_minimum_size = Vector2(4096, 4096)
+anchors_preset = -1
+anchor_right = 2.1333334
+anchor_bottom = 3.7925925
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 4112.0
+offset_bottom = 4112.0
+texture = ExtResource("1_mk52v")
+draw_center = false
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+metadata/_edit_use_anchors_ = true
