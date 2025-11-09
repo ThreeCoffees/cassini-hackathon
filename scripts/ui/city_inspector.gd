@@ -12,6 +12,7 @@ class_name CityInspector extends Control
 
 func _ready() -> void:
 	_on_faction_picked(-1)
+	ResourceManager.faction_info_changed.connect(_on_faction_info_changed)
 
 
 func _on_faction_picked(faction_id: int) -> void:
@@ -39,6 +40,8 @@ func _on_faction_picked(faction_id: int) -> void:
 	wood_yield_info.set_label(str(faction_info.wood_yields))
 
 func _on_faction_info_changed(faction_id: int) -> void:
+	if faction_id == -1:
+		return
 	var faction_info: Faction = CityManager.get_faction(faction_id)
 
 	population_info.set_label(str(faction_info.population))
@@ -47,5 +50,3 @@ func _on_faction_info_changed(faction_id: int) -> void:
 
 	food_yield_info.set_label(str(faction_info.food_yields))
 	wood_yield_info.set_label(str(faction_info.wood_yields))
-
-	

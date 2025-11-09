@@ -1,20 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://8qhk40k3dt5s"]
+[gd_scene load_steps=6 format=3 uid="uid://8qhk40k3dt5s"]
 
 [ext_resource type="Script" uid="uid://gc7k1ktvqciw" path="res://scripts/ui/city_inspector.gd" id="1_jo5e0"]
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="1_wij3p"]
 [ext_resource type="PackedScene" uid="uid://c7h2x38t0mbbm" path="res://scenes/ui/property_info.tscn" id="1_x1ltm"]
 [ext_resource type="Texture2D" uid="uid://d30ok1yq322oo" path="res://assets/icons/wheat.png" id="3_nbyyj"]
 [ext_resource type="Texture2D" uid="uid://b32e3x6esqrwi" path="res://assets/icons/tree.png" id="4_wij3p"]
 
 [node name="CityInspector" type="Control" node_paths=PackedStringArray("city_label", "population_info", "food_yield_info", "wood_yield_info", "food_requirement_info", "energy_requirement_info")]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_right = -32.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("1_wij3p")
 script = ExtResource("1_jo5e0")
-city_label = NodePath("VBoxContainer/CityHeader/MarginContainer/Label")
-population_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/PopulationInfo")
-food_yield_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/FoodInfo")
-wood_yield_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/WoodInfo")
-food_requirement_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/FoodInfo")
-energy_requirement_info = NodePath("VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/EnergyInfo")
+city_label = NodePath("VBoxContainer/Properties/MainBox/CityHeader/MarginContainer/Label")
+population_info = NodePath("VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/PopulationInfo")
+food_yield_info = NodePath("VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/FoodInfo")
+wood_yield_info = NodePath("VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/WoodInfo")
+food_requirement_info = NodePath("VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/FoodInfo")
+energy_requirement_info = NodePath("VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/EnergyInfo")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -28,102 +37,94 @@ offset_top = -153.5
 offset_bottom = 153.5
 grow_horizontal = 0
 grow_vertical = 2
-theme_override_constants/separation = 0
 
-[node name="CityHeader" type="PanelContainer" parent="VBoxContainer"]
+[node name="Properties" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CityHeader"]
+[node name="MainBox" type="VBoxContainer" parent="VBoxContainer/Properties"]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="CityHeader" type="PanelContainer" parent="VBoxContainer/Properties/MainBox"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Properties/MainBox/CityHeader"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/CityHeader/MarginContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/Properties/MainBox/CityHeader/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "City id"
 
-[node name="Properties" type="PanelContainer" parent="VBoxContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/Properties/MainBox"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Properties"]
-layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="MainBox" type="VBoxContainer" parent="VBoxContainer/Properties/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/Properties/MarginContainer/MainBox"]
+[node name="ProductionBox" type="VBoxContainer" parent="VBoxContainer/Properties/MainBox/PanelContainer2"]
 layout_mode = 2
 
-[node name="ProductionBox" type="VBoxContainer" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox"]
+[node name="Label" type="Label" parent="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 14
 text = "Production"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 
-[node name="PopulationInfo" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="PopulationInfo" parent="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
 
-[node name="FoodInfo" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="FoodInfo" parent="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
 
-[node name="PropertyIcon" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/FoodInfo/HBoxContainer" index="0"]
+[node name="PropertyIcon" parent="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/FoodInfo/HBoxContainer" index="0"]
 texture = ExtResource("3_nbyyj")
 
-[node name="WoodInfo" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="WoodInfo" parent="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
 
-[node name="PropertyIcon" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/WoodInfo/HBoxContainer" index="0"]
+[node name="PropertyIcon" parent="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/WoodInfo/HBoxContainer" index="0"]
 texture = ExtResource("4_wij3p")
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Properties/MarginContainer/MainBox"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Properties/MainBox"]
 layout_mode = 2
 
-[node name="CostBox" type="VBoxContainer" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer"]
+[node name="CostBox" type="VBoxContainer" parent="VBoxContainer/Properties/MainBox/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/Properties/MainBox/PanelContainer/CostBox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 14
 text = "Cost"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 
-[node name="FoodInfo" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="FoodInfo" parent="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
 
-[node name="PropertyIcon" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/FoodInfo/HBoxContainer" index="0"]
+[node name="PropertyIcon" parent="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/FoodInfo/HBoxContainer" index="0"]
 texture = ExtResource("3_nbyyj")
 
-[node name="EnergyInfo" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer" instance=ExtResource("1_x1ltm")]
+[node name="EnergyInfo" parent="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer" instance=ExtResource("1_x1ltm")]
 layout_mode = 2
 
-[node name="PropertyIcon" parent="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/EnergyInfo/HBoxContainer" index="0"]
+[node name="PropertyIcon" parent="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/EnergyInfo/HBoxContainer" index="0"]
 texture = ExtResource("4_wij3p")
 
-[editable path="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/PopulationInfo"]
-[editable path="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/FoodInfo"]
-[editable path="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer2/ProductionBox/VBoxContainer/WoodInfo"]
-[editable path="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/FoodInfo"]
-[editable path="VBoxContainer/Properties/MarginContainer/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/EnergyInfo"]
+[editable path="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/PopulationInfo"]
+[editable path="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/FoodInfo"]
+[editable path="VBoxContainer/Properties/MainBox/PanelContainer2/ProductionBox/VBoxContainer/WoodInfo"]
+[editable path="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/FoodInfo"]
+[editable path="VBoxContainer/Properties/MainBox/PanelContainer/CostBox/VBoxContainer2/VBoxContainer/EnergyInfo"]

@@ -7,6 +7,18 @@ var _faction_infos: Array[Faction] = []
 func get_cell_faction_id(cell_coords: Vector2i) -> int:
 	return _city_tile_faction.get(cell_coords, -1);
 
+func get_cell_faction(cell_coords: Vector2i) -> Faction:
+	var faction_id = get_cell_faction_id(cell_coords)
+	if faction_id < 0:
+		return null
+	return faction_id 
+
+func get_cell_exploatation_faction(cell_coords: Vector2i) -> Faction:
+	for f in _faction_infos:
+		if f.worked_tiles.has(cell_coords):
+			return f
+	return null
+
 # returns all city cells of a faction specified by the id.
 func get_faction_id_cells(faction_id: int) -> Array:
 	if faction_id >= Faction.faction_count:
@@ -32,6 +44,7 @@ func create_cities(tilemap: TileMapLayer):
 			var faction: Faction = Faction.new()
 			_flood_fill(cell_coords, faction)
 			_faction_infos.append(faction)
+			add_child(faction)
 
 	ResourceManager.initialize_resources()
 
@@ -50,3 +63,8 @@ func _flood_fill(cell_coords: Vector2i, faction: Faction):
 	_flood_fill(Vector2i(x-1, y), faction)
 	_flood_fill(Vector2i(x, y+1), faction)
 	_flood_fill(Vector2i(x, y-1), faction)
+
+	_flood_fill(Vector2i(x+1, y+1), faction)
+	_flood_fill(Vector2i(x+1, y-1), faction)
+	_flood_fill(Vector2i(x-1, y+1), faction)
+	_flood_fill(Vector2i(x-1, y-1), faction)

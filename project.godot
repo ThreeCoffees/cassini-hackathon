@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="CASSINI Hackathon"
-run/main_scene="uid://ck1weq6t3qglo"
+run/main_scene="uid://dwollyrtwuedd"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,13 @@ config/icon="res://icon.svg"
 CityManager="*res://scripts/autoloads/city_manager.gd"
 ResourceManager="*res://scripts/autoloads/resource_manager.gd"
 MapDataGlobal="*res://scripts/autoloads/map_data_global.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
+mouse_cursor/custom_image="uid://m6plnjkweij4"
 
 [display]
 

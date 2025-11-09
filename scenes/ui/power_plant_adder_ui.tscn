@@ -1,0 +1,98 @@
+[gd_scene load_steps=7 format=3 uid="uid://dv3gtfu6noh8u"]
+
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="1_722c1"]
+[ext_resource type="PackedScene" uid="uid://ob1fl03y7hnv" path="res://scenes/ui/power_plant_choice_container.tscn" id="2_722c1"]
+[ext_resource type="Texture2D" uid="uid://dlm2c7enxfm08" path="res://assets/icons/sun_plant.png" id="5_dfafh"]
+[ext_resource type="Texture2D" uid="uid://d1mht5bwg8527" path="res://assets/icons/wind_plant.png" id="6_21rek"]
+[ext_resource type="Script" uid="uid://coe73blebgo2" path="res://scripts/power_plants/power_plant_placer.gd" id="7_8v4up"]
+[ext_resource type="Script" uid="uid://df2bdyuux227f" path="res://scripts/power_plants/power_plant_signal_controller.gd" id="8_722c1"]
+
+[node name="PowerPlantAdder" type="Control"]
+layout_mode = 3
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 32.0
+grow_vertical = 2
+theme = ExtResource("1_722c1")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -246.0
+offset_right = 101.0
+offset_bottom = 246.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "Power Plants"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="Wood Plant" parent="PanelContainer/VBoxContainer/VBoxContainer" instance=ExtResource("2_722c1")]
+layout_mode = 2
+
+[node name="Sun Plant" parent="PanelContainer/VBoxContainer/VBoxContainer" instance=ExtResource("2_722c1")]
+layout_mode = 2
+
+[node name="Button" parent="PanelContainer/VBoxContainer/VBoxContainer/Sun Plant/MarginContainer/VBoxContainer" index="0"]
+icon = ExtResource("5_dfafh")
+type = 1
+
+[node name="Label" parent="PanelContainer/VBoxContainer/VBoxContainer/Sun Plant/MarginContainer/VBoxContainer" index="1"]
+text = "Sun Plant"
+
+[node name="Label" parent="PanelContainer/VBoxContainer/VBoxContainer/Sun Plant/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer" index="1"]
+text = "40"
+
+[node name="Label" parent="PanelContainer/VBoxContainer/VBoxContainer/Sun Plant/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2" index="1"]
+text = "+3"
+
+[node name="Wind Plant" parent="PanelContainer/VBoxContainer/VBoxContainer" instance=ExtResource("2_722c1")]
+layout_mode = 2
+
+[node name="Button" parent="PanelContainer/VBoxContainer/VBoxContainer/Wind Plant/MarginContainer/VBoxContainer" index="0"]
+icon = ExtResource("6_21rek")
+type = 2
+
+[node name="Label" parent="PanelContainer/VBoxContainer/VBoxContainer/Wind Plant/MarginContainer/VBoxContainer" index="1"]
+text = "Wind Plant"
+
+[node name="Label" parent="PanelContainer/VBoxContainer/VBoxContainer/Wind Plant/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer" index="1"]
+text = "80"
+
+[node name="Label" parent="PanelContainer/VBoxContainer/VBoxContainer/Wind Plant/MarginContainer/VBoxContainer/Wood Plant Cost/HBoxContainer2" index="1"]
+text = "+4"
+
+[node name="PowerPlantPlacer" type="Node" parent="."]
+script = ExtResource("7_8v4up")
+
+[node name="PowerPlantSignalController" type="Node" parent="." node_paths=PackedStringArray("plant_placer", "button1", "button2", "button3")]
+script = ExtResource("8_722c1")
+plant_placer = NodePath("../PowerPlantPlacer")
+button1 = NodePath("../PanelContainer/VBoxContainer/VBoxContainer/Wood Plant/MarginContainer/VBoxContainer/Button")
+button2 = NodePath("../PanelContainer/VBoxContainer/VBoxContainer/Sun Plant/MarginContainer/VBoxContainer/Button")
+button3 = NodePath("../PanelContainer/VBoxContainer/VBoxContainer/Wind Plant/MarginContainer/VBoxContainer/Button")
+
+[editable path="PanelContainer/VBoxContainer/VBoxContainer/Wood Plant"]
+[editable path="PanelContainer/VBoxContainer/VBoxContainer/Sun Plant"]
+[editable path="PanelContainer/VBoxContainer/VBoxContainer/Wind Plant"]

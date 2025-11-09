@@ -1,7 +1,8 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://0avqikbofefn"]
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://0avqikbofefn"]
 
 [ext_resource type="Texture2D" uid="uid://bccug7pdfhwfq" path="res://assets/tilesets/tmp_tileset_world.png" id="1_a2qj7"]
 [ext_resource type="Texture2D" uid="uid://bplc37a3ja804" path="res://assets/tilesets/tmp_selection.png" id="1_tifqb"]
+[ext_resource type="Texture2D" uid="uid://bu7g0wbodyvpv" path="res://assets/icons/pollution.png" id="3_cuofm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cuofm"]
 texture = ExtResource("1_tifqb")
@@ -19,7 +20,13 @@ texture_region_size = Vector2i(32, 32)
 3:0/0 = 0
 4:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e4dqh"]
+texture = ExtResource("3_cuofm")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
 [resource]
 tile_size = Vector2i(32, 32)
 sources/1 = SubResource("TileSetAtlasSource_a2qj7")
 sources/0 = SubResource("TileSetAtlasSource_cuofm")
+sources/2 = SubResource("TileSetAtlasSource_e4dqh")

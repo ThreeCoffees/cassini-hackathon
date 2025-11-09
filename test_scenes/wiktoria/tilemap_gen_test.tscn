@@ -1,0 +1,79 @@
+[gd_scene load_steps=11 format=3 uid="uid://cg2vaw40avc3m"]
+
+[ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
+[ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
+[ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_ioya4"]
+[ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="4_auybo"]
+[ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_4gsma"]
+[ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
+[ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
+[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
+[ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
+[ext_resource type="Script" uid="uid://c7773krbd5lqd" path="res://scripts/timers/resource_timer.gd" id="9_v54x0"]
+
+[node name="TilemapGenTest" type="Node2D"]
+
+[node name="Tilemap" type="Node2D" parent="."]
+
+[node name="TerrainTilemapLayer" parent="Tilemap" instance=ExtResource("1_exb0p")]
+
+[node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
+tile_set = ExtResource("2_2c4qf")
+script = ExtResource("3_ioya4")
+
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer")]
+script = ExtResource("4_auybo")
+terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
+
+[node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
+position = Vector2(-69, 369)
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="CityInspector" parent="GUI" instance=ExtResource("6_phaxv")]
+
+[node name="ResourceInspector" parent="GUI" instance=ExtResource("7_yatwd")]
+
+[node name="PowerPlantAdder" parent="GUI" instance=ExtResource("8_cyouv")]
+
+[node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
+terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
+
+[node name="GameSpeed" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("9_2c4qf")
+
+[node name="PauseSpeedButton" type="Button" parent="GUI/GameSpeed"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 31.0
+offset_right = 113.0
+offset_bottom = 101.0
+text = ">"
+
+[node name="GameSpeedLabel" type="Label" parent="GUI/GameSpeed/PauseSpeedButton"]
+layout_mode = 0
+offset_left = 79.0
+offset_top = 20.0
+offset_right = 266.0
+offset_bottom = 65.0
+text = "Game speed: 1x"
+
+[node name="ResourceTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+script = ExtResource("9_v54x0")
+
+[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
+[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
+[connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
+[connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
+[connection signal="timeout" from="ResourceTimer" to="ResourceTimer" method="_on_timeout"]
+
+[editable path="GUI/PowerPlantAdder"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wood Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Sun Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wind Plant"]

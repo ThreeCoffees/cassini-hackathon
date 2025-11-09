@@ -1,0 +1,95 @@
+[gd_scene load_steps=14 format=3 uid="uid://qjhho81t05jv"]
+
+[ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_yqvx6"]
+[ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_o3e0c"]
+[ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_pf31u"]
+[ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="4_sd8ys"]
+[ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_oitry"]
+[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="6_m4iea"]
+[ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_wkerk"]
+[ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="8_m0osf"]
+[ext_resource type="PackedScene" uid="uid://cdde5nk2a5ajp" path="res://test_scenes/domi/happiness_ui.tscn" id="9_g2sh1"]
+[ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="10_hm1eh"]
+[ext_resource type="Script" path="res://scripts/ui/game_speed.gd" id="10_pf31u"]
+[ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="11_sd8ys"]
+[ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_sd8ys"]
+
+[node name="TilemapGenTest" type="Node2D"]
+
+[node name="Tilemap" type="Node2D" parent="."]
+
+[node name="TerrainTilemapLayer" parent="Tilemap" instance=ExtResource("1_yqvx6")]
+
+[node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
+tile_set = ExtResource("2_o3e0c")
+script = ExtResource("3_pf31u")
+
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager")]
+script = ExtResource("4_sd8ys")
+terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
+selection_layer = NodePath("../SelectionLayer")
+pollution_manager = NodePath("../../PollutionManager")
+
+[node name="Camera2D" parent="." instance=ExtResource("5_oitry")]
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="HappinessUi" parent="GUI" instance=ExtResource("9_g2sh1")]
+offset_left = 1.0
+offset_top = 82.0
+offset_right = 1.0
+offset_bottom = 82.0
+
+[node name="CityInspector" parent="GUI" instance=ExtResource("8_m0osf")]
+
+[node name="ResourceInspector" parent="GUI" instance=ExtResource("7_wkerk")]
+
+[node name="PowerPlantAdder" parent="GUI" instance=ExtResource("6_m4iea")]
+
+[node name="PowerPlantSignalController" parent="GUI/PowerPlantAdder" index="2" node_paths=PackedStringArray("terrain_tilemap")]
+terrain_tilemap = NodePath("../../../Tilemap/TerrainTilemapLayer")
+
+[node name="GameSpeed" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("10_pf31u")
+
+[node name="PauseSpeedButton" type="Button" parent="GUI/GameSpeed"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 31.0
+offset_right = 113.0
+offset_bottom = 101.0
+text = ">"
+
+[node name="GameSpeedLabel" type="Label" parent="GUI/GameSpeed/PauseSpeedButton"]
+layout_mode = 0
+offset_left = 79.0
+offset_top = 20.0
+offset_right = 266.0
+offset_bottom = 65.0
+text = "Game speed: 1x"
+
+[node name="FloatingHealthbar" parent="GUI" node_paths=PackedStringArray("terrain_tilemap_layer") instance=ExtResource("11_sd8ys")]
+terrain_tilemap_layer = NodePath("../../Tilemap/TerrainTilemapLayer")
+
+[node name="ResourceTimer" parent="." node_paths=PackedStringArray("happiness_bar", "pollution_manager") instance=ExtResource("10_hm1eh")]
+happiness_bar = NodePath("../GUI/HappinessUi/PanelContainer/HBoxContainer/MarginContainer3/ProgressBar")
+pollution_manager = NodePath("../PollutionManager")
+
+[node name="PollutionManager" parent="." node_paths=PackedStringArray("plant_placer", "tilemap_layer") instance=ExtResource("13_sd8ys")]
+plant_placer = NodePath("../GUI/PowerPlantAdder/PowerPlantPlacer")
+tilemap_layer = NodePath("../Tilemap/TerrainTilemapLayer")
+
+[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
+[connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
+[connection signal="worked_cell_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_worked_tile_picked"]
+[connection signal="faction_yields_changed" from="Tilemap/SelectionLayer" to="GUI/CityInspector" method="_on_faction_info_changed"]
+
+[editable path="GUI/HappinessUi"]
+[editable path="GUI/PowerPlantAdder"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wood Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Sun Plant"]
+[editable path="GUI/PowerPlantAdder/PanelContainer/VBoxContainer/VBoxContainer/Wind Plant"]

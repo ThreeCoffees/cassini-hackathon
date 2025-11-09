@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdde5nk2a5ajp"]
+
+[ext_resource type="Theme" uid="uid://bxa8xaknswxht" path="res://resources/ui/power_plant_adder_ui.theme" id="1_r1s86"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlajf"]
+bg_color = Color(0.182, 0.7, 0.24243341, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 3
+
+[node name="HappinessUi" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme = ExtResource("1_r1s86")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -57.0
+offset_right = 57.0
+offset_bottom = 27.0
+grow_horizontal = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(400, 27)
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+text = "Happiness:"
+
+[node name="MarginContainer3" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/HBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 1, 0.9490196, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/fill = SubResource("StyleBoxFlat_qlajf")
+value = 30.0
