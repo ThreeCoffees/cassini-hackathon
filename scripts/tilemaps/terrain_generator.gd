@@ -48,15 +48,14 @@ func generate_tilemap():
 		# Zarejestruj instancję w ResourceManager, żeby mogła być aktualizowana co tick
 		ResourceManager.register_forest_hp(fh)
 		var registered: bool = false
-		if typeof(ResourceManager) != TYPE_NIL and ResourceManager != null:
-		var registered: bool = false
+		
 		if typeof(ResourceManager) != TYPE_NIL and ResourceManager != null and ResourceManager.has_method("register_forest_hp"):
 			ResourceManager.register_forest_hp(fh)
 			registered = true
 		elif get_tree().has_node("/root/ResourceManager"):
 			var rm = get_tree().get_root().get_node("ResourceManager")
 			if rm != null:
-			if rm != null and rm.has_method("register_forest_hp"):
+			
 				rm.register_forest_hp(fh)
 				registered = true
 		else:
