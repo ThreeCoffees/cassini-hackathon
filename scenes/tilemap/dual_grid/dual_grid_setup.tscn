@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnoftrd0i8mr8"]
+
+[ext_resource type="PackedScene" uid="uid://behqvgfcjuf1p" path="res://scenes/tilemap/dual_grid/background_layer.tscn" id="2_5st4r"]
+[ext_resource type="PackedScene" uid="uid://cht0coa7q2bpj" path="res://scenes/tilemap/dual_grid/dual_grid_layer.tscn" id="2_xtjvs"]
+[ext_resource type="TileSet" uid="uid://ctplrqmpylqmw" path="res://resources/tilesets/dual_grid/tmp_dualgrid_tileset.tres" id="3_tj1yv"]
+
+[node name="DualGridSetup" type="Node2D"]
+
+[node name="BackgroundLayer" parent="." node_paths=PackedStringArray("reference_tilemap") instance=ExtResource("2_5st4r")]
+tile_set = ExtResource("3_tj1yv")
+reference_tilemap = NodePath("")
+
+[node name="DualGridLayerWater" parent="." node_paths=PackedStringArray("reference_tilemap") instance=ExtResource("2_xtjvs")]
+reference_tilemap = NodePath("")
+
+[node name="DualGridLayerWood" parent="." node_paths=PackedStringArray("reference_tilemap") instance=ExtResource("2_xtjvs")]
+reference_tilemap = NodePath("")
+terrain_type = 2
+source_id = 2
+
+[node name="DualGridLayerField" parent="." node_paths=PackedStringArray("reference_tilemap") instance=ExtResource("2_xtjvs")]
+reference_tilemap = NodePath("")
+terrain_type = 3
+source_id = 3
+
+[node name="DualGridLayerCity" parent="." node_paths=PackedStringArray("reference_tilemap") instance=ExtResource("2_xtjvs")]
+reference_tilemap = NodePath("")
+terrain_type = 4
+source_id = 4

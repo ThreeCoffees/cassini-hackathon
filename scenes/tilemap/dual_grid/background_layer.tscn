@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://behqvgfcjuf1p"]
+
+[ext_resource type="Script" uid="uid://bpjrdk4i5qcrm" path="res://scripts/tilemaps/dual_grid/background_layer.gd" id="1_yblfy"]
+
+[node name="BackgroundLayer" type="TileMapLayer"]
+position = Vector2(-16, -16)
+collision_enabled = false
+script = ExtResource("1_yblfy")
