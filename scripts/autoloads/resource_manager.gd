@@ -7,6 +7,7 @@ class ResourceData:
 	var total_cost: int
 	var storage: int
 	var type: String
+	var debuff : int
 
 	func get_label() -> String:
 		if type == "population":
@@ -16,7 +17,7 @@ class ResourceData:
 	func get_change() -> int:
 		if type == "population":
 			return 0
-		return total_yield - total_cost
+		return total_yield - total_cost - debuff # tutaj dodaje bo mi sie to wydaje najlogiczniejsze
 
 	func update_change():
 		calculate_total_yield()
@@ -43,7 +44,16 @@ class ResourceData:
 	
 	func _init(new_type: String):
 		type = new_type
-	
+		debuff = 0
+
+# total prototype
+func add_debuffs(arr : Array[int]):
+	debuffs = arr
+	resources["wood"].debuff = arr[0]
+	resources["food"].debuff = arr[1]
+	resources["energy"].debuff = arr[2]
+
+var debuffs : Array[int] = [] # ilosc kolejno zanieczyszczen na wood, agri i city
 
 var resources: Dictionary[String, ResourceData] = {}
 var forest_hp_node = null

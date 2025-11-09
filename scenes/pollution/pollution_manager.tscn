@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3bqjbmnw06pl"]
+
+[ext_resource type="Script" uid="uid://vcqd7e53pfmv" path="res://scripts/pollution/pollution_manager.gd" id="1_34262"]
+
+[node name="PollutionManager" type="Node" node_paths=PackedStringArray("plant_placer", "tilemap_layer")]
+script = ExtResource("1_34262")
+plant_placer = NodePath("")
+tilemap_layer = NodePath("")

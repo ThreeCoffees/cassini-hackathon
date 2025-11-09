@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=14 format=3 uid="uid://5gydacn7c0o3"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
+[ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_upf00"]
 
 [node name="TilemapGenTest" type="Node2D"]
 
@@ -73,8 +74,13 @@ text = "Game speed: 1x"
 [node name="FloatingHealthbar" parent="GUI" node_paths=PackedStringArray("terrain_tilemap_layer") instance=ExtResource("10_kwpv6")]
 terrain_tilemap_layer = NodePath("../../Tilemap/TerrainTilemapLayer")
 
-[node name="ResourceTimer" parent="." node_paths=PackedStringArray("happiness_bar") instance=ExtResource("11_bvtse")]
+[node name="ResourceTimer" parent="." node_paths=PackedStringArray("happiness_bar", "pollution_manager") instance=ExtResource("11_bvtse")]
 happiness_bar = NodePath("../GUI/HappinessUi/PanelContainer/HBoxContainer/MarginContainer3/ProgressBar")
+pollution_manager = NodePath("../PollutionManager")
+
+[node name="PollutionManager" parent="." node_paths=PackedStringArray("plant_placer", "tilemap_layer") instance=ExtResource("13_upf00")]
+plant_placer = NodePath("../GUI/PowerPlantAdder/PowerPlantPlacer")
+tilemap_layer = NodePath("../Tilemap/TerrainTilemapLayer")
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
