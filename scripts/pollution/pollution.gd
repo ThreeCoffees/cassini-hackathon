@@ -19,7 +19,7 @@ func try_propagation():
 	var rand = rng.randf_range(0,5)
 	if (rand > propagation_propability):
 		propagate()
-		propagation_propability = min(4.95, propagation_propability+0.1)
+		propagation_propability = min(5, propagation_propability+0.15)
 
 func propagate():
 	var arr_position = tilemap.local_to_map(position)
@@ -27,14 +27,14 @@ func propagate():
 	var rand = rng.randf()
 	if rand < 0.25:
 		if not pollution_manager.is_polluted(Vector2(arr_position.x+1,arr_position.y)):
-			pollution_manager.add_polution(Vector2(arr_position.x+1,arr_position.y))
+			pollution_manager.add_polution(Vector2(arr_position.x+1,arr_position.y), min(5, propagation_propability+0.1))
 	elif rand < 0.5:
 		if not pollution_manager.is_polluted(Vector2(arr_position.x-1,arr_position.y)):
-			pollution_manager.add_polution(Vector2(arr_position.x-1,arr_position.y))
+			pollution_manager.add_polution(Vector2(arr_position.x-1,arr_position.y),min(5, propagation_propability+0.1))
 	elif rand < 0.75:
 		if not pollution_manager.is_polluted(Vector2(arr_position.x,arr_position.y+1)):
-			pollution_manager.add_polution(Vector2(arr_position.x,arr_position.y+1))
+			pollution_manager.add_polution(Vector2(arr_position.x,arr_position.y+1),min(5, propagation_propability+0.1))
 	else:
 		if not pollution_manager.is_polluted(Vector2(arr_position.x,arr_position.y-1)):
-			pollution_manager.add_polution(Vector2(arr_position.x,arr_position.y-1))
+			pollution_manager.add_polution(Vector2(arr_position.x,arr_position.y-1),min(5, propagation_propability+0.1))
 	
