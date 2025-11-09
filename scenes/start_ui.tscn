@@ -65,9 +65,9 @@ layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 50
+theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 50
+theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 5
 
 [node name="Button3" type="Button" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
@@ -81,9 +81,9 @@ size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer3"]
 layout_mode = 2
-theme_override_constants/margin_left = 50
+theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 50
+theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 5
 
 [node name="Button2" type="Button" parent="Control/PanelContainer/MarginContainer/VBoxContainer/PanelContainer3/MarginContainer"]

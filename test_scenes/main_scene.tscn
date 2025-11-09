@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=19 format=3 uid="uid://5gydacn7c0o3"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
@@ -10,9 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://bnoftrd0i8mr8" path="res://scenes/tilemap/dual_grid/dual_grid_setup.tscn" id="5_iu3lp"]
 [ext_resource type="PackedScene" uid="uid://cdde5nk2a5ajp" path="res://test_scenes/domi/happiness_ui.tscn" id="6_bvtse"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
+[ext_resource type="PackedScene" uid="uid://ctkf2ywe2ftv6" path="res://scenes/tilemap/worker_line.tscn" id="7_evp1v"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
 [ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
+[ext_resource type="PackedScene" uid="uid://b6l16sh7lyvvt" path="res://scenes/ui/border.tscn" id="9_v3i1k"]
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
 [ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_upf00"]
@@ -56,6 +58,7 @@ script = ExtResource("3_8te4h")
 z_index = 3
 tile_set = ExtResource("2_2c4qf")
 script = ExtResource("3_ioya4")
+line_scene = ExtResource("7_evp1v")
 
 [node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager")]
 script = ExtResource("4_auybo")
@@ -65,6 +68,8 @@ pollution_manager = NodePath("../../PollutionManager")
 
 [node name="PowerPlantsSpawnPoint" type="Node2D" parent="Tilemap"]
 z_index = 1
+
+[node name="Border" parent="Tilemap" instance=ExtResource("9_v3i1k")]
 
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 
