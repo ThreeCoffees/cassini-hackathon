@@ -1,16 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=15 format=3 uid="uid://culspqbmg13es"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
 [ext_resource type="Script" uid="uid://bahoes4ijhxiu" path="res://scripts/tilemaps/selection_layer.gd" id="3_ioya4"]
 [ext_resource type="Script" uid="uid://bdl5rqghktdon" path="res://scripts/tilemaps/terrain_generator.gd" id="4_auybo"]
+[ext_resource type="PackedScene" path="res://scenes/tilemap/worker_line.tscn" id="4_iu3lp"]
 [ext_resource type="PackedScene" uid="uid://drttlxlck2el7" path="res://scenes/camera/ZoomingCamera2D.tscn" id="5_4gsma"]
-[ext_resource type="PackedScene" uid="uid://cdde5nk2a5ajp" path="res://test_scenes/domi/happiness_ui.tscn" id="6_bvtse"]
+[ext_resource type="PackedScene" path="res://test_scenes/domi/happiness_ui.tscn" id="6_bvtse"]
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
-[ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
+[ext_resource type="PackedScene" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
 [ext_resource type="Script" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
-[ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
+[ext_resource type="PackedScene" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
 [ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_upf00"]
 
@@ -23,6 +24,7 @@
 [node name="SelectionLayer" type="TileMapLayer" parent="Tilemap"]
 tile_set = ExtResource("2_2c4qf")
 script = ExtResource("3_ioya4")
+line_scene = ExtResource("4_iu3lp")
 
 [node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager")]
 script = ExtResource("4_auybo")
