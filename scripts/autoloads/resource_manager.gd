@@ -92,6 +92,7 @@ func calculate_stores():
 func register_forest_hp(node):
 	# Store reference to the ForestHP node so ResourceManager can decrement HP over time
 	forest_hp_node = node
+	print("ResourceManager: forest_hp_node registered: %s" % [forest_hp_node])
 
 
 signal faction_info_changed(faction_id: int)
