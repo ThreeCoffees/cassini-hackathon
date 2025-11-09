@@ -258,6 +258,9 @@ func growth_tick(amount: int = 1) -> void:
 			else:
 				_update_overlay_for_cell(c)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
