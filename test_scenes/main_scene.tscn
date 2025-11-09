@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://5gydacn7c0o3"]
+[gd_scene load_steps=19 format=3 uid="uid://5gydacn7c0o3"]
 
 [ext_resource type="PackedScene" uid="uid://bn0f8e3irhsby" path="res://scenes/tilemap/terrain_tilemap_layer.tscn" id="1_exb0p"]
 [ext_resource type="TileSet" uid="uid://0avqikbofefn" path="res://resources/tilesets/tmp_tileset_world.tres" id="2_2c4qf"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
 [ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
+[ext_resource type="PackedScene" uid="uid://b6l16sh7lyvvt" path="res://scenes/ui/border.tscn" id="9_v3i1k"]
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
 [ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_upf00"]
@@ -67,6 +68,8 @@ pollution_manager = NodePath("../../PollutionManager")
 
 [node name="PowerPlantsSpawnPoint" type="Node2D" parent="Tilemap"]
 z_index = 1
+
+[node name="Border" parent="Tilemap" instance=ExtResource("9_v3i1k")]
 
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 
