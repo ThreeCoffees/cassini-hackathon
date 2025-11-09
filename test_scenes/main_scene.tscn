@@ -9,12 +9,12 @@
 [ext_resource type="PackedScene" uid="uid://8qhk40k3dt5s" path="res://scenes/ui/city_inspector.tscn" id="6_phaxv"]
 [ext_resource type="PackedScene" uid="uid://ca7lotynnkupq" path="res://scenes/ui/resource_inspector.tscn" id="7_yatwd"]
 [ext_resource type="PackedScene" uid="uid://dv3gtfu6noh8u" path="res://scenes/ui/power_plant_adder_ui.tscn" id="8_cyouv"]
-[ext_resource type="Script" uid="uid://dbmyx8hkappma" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
+[ext_resource type="Script" path="res://scripts/ui/game_speed.gd" id="9_2c4qf"]
 [ext_resource type="PackedScene" uid="uid://b6022owre4fc6" path="res://scenes/ui/floating_healthbar.tscn" id="10_kwpv6"]
 [ext_resource type="PackedScene" uid="uid://dl8vdawntbe5o" path="res://scenes/timers/resource_timer.tscn" id="11_bvtse"]
 [ext_resource type="PackedScene" uid="uid://b3bqjbmnw06pl" path="res://scenes/pollution/pollution_manager.tscn" id="13_upf00"]
 
-[node name="TilemapGenTest" type="Node2D"]
+[node name="TilemapGenTest2" type="Node2D"]
 
 [node name="Tilemap" type="Node2D" parent="."]
 
@@ -24,10 +24,14 @@
 tile_set = ExtResource("2_2c4qf")
 script = ExtResource("3_ioya4")
 
-[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer")]
+[node name="TerrainGenerator" type="Node" parent="Tilemap" node_paths=PackedStringArray("terrain_tilemap_layer", "selection_layer", "pollution_manager")]
 script = ExtResource("4_auybo")
 terrain_tilemap_layer = NodePath("../TerrainTilemapLayer")
 selection_layer = NodePath("../SelectionLayer")
+pollution_manager = NodePath("../../PollutionManager")
+
+[node name="PollutionLayer" type="TileMapLayer" parent="Tilemap"]
+tile_set = ExtResource("2_2c4qf")
 
 [node name="Camera2D" parent="." instance=ExtResource("5_4gsma")]
 
@@ -78,9 +82,10 @@ terrain_tilemap_layer = NodePath("../../Tilemap/TerrainTilemapLayer")
 happiness_bar = NodePath("../GUI/HappinessUi/PanelContainer/HBoxContainer/MarginContainer3/ProgressBar")
 pollution_manager = NodePath("../PollutionManager")
 
-[node name="PollutionManager" parent="." node_paths=PackedStringArray("plant_placer", "tilemap_layer") instance=ExtResource("13_upf00")]
+[node name="PollutionManager" parent="." node_paths=PackedStringArray("plant_placer", "tilemap_layer", "pollution_layer") instance=ExtResource("13_upf00")]
 plant_placer = NodePath("../GUI/PowerPlantAdder/PowerPlantPlacer")
 tilemap_layer = NodePath("../Tilemap/TerrainTilemapLayer")
+pollution_layer = NodePath("../Tilemap/PollutionLayer")
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
