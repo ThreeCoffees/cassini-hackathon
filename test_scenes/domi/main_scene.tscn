@@ -74,12 +74,14 @@ text = "Game speed: 1x"
 [node name="FloatingHealthbar" parent="GUI" node_paths=PackedStringArray("terrain_tilemap_layer") instance=ExtResource("11_sd8ys")]
 terrain_tilemap_layer = NodePath("../../Tilemap/TerrainTilemapLayer")
 
-[node name="ResourceTimer" parent="." node_paths=PackedStringArray("happiness_bar") instance=ExtResource("10_hm1eh")]
+[node name="ResourceTimer" parent="." node_paths=PackedStringArray("happiness_bar", "pollution_manager") instance=ExtResource("10_hm1eh")]
 happiness_bar = NodePath("../GUI/HappinessUi/PanelContainer/HBoxContainer/MarginContainer3/ProgressBar")
+pollution_manager = NodePath("../PollutionManager")
 
-[node name="PollutionManager" type="Node" parent="." node_paths=PackedStringArray("plant_placer")]
+[node name="PollutionManager" type="Node" parent="." node_paths=PackedStringArray("plant_placer", "tilemap_layer")]
 script = ExtResource("13_sd8ys")
 plant_placer = NodePath("../GUI/PowerPlantAdder/PowerPlantPlacer")
+tilemap_layer = NodePath("../Tilemap/TerrainTilemapLayer")
 
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="Tilemap/SelectionLayer" method="_on_faction_picked"]
 [connection signal="faction_picked" from="Tilemap/TerrainTilemapLayer" to="GUI/CityInspector" method="_on_faction_picked"]
