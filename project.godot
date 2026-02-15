@@ -20,6 +20,7 @@ config/icon="uid://p8hcue5w3ih2"
 CityManager="*res://scripts/autoloads/city_manager.gd"
 ResourceManager="*res://scripts/autoloads/resource_manager.gd"
 MapDataGlobal="*res://scripts/autoloads/map_data_global.gd"
+ApiSettings="*res://scripts/autoloads/api_settings.gd"
 
 [display]
 

@@ -10,7 +10,8 @@ func fetch_map(latlon: Vector2):
 	http.request_completed.connect(_on_request_completed)
 	var result = null
 	result = http.request(
-		"https://tileworld.electimore.xyz/api/v2/terrain/?lat="
+		ApiSettings.api_address +
+		"/api/v2/terrain/?lat="
 		+str(latlon.x)+"&lon="+str(latlon.y))
 	await http.request_completed
 	print(result)
